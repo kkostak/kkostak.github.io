@@ -5,7 +5,7 @@
 ### Projects
 
 [Assistive Wheelchair Drink Holder](/drinkHolder)
-<img src="images/drinkHolder/CADAssembly.png?raw=true" width = 800 height = 800/>
+<img src="images/drinkHolder/CADAssembly.png?raw=true" width = 400 height = auto/>
 
 ---
 [Wifi-Controlled Partner Robot](/pdf/sample_presentation.pdf)
