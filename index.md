@@ -5,7 +5,10 @@
 ### Projects
 
 [Assistive Wheelchair Drink Holder](/drinkHolder)
-<img src="images/drinkHolder/CADAssembly.png?raw=true" width = 500 height = auto/>
+<img src="images/drinkHolder/CADAssembly.png?raw=true" width = 500 height = auto class = image/>
+  <div class="overlay">
+    <div class="text">Hello World</div>
+  </div>
 
 ---
 [Wifi-Controlled Partner Robot](/pdf/sample_presentation.pdf)
@@ -73,13 +76,6 @@
   text-align: center;
 }
 </style>
-
-<div class="container">
-  <img src="profile.png" alt="Avatar" class="image">
-  <div class="overlay">
-    <div class="text">Hello World</div>
-  </div>
-</div>
 
 <p style="font-size:11px">Page template forked from <a href="https://github.com/evanca/quick-portfolio">evanca</a></p>
 <!-- Remove above link if you don't want to attibute -->
