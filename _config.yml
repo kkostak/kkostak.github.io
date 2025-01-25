@@ -1,11 +1,13 @@
-title: John Doe # your name (or website title) here
-logo: "/images/logo.png?raw=true" # your photo (or logo) here
+title: Katie Kostak # your name (or website title) here
+logo: "/images/profile.png?raw=true" # your photo (or logo) here
 description: > # your text below (remove <br> elements if you don't need line breaks)
-  First description 
+  Hi! My name is Katie and I'm a current junior at Tufts University studying Mechanical Engineering! My name is Katie Kostak, and I'm a current junior at Tufts University studying Mechanical Engineering and Computer Science. Originally from New Jersey, I was drawn to Tufts for the dual degree SMFA program, but instead fell in love with engineering. I’m a firm believer that engineering is inherently artistic and creative, and love to express myself through the various projects I take on! 
   <br><br>
-  Second description 
+  Feel free to reach out! 
   <br><br>
-  <a href="https://www.linkedin.com/in/example/">View My LinkedIn Profile</a> 
+  <a href="https://www.linkedin.com/in/katiekostak/">View My LinkedIn Profile</a> 
+  <br><br>
+  <a href="katie.kostak@gmail.com">Send me an Email!</a> 
   
 remote_theme: pages-themes/minimal@v0.2.0
 plugins:
