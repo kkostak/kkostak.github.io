@@ -6,7 +6,8 @@
 ### Category Name 1 
 
 [Project 1 Title](/drinkHolder)
-<img src="images/drinkHolder/CADAssembly.png?raw=true"/>
+<img src="images/drinkHolder/CADAssembly.png?raw=true" width="200" height="100" />
+
 
 ---
 [Project 2 Title](/pdf/sample_presentation.pdf)
