@@ -1,28 +1,26 @@
 ## [Portfolio](/sample_presentation.pdf)
-## im gonna touch you
 
 ---
 
-### Category Name 1 
+### Projects
 
-[Project 1 Title](/drinkHolder)
-<img src="images/drinkHolder/CADAssembly.png?raw=true" width="200" height="100" />
-
-
----
-[Project 2 Title](/pdf/sample_presentation.pdf)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[Assistive Wheelchair Drink Holder](/drinkHolder)
+<img src="images/drinkHolder/CADAssembly.png?raw=true"/ width = 800 height = 800>
 
 ---
-[Project 3 Title](http://example.com/)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[Wifi-Controlled Partner Robot](/pdf/sample_presentation.pdf)
+<img src="images/robot/headshot.png"/>
+
+---
+[Fluid Simulation of Cerebrospinal Fluid](http://example.com/)
+<img src="images/Simulations/brainSide.png"/>
 
 ---
 
 ### Category Name 2
 
 - [Project 1 Title](http://example.com/)
-- [Project 2 Title](http://example.com/)
+- [Project 2 Title](/pdf/sample_presentation.pdf)
 - [Project 3 Title](http://example.com/)
 - [Project 4 Title](http://example.com/)
 - [Project 5 Title](http://example.com/)
