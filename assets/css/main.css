@@ -2315,6 +2315,9 @@ input, select, textarea {
 		border: 0;
 		display: inline-block;
 		position: relative;
+		width: 400px;
+		height: 400px;
+		overflow: hidden;
 	}
 
 		.image img {
@@ -2572,7 +2575,7 @@ input, select, textarea {
 		-webkit-flex-wrap: wrap;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
-		postiion: relative;
+		position: relative;
 		margin: -2.5em 0 0 -2.5em;
 	}
 
