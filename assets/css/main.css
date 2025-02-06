@@ -2321,6 +2321,7 @@ input, select, textarea {
 		overflow: hidden;
 		margin-left: auto;
 		margin-right: auto;
+		width: 50%;
 	}
 
 		.image img {
