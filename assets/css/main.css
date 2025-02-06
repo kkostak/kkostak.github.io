@@ -116,7 +116,8 @@ input, select, textarea {
 /* Type */
 
 	body, input, select, textarea {
-		color: #585858;
+		/* color: #585858; */
+		color: #ffffff;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
 		font-weight: 300;
@@ -2315,8 +2316,8 @@ input, select, textarea {
 		border: 0;
 		display: inline-block;
 		position: relative;
-		width: 400px;
-		height: 400px;
+		width: 300px;
+		height: 200px;
 		overflow: hidden;
 	}
 
