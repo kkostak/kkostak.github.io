@@ -99,8 +99,8 @@ input, select, textarea {
 	}
 
 	body {
-		/* background: #0c364f;  */
-		background: #251F47;
+		background: #0c364f; 
+		/* background: #251F47; */
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -118,8 +118,8 @@ input, select, textarea {
 
 	body, input, select, textarea {
 		/* color: #585858; */
-		/* color: #e6ebea; */
-		color: #C1D37F;
+		color: #e6ebea;
+		/* color: #C1D37F; */
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
 		font-weight: 300;
@@ -149,13 +149,13 @@ input, select, textarea {
 		transition: border-bottom-color 0.2s ease, color 0.2s ease;
 		text-decoration: none;
 		/* color: #585858; */
-		color: #404E7C;
+		color: #3C6E71;
 		border-bottom: dotted 1px rgba(88, 88, 88, 0.5);
 	}
 
 		a:hover {
 			border-bottom-color: transparent;
-			color: #f2849e !important;
+			color: #3C6E71 !important;
 		}
 
 	strong, b {
