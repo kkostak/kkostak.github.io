@@ -99,8 +99,9 @@ input, select, textarea {
 	}
 
 	body {
-		background: #0c364f; 
-		/* background: #251F47; */
+		background: #fbfaf7;
+		/* background-image: url("../../images/bgpic.png"); */
+ 
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -118,7 +119,7 @@ input, select, textarea {
 
 	body, input, select, textarea {
 		/* color: #585858; */
-		color: #e6ebea;
+		color: #5b7d84;
 		/* color: #C1D37F; */
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
@@ -2716,27 +2717,27 @@ input, select, textarea {
 					}
 
 			.tiles article.style1 > .image:before {
-				background-color: #f2849e;
+				background-color: #5b7d84;
 			}
 
 			.tiles article.style2 > .image:before {
-				background-color: #7ecaf6;
+				background-color: #c85a3c;
 			}
 
 			.tiles article.style3 > .image:before {
-				background-color: #7bd0c1;
+				background-color: #da9648;
 			}
 
 			.tiles article.style4 > .image:before {
-				background-color: #c75b9b;
+				background-color: #ba4667;
 			}
 
 			.tiles article.style5 > .image:before {
-				background-color: #ae85ca;
+				background-color: #506a4e;
 			}
 
 			.tiles article.style6 > .image:before {
-				background-color: #8499e7;
+				background-color: #C9E4CA;
 			}
 
 			body:not(.is-touch) .tiles article:hover > .image {
@@ -3176,7 +3177,7 @@ input, select, textarea {
 
 	#footer {
 		padding: 5em 0 6em 0 ;
-		background-color: #0c364f;
+		background-color: #ebe9e5;
 	}
 
 		#footer > .inner {
