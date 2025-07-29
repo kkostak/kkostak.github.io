@@ -99,8 +99,9 @@ input, select, textarea {
 	}
 
 	body {
-		background: #fbfaf7;
-		/* background-image: url("../../images/bgpic.png"); */
+		/* background: #fbfaf7; */
+		background-image: url("../../images/bgpic.jpg");
+		background-size: (16*260)pt;
  
 	}
 
@@ -2380,6 +2381,20 @@ input, select, textarea {
 				}
 
 			}
+		.image.center {
+			display: block;
+			margin: auto;
+			width: 400pt;
+			height: auto;
+			object-fit: contain;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+		}
+			.image.center img {
+				width: 400pt;
+			}
 
 /* Table */
 
@@ -2737,7 +2752,10 @@ input, select, textarea {
 			}
 
 			.tiles article.style6 > .image:before {
-				background-color: #C9E4CA;
+				/* background-color: #C9E4CA; */
+				background-image: url("../../images/trial.jpg");
+				background-size: contain;
+
 			}
 
 			body:not(.is-touch) .tiles article:hover > .image {

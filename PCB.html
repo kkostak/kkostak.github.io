@@ -4,9 +4,11 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+
+<!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
 <html>
 	<head>
-		<title>PCB Design- Katie Kostak</title>
+		<title>PCB - Katie Kostak</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -19,12 +21,10 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="inner">
-
 							<!-- Logo -->
-								<a href="index.html" class="logo">
-									<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title">Katie!</span>
-								</a>
-
+							<a href="index.html" class="logo">
+								<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title"></span>
+							</a>
 							<!-- Nav -->
 								<nav>
 									<ul>
@@ -48,17 +48,19 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>PCB Design</h1>
-							<p> This was a project done for Tufts' ME30: Electronics and Controls, and was also my first exploration into custom PCB manufacturing! Our first task was to build a power supply PCB that could take in 12V and output 5V and 3.3 V. I first designed a circut on a breadboard to make sure I understood where things needed to go, and then used this as a blueprint on how to design & lay out the PCB. I used the same design process for the H-Bridge, which essentially enables the direction of a circut to switch (which is really useful for making a motor spin two different directions!).</p>
-							<h3>H-Bridge and Power Supply</h3>
-							<div class="box alt">
-								<div class="row gtr-uniform">
-									<div class="col-4"><span class="image fit"><img src="images/pcb/powerSupply.png" alt="ok" /></span></div>
-									<!-- <div class="col-4"><span class="image fit"><img src="images/pcb/pSdiagram.png" alt="ok2" /></span></div> -->
-									<!-- <div class="col-4"><span class="image fit"><img src="images/pcb/hBridge.png" alt="ok3" /></span></div> -->
-									<!-- <div class="col-4"><span class="image fit"><img src="images/pcb/hBridgeDiagram.png" alt="" /></span></div> -->
-									<!-- <div class="col-4"><span class="image fit"><img src="images/pcb/realThing.png" alt="" /></span></div> -->
-								</div>
+							<h1>PCB Designs</h1>
+
+							<div style="display: inline-block; width: 875pt;">
+								<p><span class="image right"><img src="images/pcb/realThing.png" alt="" /></span> <b>GOALS:</b> design from & manufacture from scratch powersupply and motor controller pcbs <br> <b>SKILLS:</b> breadboard prototyping, circut design, KiCad, soldering</p>
+							</div>		
+
+							<p> <br> Through this project, I learned about the highs and lows of working with breadboards. My first circut was a powersupply board that took in 12V and outputted 5V and 3V, and my second circut was a H-bridge motor driver. Even though I spent more time than I would like to admit debugging my breadboard with a multimeter and praying that I had not accidentally soldered two pins together, it was all so worth it when I got them to work first try! </p>
+
+
+							<h2>Electronics Schematics</h2>
+							<div>
+								<p><span class="image left"><img src="images/pcb/pSdiagram.png" alt="" style="object-position: -10% -10%;" /></span> <span class="image left"><img src="images/PCB/powerSupply.png" alt="" /></span> <br><br><br>Power Supply Schematics<br><br><br><br><br><br><p>
+								<p><span class="image left"><img src="images/pcb/hBridgeDiagram.png" alt="" style="object-position: -10% -10%;" /></span> <span class="image left"><img src="images/PCB/hBridge.png" alt="" /></span> <br><br><br>H-Bridge Schematics<br><br><br><br><br><br><p>
 							</div>
 						</div>
 					</div>
@@ -67,8 +69,10 @@
 					<footer id="footer">
 						<div class="inner">
 							<section>
-								<h2>Get in touch</h2>
-								<form method="post" action="#">
+								<h2>Say Hello!</h2>
+								<form method="POST" action="https://api.web3forms.com/submit">
+									<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
+
 									<div class="fields">
 										<div class="field half">
 											<input type="text" name="name" id="name" placeholder="Name" />
@@ -80,27 +84,31 @@
 											<textarea name="message" id="message" placeholder="Message"></textarea>
 										</div>
 									</div>
+
+									<!-- Honeypot Spam Protection -->
+									<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
 									<ul class="actions">
 										<li><input type="submit" value="Send" class="primary" /></li>
 									</ul>
 								</form>
-							</section>
-							<section>
-								<h2>Follow</h2>
-								<ul class="icons">
-									<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
-									<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
-									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+
+								
+								<ul class="copyright">
+									<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 								</ul>
 							</section>
-							<ul class="copyright">
-								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-							</ul>
+							<section>
+								<h2>Stay in Touch</h2>
+								<ul class="icons">
+									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+									<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+									<div class="box alt">
+									<div class="col-4"><span class="image fit"><img src="images/bottomLabel.png" alt="" /></span></div>
+									</div>
+								</ul>
+							</section>
 						</div>
 					</footer>
 
