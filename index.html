@@ -15,21 +15,19 @@
 	<body class="index is-preload">
 		<!-- Wrapper -->
 			<div id="wrapper">
+				
+				
+				<!-- <h1 style = "text-align: center; padding-top: 50pt;"> Hello! I'm Katie Kostak </h1> -->
+				<span class="image center"><img src="images/centerCoverBG.png" alt=""/></span>
+
+				
 				<!-- Header -->
 					<header id="header">
-						<div class="inner">
-							<!-- Logo -->
-								<!-- <a href="index.html" class="logo">
-									<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title">Hi! I'm Katie</span>
-								</a> -->
-
-							<!-- Nav -->
-								<nav>									
-									<ul>
-										<li><a href="#menu">Menu</a></li>
-									</ul>
-								</nav>
-						</div>
+						<nav>									
+							<ul>
+								<li><a href="#menu">Menu</a></li>
+							</ul>
+						</nav>
 					</header>
 
 				<!-- Menu -->
@@ -43,28 +41,43 @@
 					</nav>
 
 				<!-- Main -->
-					<div id="main" >
+					<div id="main">
 						<div class="inner">
-							<header>
-								<h1>Hi! I'm Katie</h1>
-								<!-- <span class="image center"><img src="images/centerCoverBG.png" alt=""/></span> -->
-								
-								<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-								<ul class="actions fit small">
-									<li><a href="#" class="button fit small">Fit + Small</a></li>
-									<li><a href="#" class="button fit small">Fit + Small</a></li>
-									<li><a href="#" class="button fit small">Fit + Small</a></li>
-								</ul>
+							<header> 								
+								<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+
+								<div id="myBtnContainer">
+									<ul class="actions fit small">
+										<li><a href="javascript:void(0)" class="button primary fit small" onclick="filterSelection('all')" >All Projects</a></li>
+										<li><a href="javascript:void(0)" class="button primary fit small" onclick="filterSelection('cad')" >Builds & CAD</a></li>
+										<li><a href="javascript:void(0)" class="button primary fit small" onclick="filterSelection('sim')" >Simulations</a></li>
+										<li><a href="javascript:void(0)" class="button primary fit small" onclick="filterSelection('misc')" >Misc Projects</a></li>
+
+									</ul>
+								</div>
+								  
 								<!-- <blockquote>"Katie infuses creativity to all aspects of her work. Her innovative thinking combined with her strong eye for design allows her to approach projects and problems in refreshing ways. Whether it’s building partnerships, designing trainings, or managing staff, she will always deliver." <br>
 									- Former Supervisor Calvin Zhao at <a href="https://tischcollege.tufts.edu/">Tufts University's Tisch College of Civic Life</a></blockquote> -->
 							</header>
 							<section class="tiles">
 
-								<article class="style6">
+								<article class="style1 filterDiv sim">
 									<span class="image">
-										<img src="images/makeHarvard/meWorking.jpeg" alt="" />
+										<img src="images/lasers/30 Pulses Better Frame Rate.gif" alt="" />
 									</span>
-									<a href="makeHarvard.html">
+									<a href="laserDrilling.html">
+										<h2>Laser Drilling</h2>
+										<div class="content">
+											<p>Summer Research at NCKU's Metal 3D Printing Lab in Taiwan</p>
+										</div>
+									</a>
+								</article>
+
+								<article class="style6 filterDiv cad">
+									<span class="image">
+										<img src="images/scuttletron/him.png" alt="" />
+									</span>
+									<a href="scuttletron.html">
 										<h2>Scuttletron 9000</h2>
 										<div class="content">
 											<p>Personal Project for the MassRobotics Form & Function Challenge</p>
@@ -72,9 +85,9 @@
 									</a>
 								</article>
 
-								<article class="style5">
+								<article class="style5 filterDiv cad">
 									<span class="image">
-										<img src="images/makeHarvard/meWorking.jpeg" alt="" />
+										<img src="images/makeHarvard/meWorking2.png" alt="" />
 									</span>
 									<a href="makeHarvard.html">
 										<h2>Mirrored Drawing Robot</h2>
@@ -84,9 +97,9 @@
 									</a>
 								</article>
 
-								<article class="style1">
+								<article class="style1 filterDiv cad">
 									<span class="image">
-										<img src="images/nemitz/fingerDemo.png" alt="" />
+										<img src="images/nemitz/orangeCover.png" alt="" />
 									</span>
 									<a href="nemitz.html">
 										<h2>Soft-Bodied Robotics</h2>
@@ -96,19 +109,19 @@
 									</a>
 								</article>
 
-								<article class="style2">
+								<article class="style2 filterDiv cad">
 									<span class="image">
 										<img src="images/robot/robot.png" alt="" />
 									</span>
 									<a href="robot.html">
-										<h2>Wifi-Controlled Robot</h2>
+										<h2>Wifi-Controlled Robot</h2> 
 										<div class="content">
 											<p>A robot that performs asynchronous task execution with a partner robot over wifi.</p>
 										</div>
 									</a>
 								</article>
 
-								<article class="style3">
+								<article class="style3 filterDiv cad">
 									<span class="image">
 										<img src="images/drink/assemblyStraight.png" alt="" />
 									</span>
@@ -120,19 +133,7 @@
 									</a>
 								</article>
 
-								<article class="style4">
-									<span class="image">
-										<img src="images/sim/velField.png" alt="" />
-									</span>
-									<a href="comsol.html">
-										<h2>Fluid & Heat Transfer Simulations</h2>
-										<div class="content">
-											<p>Cerebrospinal fluid, air foils, and more!</p>
-										</div>
-									</a>
-								</article>
-
-								<article class="style5">
+								<article class="style5 filterDiv sim">
 									<span class="image">
 										<img src="images/fea/curtainRodCAD.png" alt="" />
 									</span>
@@ -144,9 +145,9 @@
 									</a>
 								</article>
 
-								<article class="style6">
+								<article class="style6 filterDiv misc">
 									<span class="image">
-										<img src="images/PCB/hBridgeDiagram.png" alt="" />
+										<img src="images/PCB/realThingCover.png" alt="" />
 									</span>
 									<a href="PCB.html">
 										<h2>PCB Design</h2>
@@ -156,9 +157,9 @@
 									</a>
 								</article>
 
-								<article class="style2">
+								<article class="style2 filterDiv cad">
 									<span class="image">
-										<img src="images/teardown/noLabelExplode.png" alt="" />
+										<img src="images/teardown/crosssection.png" alt="" />
 									</span>
 									<a href="teardown.html">
 										<h2>Teardown Project</h2>
@@ -167,14 +168,15 @@
 										</div>
 									</a>
 								</article>
-								<article class="style3">
+
+								<article class="style4 filterDiv misc">
 									<span class="image">
 										<img src="images/fea/displacementPlot.png" alt="" />
 									</span>
-									<a href="beamFEA.html">
-										<h2>FEA on a C-Shaped Beam</h2>
+									<a href="art.html">
+										<h2>(almost) everything that I have ever drawn</h2>
 										<div class="content">
-											<p>Sed nisl arcu euismod sit amet nisi lorem etiam dolor veroeros et feugiat.</p>
+											<p></p>
 										</div>
 									</a>
 								</article>
@@ -226,6 +228,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/filter.js"></script>
 
 	</body>
 </html>
