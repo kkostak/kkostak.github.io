@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
+
 	<body class="is-preload">
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -46,82 +47,75 @@
 					</nav>
 
 				<!-- Main -->
-					<div id="main">
-						<div class="inner">
-							<h1>Mirrored Drawing Robot @ <a href="https://makeharvard.io/">MakeHarvard</a></h1>
+				<div id="main">
+					<div class="inner">
+						<h1>Mirrored Drawing Robot @ <a href="https://makeharvard.io/">MakeHarvard</a></h1>
 
-							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><img src="images/makeHarvard/meWorking.jpeg" alt="" /></span> <b>GOALS:</b>  to create a robot that can mirror input motion using capstan drives <br> <b>SKILLS:</b>  Rapid prototyping, CAD, Raspberry Pi programming & electronics</p>
+						<div style="display: inline-block; width: 875pt;">
+							<p><span class="image right"><img src="images/makeHarvard/meWorking.jpeg" alt="" /></span> <b>GOALS:</b>  to create a robot that can mirror input motion using capstan drives <br> <b>SKILLS:</b>  Rapid prototyping, CAD, Raspberry Pi programming & electronics</p>
+						
+							<p> This project was done over the course of a 24-hour makeathon. It was heavily inspired by a design that was shown in my Electronics & Controls class, where our professor developed a robot that used a combination of control theory and zero-backlash capstan drives in order to allow the robot to precisely mirror a given input motion. To be honest, there was no real overarching goal of this project other than I thought that design was so cool and I wanted to see how far I could get in recreating it from scratch & from memory, in just 24 hours. </p>
+						</div>		
+
+						<div>
+							<h2>Arm CAD Models</h2>
+							<p><span class="image left"><img src="images/makeHarvard/cad1.png" alt="" style="object-position: -10% -10%;" /></span> <span class="image left"><img src="images/makeHarvard/cad2.png" alt="" /></span> <br>The left (input) arm and the right (output) arm are designed slightly differently in order to account for the weight of the electronics<br><br><br><br><p>
 							
-								<p> This project was done over the course of a 24-hour makeathon. It was heavily inspired by a design that was shown in my Electronics & Controls class, where our professor developed a robot that used a combination of control theory and zero-backlash capstan drives in order to allow the robot to precisely mirror a given input motion. To be honest, there was no real overarching goal of this project other than I thought that design was so cool and I wanted to see how far I could get in recreating it from scratch & from memory, in just 24 hours. </p>
-							</div>		
-
-							<div>
-								<h2>Arm CAD Models</h2>
-								<p><span class="image left"><img src="images/makeHarvard/cad1.png" alt="" style="object-position: -10% -10%;" /></span> <span class="image left"><img src="images/makeHarvard/cad2.png" alt="" /></span> <br>The left (input) arm and the right (output) arm are designed slightly differnetly in order to account for the weight of the electronics<br><br><br><br><p>
-								
-								<p> The idea was that while the user was drawing on one side, encoders at the "elbow" and "shoulder" joints would be reading angular data, and sending to the output side through a Raspberry Pi. Another pro I discovered about using capstan drives was that it allowed for both of the motors to be placed at the "shoulder" joint on the output side. Because the weight of the "elbow" motor was now off of the arm, deflection was now much less of an issue and I was able to make the arms of the robot ultra thin and light. </p>
-								<p> </p>
-								</div>
-								
-								<h2>Future Improvements</h2>
-								<p> Believe it or not, this 24-hour project still has a couple rough edges... but here's how I would fix them now:</p>
-								<ul>
-									<li> The string we used kept losing tension. I would have included a tensioning mechanism to avoid having to manually retension it </li>
-									<li> Though it worked once all together, it was a nightmare to assemble. I would have made ease of access and assembly more of a priority in the design phase </li>
-									<li> The lack of weight on the arm actually made it hard for the marker to press down hard enough to draw. I would have made the marker holder spring-tensioned. </li>
-								</ul>
-							</div>
-					</div>
+							<p> The idea was that while the user was drawing on one side, encoders at the "elbow" and "shoulder" joints would be reading angular data, and sending to the output side through a Raspberry Pi. Another pro I discovered about using capstan drives was that it allowed for both of the motors to be placed at the "shoulder" joint on the output side. Because the weight of the "elbow" motor was now off of the arm, deflection was now much less of an issue and I was able to make the arms of the robot ultra thin and light. </p>
+							<p> </p>
+						</div>
+							
+							<h2>Future Improvements</h2>
+							<p> Believe it or not, this 24-hour project still has a couple rough edges... but here's how I would fix them now:</p>
+							<ul>
+								<li> The string we used kept losing tension. I would have included a tensioning mechanism to avoid having to manually retension it </li>
+								<li> Though it worked once all together, it was a nightmare to assemble. I would have made ease of access and assembly more of a priority in the design phase </li>
+								<li> The lack of weight on the arm actually made it hard for the marker to press down hard enough to draw. I would have made the marker holder spring-tensioned. </li>
+							</ul>
+						</div>
+				</div>
 
 				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<section>
-								<h2>Say Hello!</h2>
-								<form method="POST" action="https://api.web3forms.com/submit">
-									<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
-
-									<div class="fields">
-										<div class="field half">
-											<input type="text" name="name" id="name" placeholder="Name" />
-										</div>
-										<div class="field half">
-											<input type="email" name="email" id="email" placeholder="Email" />
-										</div>
-										<div class="field">
-											<textarea name="message" id="message" placeholder="Message"></textarea>
-										</div>
+				<footer id="footer">
+					<div class="inner">
+						<section>
+							<h2>Say Hello!</h2>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field half">
+										<input type="text" name="name" id="name" placeholder="Name" />
 									</div>
-
-									<!-- Honeypot Spam Protection -->
-									<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-
-									<ul class="actions">
-										<li><input type="submit" value="Send" class="primary" /></li>
-									</ul>
-								</form>
-
-								
-								<ul class="copyright">
-									<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-								</ul>
-							</section>
-							<section>
-								<h2>Stay in Touch</h2>
-								<ul class="icons">
-									<li><a href="https://github.com/kkostak" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
-									<li><a href="katie.kostak@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
-									<li><a href="www.linkedin.com/in/katiekostak" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
-									<div class="box alt">
-									<div class="col-4"><span class="image fit"><img src="images/bottomLabel.png" alt="" /></span></div>
+									<div class="field half">
+										<input type="email" name="email" id="email" placeholder="Email" />
 									</div>
+									<div class="field">
+										<textarea name="message" id="message" placeholder="Message"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send" class="primary" /></li>
 								</ul>
-							</section>
-						</div>
-					</footer>
+							</form>
+						</section>
+						<section>
+							<h2>Stay in Touch</h2>
+							<ul class="icons">
+								<li><a href="https://github.com/kkostak" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="katie.kostak@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								<li><a href="www.linkedin.com/in/katiekostak" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+								<div class="box alt">
+								<div class="col-4"><span class="image fit"><img src="images/bottomLabel.png" alt="" /></span></div>
+								</div>
+							</ul>
+						</section>
+						<ul class="copyright">
+							<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
+				</footer>
 
-			</div>
+		</div>
+
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
