@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
+<html>
+	<head>
+		<title>Flip Clock - Katie Kostak</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+							<!-- Logo -->
+							<a href="index.html" class="logo">
+								<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title">Katie!</span>
+							</a>
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutMe.html">About Me</a></li>
+							<li><a href="https://docs.google.com/document/d/1IWItMeYGe21i9kFOkmaiU_o10JnmGZ0ZCY9t4pEIM1M/edit?usp=sharing">Resume</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>API-Driven Flip Clock</h1>
+
+							<div style="display: inline-block; width: 875pt;">
+								<p><span class="image right"><img src="images/clock/clock2.png" alt="" /></span> <b>GOALS:</b> Create a clock that utilises an API and operates with just one servo motor <br> <b>SKILLS:</b> CAD Design, debugging electromechanical systems, ESP32, API Integration </p>
+
+								<p> This was a project was done in one week for my Intro to Robotics class. The prompt was to create a clock that uses a servo motor and integrated information obtained by an API. My flip clock tells you what hour it is in two different time zones - EST and PST. It does this by using an API to retrieve the time zone info, then moving the servo accordingly. </p> 
+							</div>		
+
+							<div>
+								<h2>How It Works</h2>
+									<h3> Ratchet Mechanism </h3>
+										<p><span class="image left"><img src="images/clock/ratchetReal.png" alt="" /></span> <br><br>A major design constraint in this project was only being allowed to use one servo motor that had 180 degrees of motion. In order to execute the flip clock design, I needed a full 360 degrees of motion. To get around this, I designed a ratchet mechanism so that every time the servo reached the limit to its range of motion, it could return to 0 degrees without disrupting the clock position.</p>									
+										<br>
+										<br>
+
+									<h3> Gear Theory</h3>
+										<p><span class="image right"><img src="images/clock/GearMapping.png" alt="" /></span><br>I really wanted to make my mechanism as compact as possible, so I needed a way to transmit power from servo motor to the tile spool. It was important that the gear ratio was 1:1 because I designed the ratchet mechanism to have 10 "clicks," with each click representing the turn of one number. Here is the math I used: </p>									
+											<blockquote> <math>
+												<mfrac>
+													<mrow>
+													<mn>driven gears</mn>
+													</mrow>
+													<mrow>
+													<mn>driving gears</mn>
+													</mrow>
+												</mfrac>
+
+												<mo> = </mo>
+
+												<mfrac>
+													<mrow>
+														<mn> 60 </mn>
+														<mo> * </mo>
+														<mn> 10</mn>
+													</mrow>
+													<mrow>
+														<mn> 30 </mn>
+														<mo> * </mo>
+														<mn> 20</mn>
+													</mrow>
+												</mfrac>
+
+												<mo> = </mo>
+												<mn> 1 </mn>
+											</math> </blockquote>
+									<br>
+
+								<h2>API Integration & Code</h2>
+										<p> I used <a href = "https://web.ncku.edu.tw/"> TimeAPI</a> in order to tell what time it is in different time zones. I used MicroPython on an ESP32 to connect to WiFi, send an API request, and then interpret the returned JSON data. The time data that I got from the API was then mapped to a servo angle, and if that angle was above 180 degrees, I had the servo return to 0 degrees before going to the remaining angular amount. </p>
+										<pre><code id = "APICode">
+import urequests
+from machine import PWM, Pin
+import time
+
+# Example from https://docs.micropython.org/en/latest/esp8266/tutorial/network_basics.html 
+def wifi_connect():
+	import network  # imports network library to connect to wifi
+	from Day2 import secrets  # imports lib that has ssid and pwd
+	sta_if = network.WLAN(network.WLAN.IF_STA)
+	if not sta_if.isconnected():
+		print('connecting to network...')
+		sta_if.active(True)
+		sta_if.connect(secrets.SSID, secrets.PWD)
+		while not sta_if.isconnected():
+			pass
+	print('network config:', sta_if.ipconfig('addr4'))
+	
+wifi_connect()
+
+
+
+# Define the API endpoint
+urlButton1 = "https://timeapi.io/api/time/current/zone?timeZone=America%2FLos_Angeles"
+urlButton2 = "https://timeapi.io/api/time/current/zone?timeZone=America%2FNew_York"
+
+print("Getting Responses...")
+
+response1 = urequests.get(urlButton1, headers=None)
+response2 = urequests.get(urlButton2, headers=None)
+
+
+# Check if the request was successful
+if response1.status_code == 200 or response2.status_code == 200:
+	# Parse the JSON response
+	data1 = response1.json()
+	data2 = response2.json()
+	# Extract the hour
+	currHour1 = data1.get("hour")
+	currHour2 = data2.get("hour")
+	
+	print(f"Current hour in {data1.get('timeZone')}: {currHour1}")
+	print(f"Current hour in {data2.get('timeZone')}: {currHour2}")
+	
+#Servo Logic
+
+# --- Setup servo on GPIO4 ---
+servo = PWM(Pin(4), freq=50, duty_u16=0)
+
+# --- Function to move servo to a specific angle ---
+def moveServo(angle):
+	# Map 0-180 degrees to 500us-2500us pulse width
+	pulse_width_ns = int((500 + (angle / 180) * 2000) * 1000)  # ns
+	servo.duty_ns(pulse_width_ns)
+	print(f"Moved to {angle}°")
+	time.sleep(0.5)
+	
+#Button Logic
+button1 = Pin(34, Pin.IN, Pin.PULL_UP)   # Usually labeled SW1
+button2 = Pin(35, Pin.IN)              # Usually labeled SW2 (no pull-up)
+
+# --- Main loop ---
+while True:
+	print ("Looping")
+	
+	if not button1.value():  # Button is pressed (active LOW)
+		print("Button 1 pressed!")
+		if currHour1*36 > 180:
+			moveServo(0)
+			time.sleep(1)
+		moveServo((currHour1*36)%180)
+		time.sleep(1)
+		
+
+	if button2.value() == 0:  # Button is pressed (active LOW)
+		print("Button 2 pressed!")
+		if currHour2*36 > 180:
+			moveServo(0)
+			time.sleep(1)
+		moveServo((currHour2*36)%180)
+		time.sleep(1)
+
+	time.sleep(0.05)  # debounce delay
+	
+
+
+								</code></pre>
+
+								
+								<h2>CAD</h2>
+								<iframe src="https://tufts597.autodesk360.com/shares/public/SH30dd5QT870c25f12fc4ab790025d5f9d66?mode=embed" width="800" height="600" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>
+							<h2> Challenges & Future Improvements </h2>
+							<ul>
+								<li> I wanted to make the clock as small and compact as possible. However, this meant that the tolerances on the gears were very small, and being off from the pitch circle by even 0.5 mm would cause the teeth not to mesh properly. If I were to do it again, I would make the gears just a little bit bigger. </li>
+								<li> When designing the ratchet mechanism, I underestimated how big a role friction would play in allowing the mechanism to work. </li>
+							</ul>
+							</div>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+								<h2>Say Hello!</h2>
+								<form method="POST" action="https://api.web3forms.com/submit">
+									<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
+
+									<div class="fields">
+										<div class="field half">
+											<input type="text" name="name" id="name" placeholder="Name" />
+										</div>
+										<div class="field half">
+											<input type="email" name="email" id="email" placeholder="Email" />
+										</div>
+										<div class="field">
+											<textarea name="message" id="message" placeholder="Message"></textarea>
+										</div>
+									</div>
+
+									<!-- Honeypot Spam Protection -->
+									<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+									<ul class="actions">
+										<li><input type="submit" value="Send" class="primary" /></li>
+									</ul>
+								</form>
+
+								
+								<ul class="copyright">
+									<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+								</ul>
+							</section>
+							<section>
+								<h2>Stay in Touch</h2>
+								<ul class="icons">
+									<li><a href="https://github.com/kkostak" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://katie.kostak@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+									<li><a href="https://www.linkedin.com/in/katiekostak" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<div class="box alt">
+									<div class="col-4"><span class="image fit"><img src="images/bottomLabel.png" alt="" /></span></div>
+									</div>
+								</ul>
+							</section>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
