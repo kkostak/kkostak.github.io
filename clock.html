@@ -95,9 +95,12 @@
 											</math> </blockquote>
 									<br>
 
-								<h2>API Integration & Code</h2>
-										<p> I used <a href = "https://web.ncku.edu.tw/"> TimeAPI</a> in order to tell what time it is in different time zones. I used MicroPython on an ESP32 to connect to WiFi, send an API request, and then interpret the returned JSON data. The time data that I got from the API was then mapped to a servo angle, and if that angle was above 180 degrees, I had the servo return to 0 degrees before going to the remaining angular amount. </p>
-										<pre><code id = "APICode">
+								<h3>API Integration & Code</h3>
+									<p> I used <a href = "https://web.ncku.edu.tw/"> TimeAPI</a> in order to tell what time it is in different time zones. I used MicroPython on an ESP32 to connect to WiFi, send an API request, and then interpret the returned JSON data. The time data that I got from the API was then mapped to a servo angle, and if that angle was above 180 degrees, I had the servo return to 0 degrees before going to the remaining angular amount. </p>
+									<a href="javascript:" onClick="document.getElementById('APICode').style.display='block';" class="button small primary">see my code!</a>
+
+									<div id = "APICode" style="display:none;">
+										<pre><code>
 import urequests
 from machine import PWM, Pin
 import time
@@ -180,19 +183,22 @@ while True:
 		time.sleep(1)
 
 	time.sleep(0.05)  # debounce delay
-	
+									</code></pre>
 
-
-								</code></pre>
-
+									<a href="javascript:;" onClick="document.getElementById('APICode').style.display='none';" class="button small primary" >I dont want to look at this code anymore!!</a>
+								</div>
+								<br>
+								<br>
 								
-								<h2>CAD</h2>
-								<iframe src="https://tufts597.autodesk360.com/shares/public/SH30dd5QT870c25f12fc4ab790025d5f9d66?mode=embed" width="800" height="600" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>
-							<h2> Challenges & Future Improvements </h2>
-							<ul>
-								<li> I wanted to make the clock as small and compact as possible. However, this meant that the tolerances on the gears were very small, and being off from the pitch circle by even 0.5 mm would cause the teeth not to mesh properly. If I were to do it again, I would make the gears just a little bit bigger. </li>
-								<li> When designing the ratchet mechanism, I underestimated how big a role friction would play in allowing the mechanism to work. </li>
-							</ul>
+							<h3>CAD</h3>
+								<iframe src="https://tufts597.autodesk360.com/shares/public/SH30dd5QT870c25f12fc30798cf040deedf1?mode=embed" width="640" height="480" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>							
+								<br> <br>
+
+							<h3>Challenges & Future Improvements</h3>
+								<ul>
+									<li> I wanted to make the clock as small and compact as possible. However, this meant that the tolerances on the gears were very small, and being off from the pitch circle by even 0.5 mm would cause the teeth not to mesh properly. If I were to do it again, I would make the gears just a little bit bigger. </li>
+									<li> When designing the ratchet mechanism, I underestimated how big a role friction would play in allowing the mechanism to work. </li>
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -224,10 +230,9 @@ while True:
 										<li><input type="submit" value="Send" class="primary" /></li>
 									</ul>
 								</form>
-
 								
 								<ul class="copyright">
-									<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+									<li>Built by Katie Kostak</li>
 								</ul>
 							</section>
 							<section>
