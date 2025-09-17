@@ -51,7 +51,7 @@
 							<h1>API-Driven Flip Clock</h1>
 
 							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><img src="images/clock/clock2.png" alt="" /></span> <b>GOALS:</b> Create a clock that utilises an API and operates with just one servo motor <br> <b>SKILLS:</b> CAD Design, debugging electromechanical systems, ESP32, API Integration </p>
+								<p><span class="image right"><img src="images/ME35/clock/clock2.png" alt="" /></span> <b>GOALS:</b> Create a clock that utilises an API and operates with just one servo motor <br> <b>SKILLS:</b> CAD Design, debugging electromechanical systems, ESP32, API Integration </p>
 
 								<p> This was a project was done in one week for my Intro to Robotics class. The prompt was to create a clock that uses a servo motor and integrated information obtained by an API. My flip clock tells you what hour it is in two different time zones - EST and PST. It does this by using an API to retrieve the time zone info, then moving the servo accordingly. </p> 
 							</div>		
@@ -59,12 +59,12 @@
 							<div>
 								<h2>How It Works</h2>
 									<h3> Ratchet Mechanism </h3>
-										<p><span class="image left"><img src="images/clock/ratchetReal.png" alt="" /></span> <br><br>A major design constraint in this project was only being allowed to use one servo motor that had 180 degrees of motion. In order to execute the flip clock design, I needed a full 360 degrees of motion. To get around this, I designed a ratchet mechanism so that every time the servo reached the limit to its range of motion, it could return to 0 degrees without disrupting the clock position.</p>									
+										<p><span class="image left"><img src="images/ME35/clock/ratchetReal.png" alt="" /></span> <br><br>A major design constraint in this project was only being allowed to use one servo motor that had 180 degrees of motion. In order to execute the flip clock design, I needed a full 360 degrees of motion. To get around this, I designed a ratchet mechanism so that every time the servo reached the limit to its range of motion, it could return to 0 degrees without disrupting the clock position.</p>									
 										<br>
 										<br>
 
 									<h3> Gear Theory</h3>
-										<p><span class="image right"><img src="images/clock/GearMapping.png" alt="" /></span><br>I really wanted to make my mechanism as compact as possible, so I needed a way to transmit power from servo motor to the tile spool. It was important that the gear ratio was 1:1 because I designed the ratchet mechanism to have 10 "clicks," with each click representing the turn of one number. Here is the math I used: </p>									
+										<p><span class="image right"><img src="images/ME35/clock/GearMapping.png" alt="" /></span><br>I really wanted to make my mechanism as compact as possible, so I needed a way to transmit power from servo motor to the tile spool. It was important that the gear ratio was 1:1 because I designed the ratchet mechanism to have 10 "clicks," with each click representing the turn of one number. Here is the math I used: </p>									
 											<blockquote> <math>
 												<mfrac>
 													<mrow>
@@ -96,7 +96,7 @@
 									<br>
 
 								<h3>API Integration & Code</h3>
-									<p> I used <a href = "https://web.ncku.edu.tw/"> TimeAPI</a> in order to tell what time it is in different time zones. I used MicroPython on an ESP32 to connect to WiFi, send an API request, and then interpret the returned JSON data. The time data that I got from the API was then mapped to a servo angle, and if that angle was above 180 degrees, I had the servo return to 0 degrees before going to the remaining angular amount. </p>
+									<p> I used <a href = "https://timeapi.io"> TimeAPI</a> in order to tell what time it is in different time zones. I used MicroPython on an ESP32 to connect to WiFi, send an API request, and then interpret the returned JSON data. The time data that I got from the API was then mapped to a servo angle, and if that angle was above 180 degrees, I had the servo return to 0 degrees before going to the remaining angular amount. </p>
 									<a href="javascript:" onClick="document.getElementById('APICode').style.display='block';" class="button small primary">see my code!</a>
 
 									<div id = "APICode" style="display:none;">
@@ -191,13 +191,14 @@ while True:
 								<br>
 								
 							<h3>CAD</h3>
-								<iframe src="https://tufts597.autodesk360.com/shares/public/SH30dd5QT870c25f12fc30798cf040deedf1?mode=embed" width="640" height="480" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>							
+									<iframe src="https://tufts597.autodesk360.com/shares/public/SH30dd5QT870c25f12fc30798cf040deedf1?mode=embed" width="640" height="480" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>							
 								<br> <br>
 
 							<h3>Challenges & Future Improvements</h3>
 								<ul>
 									<li> I wanted to make the clock as small and compact as possible. However, this meant that the tolerances on the gears were very small, and being off from the pitch circle by even 0.5 mm would cause the teeth not to mesh properly. If I were to do it again, I would make the gears just a little bit bigger. </li>
-									<li> When designing the ratchet mechanism, I underestimated how big a role friction would play in allowing the mechanism to work. </li>
+									<li> I underestimated how big a role friction would play in allowing the ratchet mechanism to work, which led me to have to redesign it multiple times. </li>
+									<li> I accidentally superglued my gears together. Don't do that. </li>
 								</ul>
 							</div>
 						</div>
@@ -232,7 +233,7 @@ while True:
 								</form>
 								
 								<ul class="copyright">
-									<li>Built by Katie Kostak</li>
+									<li>Built by Katie Kostak :-)</li>
 								</ul>
 							</section>
 							<section>

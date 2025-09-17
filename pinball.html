@@ -8,7 +8,7 @@
 <!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
 <html>
 	<head>
-		<title>Lasers - Katie Kostak</title>
+		<title>Cheater's Pinball - Katie Kostak</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -48,77 +48,38 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>Laser Drilling @ <a href = "https://web.ncku.edu.tw/"> NCKU </a></h1>
+							<h1>Cheater's Pinball</h1>
 
 							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><img src="images/lasers/500PulseAnimation.GIF" alt="" /></span> <b>GOALS:</b> Design a COMSOL simulation that can simulate laser drilling on Aluminum Oxide and Aluminum Nitride & design an experiment to determine optimal laser drilling parameters <br> <br> <b>SKILLS:</b> COMSOL Multiphysics, Experimental Design, Simulation Validation, MATLAB</p>
-								<p>I spent the summer of 2025 in Taiwan studying laser drilling manufacturing on semiconducor materials under <a href = "https://scholar.google.com/citations?user=Li7MD7YAAAAJ&hl=en"> Professor Yu-Lung Lo. </a>This simulation uses a femtosecond laser at 50 kHz & 400 laser pulses at a peak power of 24 W. </p>
+								<p><span class="image right"><img src="images/pic06.jpg" alt="" /></span> <b>GOALS: </b>  Create a pinball game that utilizes machine learning to give the player an advantage <br> <b>SKILLS: </b>  Machine Learning, Python, Laser Cutting, 3D Printing</p>
+								<p>This week's design prompt for my Intro to Robotics course was to create a game that incorporates a "smart motor" - basically a motor that can be trained with a machine learning algorithm & accelerometer. We ended up using a K-means algorithm to train the motor to tilt the playing field left or right when the user points the accelerometer at certain trained positions. </p>
+								<br>
 							</div>		
 
-							<br> <br>
-							<h2> Full Research Presentation </h2>
-								<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQIEfwRmK47jQNR47bw0RM7vfz2HZkaTpMhxpTSSnrEJsn6WAJQxe2iy9fSMrnORKvEzfe1ewrhIaya/pubembed?start=false&loop=true&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-							
-							<br><br>
-
 							<div>
-								<h2>Experiment</h2>
-								<p><span class="image left"><img src="images/lasers/sample.png" alt="" style="object-position: -10% -10%;" /></span> <span class="image left"><img src="images/lasers/400p90pow60kHz.png" alt="" /></span> Each column of laser drilled holes represents a different set of laser parameters. <br> <br> We grided the samples to find the cross section and take measurements to define the taper ange. <br><br><p>
+								<h2>Electronics</h2>
+									<p><span class="image left"><img src="images/ME35/pinball/hardware.png" alt="" /></span><br><br><br>We had a pretty simple electronics setup of an ESP32 connected to two servos and a motor</p>									
+									<br><br><br><br><br><br> 
 								
-								<h2> Plotted Results </h2>
-								<p><span class="image left"><img src="images/lasers/watts60.png" alt="" style="object-position: -10% -10%;" /></span> <span class="image left"><img src="images/lasers/Roundness55.png" alt="" /></span> Selected results after data collection<br><br><p>
-							</div>
+								<h2>Code</h2>
+									<p> We used a K-means algorithm to train the motor on how to tilt the playing feild. On startup, the accelerometer would collect data for tilting right, tilting left, and being centered. Once these data points were collected, the player could in real time control the tilting of the board just by turning the accelerometer. </p>
 
-							<br> <br> <br> <br> <br> <br> <br> 
+									<a href="javascript:" onClick="document.getElementById('MLCode').style.display='block';" class="button small primary">see the code!</a>
+										<div id = "MLCode" style="display:none;">
+											<pre><code>
+vomit
+											</code></pre>
 
-							<div>
-								<h2>Other Simulations</h2>
-									<div class="row gtr-uniform">
-										<!-- First Image -->
-										<div class="col-4">
-											<span class="image fit">
-											<video 
-												name="Orange Demo" 
-												style="
-												width: 450px; 
-												height: 350px; 
-												object-fit: cover;
-												transform: scale(0.8) translate(-50px, -10px);
-												transform-origin: 20% 4%;
-												border-radius: 15px;
-												" 
-												autoplay 
-												muted 
-												loop
-											>
-												<source src="images/lasers/laserPassHT.mov">
-											</video>
-											</span>
+											<a href="javascript:;" onClick="document.getElementById('MLCode').style.display='none';" class="button small primary" >I dont want to look at this code anymore!!</a>
 										</div>
-										<!-- Second Image -->
-										<div class="col-4">
-											<span class="image fit">
-											<video 
-												name="Orange Demo" 
-												style="
-												width: 450px; 
-												height: 350px; 
-												object-fit: cover;
-												transform: scale(0.8) translate(-50px, -10px);
-												transform-origin: 20% 4%;
-												border-radius: 15px;
-												" 
-												autoplay 
-												muted 
-												loop
-											>
-												<source src="images/lasers/LaserPulsesHT.mov">
-											</video>
-											</span>
-										</div>
+									<br><br>
 
-									</div>
-								
+								<h2>Hardware</h2>
+									<p><span class="image right"><img src="images/ME35/clock/GearMapping.png" alt="" /></span><br> Lasercut wood pieces! </p>
+									<br><br><br><br><br><br>								
+
+								<h2>Challenges & Future Improvements</h2>
+									<li>We had a really hard time with 3D printed gears. I would just savge the effort and laser cut bigger gears in the future.</li>
 							</div>
 						</div>
 					</div>
@@ -150,6 +111,7 @@
 										<li><input type="submit" value="Send" class="primary" /></li>
 									</ul>
 								</form>
+
 								
 								<ul class="copyright">
 									<li>Built by Katie Kostak :-)</li>

@@ -72,6 +72,11 @@ input, select, textarea {
 	appearance: none;
 }
 
+::placeholder {
+	color: #524747; /* Example: a lighter gray */
+	opacity: 1; /* Ensure full opacity, especially for Firefox */
+  }
+
 /* Basic */
 
 	@-ms-viewport {
