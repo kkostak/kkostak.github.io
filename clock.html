@@ -97,9 +97,11 @@
 
 								<h3>API Integration & Code</h3>
 									<p> I used <a href = "https://timeapi.io"> TimeAPI</a> in order to tell what time it is in different time zones. I used MicroPython on an ESP32 to connect to WiFi, send an API request, and then interpret the returned JSON data. The time data that I got from the API was then mapped to a servo angle, and if that angle was above 180 degrees, I had the servo return to 0 degrees before going to the remaining angular amount. </p>
-									<a href="javascript:" onClick="document.getElementById('APICode').style.display='block';" class="button small primary">see my code!</a>
+									<a href="javascript:" id = "showButton" onClick="document.getElementById('APICode').style.display='block'; document.getElementById('showButton').style.display='none';" class="button small primary">see my code!</a>
 
 									<div id = "APICode" style="display:none;">
+										<a href="javascript:;" onClick="document.getElementById('APICode').style.display='none'; document.getElementById('showButton').style.display='inline-block';" class="button small primary" >I dont want to look at the code anymore!!</a>
+
 										<pre><code>
 import urequests
 from machine import PWM, Pin
@@ -184,8 +186,6 @@ while True:
 
 	time.sleep(0.05)  # debounce delay
 									</code></pre>
-
-									<a href="javascript:;" onClick="document.getElementById('APICode').style.display='none';" class="button small primary" >I dont want to look at this code anymore!!</a>
 								</div>
 								<br>
 								<br>

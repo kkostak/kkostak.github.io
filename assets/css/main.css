@@ -3389,4 +3389,27 @@ input, select, textarea {
 
 		}
 
+/* Gallery */
+.gallery {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1.5rem;
+	grid-auto-flow: dense;
+  }
+  
+  .gallery img {
+	display: block;
+	width: 100%;
+	object-fit: cover;
+	background-color: hsl(0 0% 90%);
+  }
+  
+  .gallery-landscape {
+	aspect-ratio: 9 / 6;
+	grid-column-end: span 2;
+  }
+  
+  .gallery-portrait {
+	aspect-ratio: 6 / 9;
+  }
 

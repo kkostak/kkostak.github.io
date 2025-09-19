@@ -51,23 +51,285 @@
 							<h1>Cheater's Pinball</h1>
 
 							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><img src="images/pic06.jpg" alt="" /></span> <b>GOALS: </b>  Create a pinball game that utilizes machine learning to give the player an advantage <br> <b>SKILLS: </b>  Machine Learning, Python, Laser Cutting, 3D Printing</p>
+								<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover;"autoplay muted loop><source src="images/ME35/pinball/Demo.MOV"></video></span> <b>GOALS: </b>  Create a pinball game that utilizes machine learning to give the player an advantage <br> <b>SKILLS: </b>  Machine Learning, Python, Laser Cutting, 3D Printing</p>
 								<p>This week's design prompt for my Intro to Robotics course was to create a game that incorporates a "smart motor" - basically a motor that can be trained with a machine learning algorithm & accelerometer. We ended up using a K-means algorithm to train the motor to tilt the playing field left or right when the user points the accelerometer at certain trained positions. </p>
 								<br>
 							</div>		
 
 							<div>
-								<h2>Electronics</h2>
-									<p><span class="image left"><img src="images/ME35/pinball/hardware.png" alt="" /></span><br><br><br>We had a pretty simple electronics setup of an ESP32 connected to two servos and a motor</p>									
-									<br><br><br><br><br><br> 
-								
 								<h2>Code</h2>
-									<p> We used a K-means algorithm to train the motor on how to tilt the playing feild. On startup, the accelerometer would collect data for tilting right, tilting left, and being centered. Once these data points were collected, the player could in real time control the tilting of the board just by turning the accelerometer. </p>
-
-									<a href="javascript:" onClick="document.getElementById('MLCode').style.display='block';" class="button small primary">see the code!</a>
+									<p><span class="image left"><video name="Pinball Code Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0 64%"autoplay muted loop><source src="images/ME35/pinball/Training.mov"></video></span> <br>When you boot up the game, you first have to train the machine learning algorithm by telling it where you want the tilt left, center, and right commands to be. To do this, we used a K-means algorithm. Once these data points were collected, the player could in real time control the tilting of the board just by turning the accelerometer. </p>
+									<br><br>
+									<a id = "showButton" href="javascript:" onClick="document.getElementById('MLCode').style.display='block'; document.getElementById('showButton').style.display='none';" class="button small primary">see the code!</a>
 										<div id = "MLCode" style="display:none;">
+											<a href="javascript:;" onClick="document.getElementById('MLCode').style.display='none'; document.getElementById('showButton').style.display='inline-block';" class="button small primary" >I dont want to look at the code anymore!!</a>
+
 											<pre><code>
-vomit
+'''
+ME30 Project 2 Code
+written by Theo Prince, Katie Kostak, and Sol Brizuela Baez
+lis3dh library and Count and Motor classes provided by instructor Milan
+This code is written for a pinball machine, with the added functionality of
+a motor that tilts the board based on the position of an accelerometer
+'''
+from machine import Pin
+from machine import PWM
+import time
+import lis3dh
+import time
+import array
+
+# Class used to read data from the encoder
+class Count(object):
+	def __init__(self,A,B):
+		self.A = Pin(A, Pin.IN)
+		self.B = Pin(B, Pin.IN)
+		self.counter = 0
+		self.A.irq(self.cb,self.A.IRQ_FALLING|self.A.IRQ_RISING) #interrupt on line A
+		self.B.irq(self.cb,self.B.IRQ_FALLING|self.B.IRQ_RISING) #interrupt on line B
+
+	def cb(self,msg):
+		other,inc = (self.B,1) if msg == self.A else (self.A,-1) #define other line and increment
+		#self.counter += -inc if msg.value()!=other.value() else  inc 
+		
+	def value(self):
+		return self.counter
+
+#Class used to interact with the motor and encoder together
+class Motor(Count):
+	def __init__(self,m1,m2, A, B):
+		self.enc = Count(A,B)
+		self.M1 = PWM(m1, freq=50, duty_u16=0)
+		self.M2 = PWM(m2, freq=50, duty_u16=0)
+		self.stop()
+		
+	def pos(self):
+		return self.enc.value()     
+			
+	def stop(self):
+		self.M1.duty_u16(0) 
+		self.M2.duty_u16(0) 
+
+	def start(self, direction = 0, speed = 40):
+		if direction:
+			self.M1.duty_u16(int(speed*65535/100)) 
+			self.M2.duty_u16(0)
+		else:
+			self.M1.duty_u16(0)
+			self.M2.duty_u16(int(speed*65535/100))
+	
+	def move_pos(self, position, direction, speed = 40):
+		
+		print("moving")
+		
+		if direction:
+			self.M1.duty_u16(int(speed*65535/100)) 
+			self.M2.duty_u16(0)
+		else:
+			self.M1.duty_u16(0)
+			self.M2.duty_u16(int(speed*65535/100))
+		while True:
+			print(self.pos())
+			if abs(self.pos()) > position:
+				self.stop()
+				break
+			time.sleep(.1)
+
+# Function used to flip servo arms to push the ball up the board
+def flip_hands():
+	#Go from 90 degrees to 0 degrees)
+	print("im gonna flip out!!!")
+	
+	servo2.duty_ns(2000*1000)
+	servo1.duty_ns(2000*1000)
+	time.sleep(1)
+	
+	servo2.duty_ns(500*1000)
+	servo1.duty_ns(500*1000)                                       
+		
+
+# Recursive function to find ideal centroids
+# This uses a K-means algorithm to sort data into discrete sets
+# and find the center of gravity of the group
+def find_centroids(data,centroids, total_change):
+	
+	# Stop condition: centroid is no longer moving a significant amount
+	if total_change < .1:
+#       # Return the three points in the middle of their respective groups
+		return centroids
+	
+	# Recursive case
+	else:
+		# Initialize local variables
+		total_change = 0
+		groups = [[],[],[]]
+		min_dist = 1
+		group = 0
+		
+		# For each data point, find the nearest centroid and assign the data
+		# point to that centroid
+		for i in range(len(data)):
+			min_dist = 1
+			#find nearest centroid
+			for j in range(len(centroids)):
+				if abs(centroids[j]- data[i]) < min_dist:
+					min_dist = abs(centroids[j]- data[i])
+					group = j
+			# Add data point to group corresponding to the nearest centroid
+			groups[group].append(data[i])
+		# Find new centroids by taking the average value of each group
+		for i in range(len(groups)):
+			total = 0
+			for j in range(len(groups[i])):
+				total += groups[i][j]
+			#update total_change to compare to threshold
+			print(groups)
+			total_change += abs(centroids[i]-(total / len(groups[i])))
+			#overwrite previous centroid values
+			centroids[i] = total / len(groups[i])
+
+		# Call the function again with same data, new centroids, and new total_change
+		return find_centroids(data, centroids, total_change)
+			
+# Function to collect data from user on accelerometer position corresponding to each position   
+def train():
+	try:
+		# Initialize the accelerometer with ESP32 default pins
+		h3lis331dl = lis3dh.H3LIS331DL(sda_pin=21, scl_pin=22)
+		
+		# Read WHO AM I register
+		who_am_i = h3lis331dl.read_who_am_i()
+		print(f"WHO AM I: 0x{who_am_i:02X}")
+		
+		# Prepare user for training
+		print("Training: tilt left")
+		time.sleep(2)
+		start = time.time()
+		while time.time() < (start + 5):
+			# Read raw acceleration data
+	
+			accl_raw = h3lis331dl.read_accl()
+			accl_g = h3lis331dl.read_accl_g()
+			global data
+			data.append(accl_g['x'])
+			print(data)
+			time.sleep(1)
+		
+		print("Training: tilt middle")
+		time.sleep(2)
+		start = time.time()
+		while time.time() < (start + 5):
+			
+			accl_raw = h3lis331dl.read_accl()
+			accl_g = h3lis331dl.read_accl_g()
+			global data
+			data.append(accl_g['x'])
+			print(data)
+			time.sleep(1)
+		
+		print("Training: tilt right")
+		time.sleep(1)
+		start = time.time()
+		while time.time() < (start + 5):
+			accl_raw = h3lis331dl.read_accl()
+			accl_g = h3lis331dl.read_accl_g()
+			global data
+			data.append(accl_g['x'])
+			print(data)
+			time.sleep(1)
+			
+		return data
+			
+	except KeyboardInterrupt:
+		print("Measurement stopped by user")
+	except Exception as e:
+		print(f"Error: {e}")
+
+data = []
+num_centroids = 3
+left_centroid = -1
+middle_centroid = 0
+right_centroid = 1
+
+#declare arbitrary, intial centroids
+centroids = [-1,0,1]
+total_change = 10
+		
+data = train()
+centroids = find_centroids(data, centroids, total_change)
+
+servo1 = PWM(Pin(4), freq=50, duty_u16=0)
+servo2 = PWM(Pin(5), freq=50, duty_u16=0)
+
+button = Pin(34, Pin.IN)
+
+motor1 = Motor(12,13, 25,26)
+h3lis331dl = lis3dh.H3LIS331DL(sda_pin=21, scl_pin=22)
+dist_to_closest = 10
+
+#motor1.move_pos(50, 0)
+left = False
+right = False
+stopped = False
+while True:
+	print("here")
+	pos = h3lis331dl.read_accl_g()['x']
+	print(pos)
+	closest = 0
+	dist_to_closest = 10
+	
+	if(button.value() == 0):
+		print("im flippin my shi ;:-)")
+		flip_hands()
+	
+	for i in centroids:
+		#print("checking distances")
+		if abs(pos-i) < dist_to_closest:
+			dist_to_closest = abs(pos-i)
+			closest = i
+			#print (closest)
+	if closest == min(centroids):
+		print("moving motor right")
+		print(left)
+		if not left:
+			motor1.start(1)
+			time.sleep(.1)
+			motor1.stop()
+			last = 1
+			left = True
+			stopped = False
+		else:
+			print("already right")
+	elif closest == max(centroids):
+		print("moving motor left")
+		print(right)
+		if not right:
+			motor1.start(0)
+			time.sleep(.1)
+			motor1.stop()
+			right = True
+			stopped = False
+	else:
+		print("returning to center")
+		print(stopped)
+		if not stopped:
+			if left:
+				motor1.start(0)
+				time.sleep(.1)
+				motor1.stop()
+			else:
+				motor1.start(1)
+				time.sleep(.1)
+				motor1.stop()
+			left = False
+			right = False
+			stopped = True
+	time.sleep(.1)
+	
+
+button.irq(trigger=Pin.IRQ_FALLING|Pin.IRQ_RISING, handler= flip_hands)
+
+
 											</code></pre>
 
 											<a href="javascript:;" onClick="document.getElementById('MLCode').style.display='none';" class="button small primary" >I dont want to look at this code anymore!!</a>
@@ -75,11 +337,12 @@ vomit
 									<br><br>
 
 								<h2>Hardware</h2>
-									<p><span class="image right"><img src="images/ME35/clock/GearMapping.png" alt="" /></span><br> Lasercut wood pieces! </p>
-									<br><br><br><br><br><br>								
-
+									<p><span class="image right"><img src="images/ME35/pinball/game.png" alt="" style="object-position: -10% -10%;" /></span> <span class="image right"><img src="images/ME35/pinball/Side Profile.png" alt="" /></span> <br><br> My primary contribution was in the hardware of the project. We created the frame out of laser cut wood, and 3D printed the flippers and its gears.<br><br><p>
+									<br>
+								
 								<h2>Challenges & Future Improvements</h2>
-									<li>We had a really hard time with 3D printed gears. I would just savge the effort and laser cut bigger gears in the future.</li>
+									<li>We had a really hard time with 3D printed gears. I would just save the effort and laser cut bigger gears in the future.</li>
+									<li>In the future, I would change the servo mount to be directly attatched to the board instead of attatched to the tilting mechanism. The current design leaves alot of room for error in the gears turning.</li>
 							</div>
 						</div>
 					</div>
