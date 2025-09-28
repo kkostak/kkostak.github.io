@@ -51,7 +51,7 @@
 							<h1>Ballo</h1>
 
 							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><img src="images/pic06.jpg" alt="" /></span> <b>GOALS:</b> create a robot that uses a color sensor to follow a line <br> <b>SKILLS:</b> CAD, ESP32, Python, Laser Cutting </p>
+								<p><span class="image right"><img src="images/ME35/ballo/ballo.png" alt="" /></span> <b>GOALS:</b> create a robot that uses a color sensor to follow a line <br> <b>SKILLS:</b> CAD, ESP32, Python, Laser Cutting </p>
 								<p> This week's design prompt for my Robotics class was to create a line following robot that operates using color sensors. The night after this prompt was announced, my friend became the proud parent of a <a href = https://sphero.com/products/sphero-bolt> Sphero</a> and I was really jealous and wanted my own.</p>
 							</div>		
 
@@ -59,21 +59,212 @@
 								<h2>Hardware</h2>
 									I designed the robot using Fusion360 and fabricated it mostly through 3D printing with a little bit of laser cutting acrylic. 
 									<iframe src="https://tufts597.autodesk360.com/shares/public/SH28cd1QT2badd0ea72b6adc2b9e650e415b?mode=embed" width="800" height="600" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>
+									<br> <br> 
 
-								<h2>Code</h2>
-									<p><br>When you boot up the game, you first have to train the machine learning algorithm by telling it where you want the tilt left, center, and right commands to be. To do this, we used a K-means algorithm. Once these data points were collected, the player could in real time control the tilting of the board just by turning the accelerometer. </p>
-									<br><br>
+								<h2>Color Sensing</h2>
+									<p><span class="image right"><img src="images/ME35/ballo/Diagram.png" alt="" /></span> <br> The color sensors are aligned vertically and slightly offset from each other. This way, when it detects the white background it knows that it is off the line, but also it is still able to dectect when the line changes colors. </p>
+									<p>My partner Kilder wrote the majority of the code, but here's what it looks like: </p>
+									<br> 
 									<a id = "showButton" href="javascript:" onClick="document.getElementById('MLCode').style.display='block'; document.getElementById('showButton').style.display='none';" class="button small primary">see the code!</a>
 										<div id = "MLCode" style="display:none;">
 											<a href="javascript:;" onClick="document.getElementById('MLCode').style.display='none'; document.getElementById('showButton').style.display='inline-block';" class="button small primary" >I dont want to look at the code anymore!!</a>
 
 											<pre><code>
-	something about code
+from machine import Pin, PWM, I2C
+import time
+
+# --------------------------
+# Onboard button
+# --------------------------
+button = Pin(34, Pin.IN)
+print("Waiting for button (D34) press...")
+while button.value() == 1:
+    time.sleep(0.05)
+print("Button pressed! Starting line following...")
+time.sleep(0.2)
+
+# --------------------------
+# I2C color sensors
+# --------------------------
+i2c_left = I2C(0, scl=Pin(22), sda=Pin(21), freq=400000)
+i2c_right = I2C(1, scl=Pin(25), sda=Pin(26), freq=400000)
+VEML_ADDR = 0x10
+
+REG_CONF  = 0x00
+REG_RED   = 0x08
+REG_GREEN = 0x09
+REG_BLUE  = 0x0A
+REG_WHITE = 0x0B
+
+def veml_init(i2c):
+    i2c.writeto_mem(VEML_ADDR, REG_CONF, bytes([0x00]))
+    time.sleep(0.1)
+
+def veml_read(i2c):
+    def read16(reg):
+        data = i2c.readfrom_mem(VEML_ADDR, reg, 2)
+        return int.from_bytes(data, 'little')
+    return read16(REG_RED), read16(REG_GREEN), read16(REG_BLUE), read16(REG_WHITE)
+
+veml_init(i2c_left)
+veml_init(i2c_right)
+
+# --------------------------
+# Encoder class
+# --------------------------
+class Count:
+    def __init__(self, A_pin, B_pin):
+        self.A = Pin(A_pin, Pin.IN)
+        self.B = Pin(B_pin, Pin.IN)
+        self.counter = 0
+        self.A.irq(self.cb, Pin.IRQ_RISING | Pin.IRQ_FALLING)
+        self.B.irq(self.cb, Pin.IRQ_RISING | Pin.IRQ_FALLING)
+
+    def cb(self, pin):
+        other, inc = (self.B, 1) if pin == self.A else (self.A, -1)
+        self.counter += -inc if pin.value() != other.value() else inc
+
+    def value(self):
+        return self.counter
+
+# --------------------------
+# Motor class
+# --------------------------
+class Motor:
+    def __init__(self, pwm_pin, dir_pin, encA, encB):
+        self.pwm = PWM(Pin(pwm_pin))
+        self.pwm.freq(1000)
+        self.dir = Pin(dir_pin, Pin.OUT)
+        self.encoder = Count(encA, encB)
+        self.stop()
+
+    def stop(self):
+        self.pwm.duty_u16(0)
+        self.dir.value(0)
+
+    def set_speed(self, direction=1, speed_percent=50):
+        self.dir.value(direction)
+        self.pwm.duty_u16(int(speed_percent / 100 * 65535))
+
+    def position(self):
+        return self.encoder.value()
+
+# --------------------------
+# Initialize motors
+# --------------------------
+left_motor  = Motor(pwm_pin=13, dir_pin=12, encA=32, encB=39)
+right_motor = Motor(pwm_pin=14, dir_pin=27, encA=33, encB=36)
+
+# --------------------------
+# Color detection & smoothing
+# --------------------------
+colors_left = {'black': (90,91,53,222), 'red': (201,124,77,393),
+               'green': (168,213,86,369), 'blue': (150,220,198,399),
+               'white': (421,518,339,852)}
+colors_right = {'black': (92,91,51,229), 'red': (206,128,78,403),
+                'green': (167,209,84,374), 'blue': (154,217,185,406),
+                'white': (423,514,316,862)}
+
+def make_ranges(refs, tol=40):
+    ranges = {}
+    for c,v in refs.items():
+        ranges[c] = ((v[0]-tol,v[0]+tol),(v[1]-tol,v[1]+tol),(v[2]-tol,v[2]+tol),(v[3]-tol*2,v[3]+tol*2))
+    return ranges
+
+ranges_left  = make_ranges(colors_left)
+ranges_right = make_ranges(colors_right)
+
+def classify_color(r,g,b,w,ranges):
+    for color,(rr,gg,bb,ww) in ranges.items():
+        if rr[0]<=r<=rr[1] and gg[0]<=g<=gg[1] and bb[0]<=b<=bb[1] and ww[0]<=w<=ww[1]:
+            return color
+    return "Unknown"
+
+window_size = 5
+left_history  = []
+right_history = []
+
+def add_history(history,value):
+    history.append(value)
+    if len(history) > window_size:
+        history.pop(0)
+
+def majority_vote(history):
+    counts = {}
+    for item in history:
+        counts[item] = counts.get(item,0)+1
+    max_count = 0
+    winner = "Unknown"
+    for k,v in counts.items():
+        if v>max_count:
+            max_count=v
+            winner=k
+    return winner
+
+# --------------------------
+# Main loop: shorter bursts + rest
+# --------------------------
+BASE_SPEED = 10
+TURN_SCALE = 0.3
+RUN_DURATION = 0.5   # seconds per motor burst
+REST_DURATION = 0.5  # seconds rest between bursts
+
+print("=== LINE FOLLOWING MODE ===")
+
+try:
+    while True:
+        # Read color sensors
+        lr,lg,lb,lw = veml_read(i2c_left)
+        rr,rg,rb,rw = veml_read(i2c_right)
+        add_history(left_history, classify_color(lr,lg,lb,lw, ranges_left))
+        add_history(right_history, classify_color(rr,rg,rb,rw, ranges_right))
+
+        sm_left  = majority_vote(left_history)
+        sm_right = majority_vote(right_history)
+
+        # Decide motor speeds: black = full, white = slower (turn)
+        left_speed  = BASE_SPEED if sm_left=='black' else BASE_SPEED*TURN_SCALE
+        right_speed = BASE_SPEED if sm_right=='black' else BASE_SPEED*TURN_SCALE
+
+        # Run motors simultaneously
+        left_motor.set_speed(direction=1, speed_percent=left_speed)
+        right_motor.set_speed(direction=1, speed_percent=right_speed)
+
+        # Burst duration
+        time.sleep(RUN_DURATION)
+
+        # Stop motors
+        left_motor.stop()
+        right_motor.stop()
+
+        # Rest period
+        time.sleep(REST_DURATION)
+
+        # Debug
+        print(f"Left: {sm_left} | Right: {sm_right} | Encoders: L={left_motor.position()} R={right_motor.position()}")
+
+except KeyboardInterrupt:
+    print("\nStopping motors...")
+finally:
+    left_motor.stop()
+    right_motor.stop()
+    left_motor.pwm.deinit()
+    right_motor.pwm.deinit()
+    print("Motors stopped ✅")
+
+
+
 											</code></pre>
 										</div>
+									<br> <br>
+								
 									
 								<h2>Challenges & Future Improvements</h2>
-								
+								<p><span class="image right"><video name="Ballo Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0 64%"autoplay muted loop><source src="images/ME35/ballo/Demo.mp4"></video></span>
+									<li>Designing everything to fit within the ball was hard, but not in the sense that there was not enough space. It was actually the fact that there was too much space above and below the internal robot that made things difficult, and designing it to be stable, but mobile inside was definitely a challenge. My solution to this was to put a wheels above the main robot to fill up space above the robot.</li>
+									<li>Even after all that, when we tested the robot we saw that the center of gravity was too high and instead of wanting to roll vertically, it wanted to roll horizontally. I think we're just gonna let it be a horizontal robot now. </li>
+								</p>
+
 							</div>
 						</div>
 					</div>
