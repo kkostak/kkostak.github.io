@@ -2601,6 +2601,10 @@ input, select, textarea {
 			pointer-events: none;
 			opacity: 0.25;
 		}
+		.btn.active {
+			background-color: #1d221d; 
+			color: white;
+		  }
 
 /* Tiles */
 	/* The "show" class is added to the filtered elements */
