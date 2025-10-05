@@ -51,27 +51,25 @@
 							<h1>Soft-Bodied Robotics</h1>
 
 							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0 64%"autoplay muted loop><source src="images/nemitz/NiceHand.mov"></video></span> <b>GOALS: </b> Design a pneumatically actuated hand out of ultra-soft TPU <br> <b>SKILLS: </b> CAD, Arduino, Iterative Design</p>
+								<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0 64%"autoplay muted loop><source src="images/nemitz/NiceHand.mov"></video></span> <b>GOALS: </b> Design a pneumatically actuated hand out of ultra-soft TPU <br> <b>SKILLS: </b> CAD, Arduino, Iterative Design, 3D Printing</p>
 							</div>		
 
 							<div>
 								<h2>Pneumatic Actuation</h2>
 
 								<h2>Electronics</h2>
-									<p><span class="image left"><img src="images/ME35/pinball/hardware.png" alt="" /></span><br><br> This electromechanical system was a monster to set up. I really wanted each joint to be individually controllable, which ment wiring up 15 solenoid valves both the the microcontroller and the air compressor - one for each of the 3 joints on each of the fingers. All this to say, cable management was a nightmare. </p>									
-									<br><br><br><br>
+									<p><span class="image left"><img src="images/nemitz/Electronics.png" alt=""/></span> <span class="image left"><img src="images/nemitz/WiringDiagram.png" style="object-position: 10% 10%;" alt="" /></span>This electromechanical system was a monster to set up. I really wanted each joint to be individually controllable, which ment wiring up 15 solenoid valves both the the microcontroller and the air compressor - one for each of the 3 joints on each of the fingers. <p>
 
 								<h2>Code</h2>
-									<p>I used C++ on an Arduino in order to program the actuation sequences of the solenoid valves. It's a pretty simple script, but its here if you're interested!</p>
-									<a href="javascript:" onClick="document.getElementById('HandCode').style.display='block';" class="button small primary">see my code!</a>
-									<div id = "HandCode" style="display:none;">
-										<pre><code>
-vomit
-										</code></pre>
+									<p> The code is just a pretty simple script to turn certain pins on and off. Here it is if you want to see it! </p>
+									<a id = "showButton" href="javascript:" onClick="document.getElementById('MLCode').style.display='block'; document.getElementById('showButton').style.display='none';" class="button small primary">see my code!</a>
+										<div id = "MLCode" style="display:none;">
+											<a href="javascript:;" onClick="document.getElementById('MLCode').style.display='none'; document.getElementById('showButton').style.display='inline-block';" class="button small primary" >I dont want to look at the code anymore!!</a>
 
-										<a href="javascript:;" onClick="document.getElementById('HandCode').style.display='none';" class="button small primary" >I dont want to look at this code anymore!!</a>
-									</div>
-									<br><br>
+											<pre><code>
+	something about code
+											</code></pre>
+										</div>
 
 								<h2>CAD Model</h2>
 

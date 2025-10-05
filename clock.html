@@ -194,10 +194,12 @@ while True:
 									<iframe src="https://tufts597.autodesk360.com/shares/public/SH30dd5QT870c25f12fc30798cf040deedf1?mode=embed" width="640" height="480" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>							
 								<br> <br>
 
-							<h3>Challenges & Future Improvements</h3>
+							<h3>Everything That Went Wrong and How I Fixed It</h3>
 								<ul>
-									<li> I wanted to make the clock as small and compact as possible. However, this meant that the tolerances on the gears were very small, and being off from the pitch circle by even 0.5 mm would cause the teeth not to mesh properly. If I were to do it again, I would make the gears just a little bit bigger. </li>
-									<li> I underestimated how big a role friction would play in allowing the ratchet mechanism to work, which led me to have to redesign it multiple times. </li>
+									<li> 3D PRINTING TINY LITTLE GEARS SUCKS the tolerances are so small and when I printed out the shafts for the ticket spool to sit on, I made the 3D printing tolerance too big so there was too much wiggle room and even that 0.5 mm of freedom made it so that the <b> gears would just not mesh </b> with each other. But it was a pretty simple fix of just <b> reprinting with a smaller tolerance </b>. </li>
+									<br>
+									<li> The ratchet mechanism had <b> too much friction </b>for such a little setup. with the teal version of the inner ratchet, the contact between the sides of the outer gear & the sides of the ratchet, along with the bottom of the gear & bottom of the ratchet, was too much resistance for them to move independantly. I ended up <b> raising the ratchet </b> 1 mm so that the bottoms dont touch, and <b>removing the fillet </b> on the ratchet so that there was more room for the ratchet to flex.  </li>
+									<br>
 									<li> I accidentally superglued my gears together. Don't do that. </li>
 								</ul>
 							</div>
