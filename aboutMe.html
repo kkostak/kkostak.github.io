@@ -89,11 +89,13 @@
 				<footer id="footer">
 					<div class="inner">
 						<section>
-							<h2>Get in touch</h2>
-							<form method="post" action="katie.kostak@gmail.com">
+							<h2>Say Hello!</h2>
+							<form method="POST" action="https://api.web3forms.com/submit">
+								<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
+
 								<div class="fields">
-									<div class="field half" >
-										<input type="text" name="name" id="name" placeholder="Name"/>
+									<div class="field half">
+										<input type="text" name="name" id="name" placeholder="Name" />
 									</div>
 									<div class="field half">
 										<input type="email" name="email" id="email" placeholder="Email" />
@@ -102,6 +104,10 @@
 										<textarea name="message" id="message" placeholder="Message"></textarea>
 									</div>
 								</div>
+
+								<!-- Honeypot Spam Protection -->
+								<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
 								<ul class="actions">
 									<li><input type="submit" value="Send" class="primary" /></li>
 								</ul>

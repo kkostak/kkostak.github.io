@@ -143,30 +143,6 @@
 										</div>
 									</a>
 								</article>
-								
-								<article class="style2 filterDiv cad">
-									<span class="image">
-										<img src="images/robot/robot.png" alt="" />
-									</span>
-									<a href="robot.html">
-										<h2>Wifi-Controlled Robot</h2> 
-										<div class="content">
-											<p>A robot that performs asynchronous task execution with a partner robot over wifi.</p>
-										</div>
-									</a>
-								</article>
-
-								<article class="style3 filterDiv cad">
-									<span class="image">
-										<img src="images/drink/assemblyStraight.png" alt="" />
-									</span>
-									<a href="drinkHolder.html">
-										<h2>Assistive Wheelchair Drink Holder</h2>
-										<div class="content">
-											<p>Made to help a client with Duchenne Muscular Dystrophy have more independence in their day-to-day life</p>
-										</div>
-									</a>
-								</article>
 
 								<article class="style5 filterDiv sim">
 									<span class="image">
@@ -223,11 +199,13 @@
 					<footer id="footer">
 						<div class="inner">
 							<section>
-								<h2>Get in touch</h2>
-								<form method="post" action="katie.kostak@gmail.com">
+								<h2>Say Hello!</h2>
+								<form method="POST" action="https://api.web3forms.com/submit">
+									<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
+
 									<div class="fields">
-										<div class="field half" >
-											<input type="text" name="name" id="name" placeholder="Name"/>
+										<div class="field half">
+											<input type="text" name="name" id="name" placeholder="Name" />
 										</div>
 										<div class="field half">
 											<input type="email" name="email" id="email" placeholder="Email" />
@@ -236,6 +214,10 @@
 											<textarea name="message" id="message" placeholder="Message"></textarea>
 										</div>
 									</div>
+
+									<!-- Honeypot Spam Protection -->
+									<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
 									<ul class="actions">
 										<li><input type="submit" value="Send" class="primary" /></li>
 									</ul>
