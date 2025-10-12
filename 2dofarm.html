@@ -8,7 +8,7 @@
 <!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
 <html>
 	<head>
-		<title>Kinematic Drawing Mirroring Robot - Katie Kostak</title>
+		<title>IK Drawing Robot - Katie Kostak</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -48,33 +48,46 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>RK Drawing Robot</h1>
+							<h1>IK Drawing Robot</h1>
 
 							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0 64%"autoplay muted loop><source src="images/nemitz/NiceHand.mov"></video></span> <b>GOALS: </b> Design a pneumatically actuated hand out of ultra-soft TPU <br> <b>SKILLS: </b> CAD, Arduino, Iterative Design, 3D Printing</p>
+								<p><span class="image right"><video style = "width: 450px; height: 350px; object-fit: cover; object-position: 50% 75%"autoplay muted loop><source src="images/ME35/2dof/demo.mp4"></video></span> <b>GOALS: </b> Design a robot that can draw a shape using inverse kinematics <br> <b>SKILLS: </b> CAD, Kinematics, MATLAB, MicroPython, ESP32</p>
+								<p> This was a 2-week long project for my Introductory Robotics class. The requirements for this project were just to create a 2-degree-of-freedom arm that uses inverse kinematics (IK) to control the end effector to draw a shape.  </p>
 							</div>		
 
 							<div>
-								<h2>Pneumatic Actuation</h2>
+								<h2>Kinematics Theory</h2>
+									<p><span class="image left"><img src="images/ME35/2dof/MathDiagram.png" alt="" /></span><br><br> </p>	
+									<br>
+									<p>Here's the math behind the kinematics! It's essentially just a bunch of trigonometry.</p>
+									<br>
+									<br>								
+									<br>
+									<br>
+									<br>
+									<br>
+
+								<h2> MATLAB Simulation </h2>
+									<p><span class="image right"><video name="badROM" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/2dof/MATLAB Demo.mov"></video></span><br>Before going straight to incorporating the kinematics with the mechanical system, I wanted to simulate everything in MATLAB to make sure that my logic was sound. So I made a MATLAB script that models the linkage system, and you can input an array of points and it will draw it out! Let it be known that this was programmed by hand, and the only time AI was used was to generate the array of points for the star shape. <p>
+									<br>
+										<a id = "showButton" href="javascript:" onClick=" document.getElementById('matlab').style.display='inline-block'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">MATLAB code!</a>
+										<a id = "showButton" href="javascript:" onClick="document.getElementById('micropython').style.display='inline-block'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">MicroPython code!</a>
+										<a id = "hideButton" href="javascript:" style = "display: none;" onClick="document.getElementById('matlab').style.display='none'; document.getElementById('micropython').style.display='inline-block'; document.getElementById('hideButton').style.display='none';" class="button small primary">hide code</a>
+
+										<pre style = "display: none;"><code id = "matlab">
+matlab
+										</code></pre>
+										<pre style = "display: none;"><code id = "micropython">
+micropython
+										</code></pre>
 
 								<h2>Hardware</h2>
-									<p><span class="image left"><video name="badROM" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/2dof/badROM.mp4"></video></span> This was the first prototype of the arm linkages I made. It's a pretty simple assembly with 3D printed  <p>
+									<p><span class="image left"><video name="badROM" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/2dof/badROM.mp4"></video></span><br>This was the first prototype of the arm linkages I designed. The issue I ran into with this prototype was just that its range of motion was too little for what I wanted to do with it. I fixed this by giving more space between the linkage and the bearings, and also offsetting the bearing from the bearing-holder-linkage    <p>
+									<br> <br> <br>	
 
-								<h2>Code</h2>
-									<p> The code is just a pretty simple script to turn certain pins on and off. Here it is if you want to see it! </p>
-									<a id = "showButton" href="javascript:" onClick="document.getElementById('MLCode').style.display='block'; document.getElementById('showButton').style.display='none';" class="button small primary">see my code!</a>
-										<div id = "MLCode" style="display:none;">
-											<a href="javascript:;" onClick="document.getElementById('MLCode').style.display='none'; document.getElementById('showButton').style.display='inline-block';" class="button small primary" >I dont want to look at the code anymore!!</a>
+								<h2>that one issue that drove me crazy</h2>
+									<p><span class="image left"><img src="images/ME35/2dof/star.png" alt="" /></span>Ok do you see how the star is warped? Like its kind of squished in the Y axis? I spent SO LONG trying to figure out why this was happening. The MATLAB simulation helped me prove it wasn't a code issue, and when I was looking at the mechanical system I realized that I think this five-bar linkage setup is a little fundamentally flawed. Especially compared to the X-axis, the Y-axis is controlled by such minute changes in servo angles that it makes it really hard to accurately control - especially given the generic servo motors that I had. I think if I had all the time in the world I would experiment with better servo motors with higher step resolution, or potentially switching to motors and trying to do some fancy gear ratio stuff. </p>	
 
-											<pre><code>
-	something about code
-											</code></pre>
-										</div>
-
-								<h2>CAD Model</h2>
-
-								<h2>Future Goals</h2>
-									<p><span class="image right"><img src="images/nemitz/nomadFing.png" alt="" /></span><br><br> Something I experimented with while working on this project was using 3D sculpting to create a much more organic finger shape. Though we tested some demos, the added material to make it look more realistic made the range of motion much smaller than the CADed version so the idea ended up being scrapped. However, I would love to explore the idea of combining 3D sculpting and traditional 3D modelling together in the future!</p>									
 
 							</div>
 						</div>
