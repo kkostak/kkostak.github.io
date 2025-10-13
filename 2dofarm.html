@@ -60,7 +60,7 @@
 									<p>Here's the IK I used to correlate an end effector point to servo angles. It's essentially just a bit of trigonometry.</p>
 
 									<p><span class="image left"><img src="images/ME35/2dof/MathDiagram.png" alt="" /></span> </p>	
-									<p>Using Pythagorean Theorem, Arctan, and Law of Cosines:</p>		
+									<p>Using Pythagorean Theorem, Arctan, and a simplified Law of Cosines:</p>		
 									
 									<div class = "row">
 										<div class = "column">
@@ -119,12 +119,12 @@
 										<div class = "column">
 											<blockquote><math>
 												<mrow>
-													<mi>a₂</mi>
+													<mi>b₂</mi>
 													<mo>=</mo>
 													<mi>acos</mi>
 													<mo>(</mo>
 													<mfrac>
-													  <mi>e</mi>
+													  <mi> c</mi>
 													  <mrow><mn>2</mn><mi>L</mi></mrow>
 													</mfrac>
 													<mo>)</mo>
@@ -134,12 +134,12 @@
 										<div class = "column">
 											<math>
 												<mrow>
-													<mi>b₂</mi>
+													<mi>a₂</mi>
 													<mo>=</mo>
 													<mi>acos</mi>
 													<mo>(</mo>
 													<mfrac>
-													  <mi> c</mi>
+													  <mi>e</mi>
 													  <mrow><mn>2</mn><mi>L</mi></mrow>
 													</mfrac>
 													<mo>)</mo>
@@ -354,6 +354,8 @@ i havent gotten my micropython script off my esp32 yet, but its more or less sim
 											<!-- <p> This was the first prototype of the arm linkages I designed. The issue I ran into with this prototype was just that its range of motion was too little for what I wanted to do with it. I fixed this by giving more space between the linkage and the bearings, and also offsetting the bearing from the bearing-holder-linkage</p> -->
 										</div>
 									  </div>
+
+									  <p>Also, I originally planned on using the encoders mounted to the mirrored side with the black linkages, but due to the nature of a 2-week long project, I found it more worthwhile to spend my time making sure the kinematics of the robot worked. </p>
 									
 									<h2>that one issue that drove me crazy</h2>
 									<p><span class="image left"><img src="images/ME35/2dof/star.png" alt="" /></span>Ok do you see how the star is warped? Like its kind of squished in the Y axis? I spent SO LONG trying to figure out why this was happening. The MATLAB simulation helped me prove it wasn't a code issue, and when I was looking at the mechanical system I realized that I think this five-bar linkage setup is a little fundamentally flawed. Especially compared to the X-axis, the Y-axis is controlled by such minute changes in servo angles that it makes it really hard to accurately control - especially given the generic servo motors that I had. I think if I had all the time in the world I would experiment with better servo motors with higher step resolution, or potentially switching to motors and trying to do some fancy gear ratio stuff. </p>	
