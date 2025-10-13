@@ -57,35 +57,283 @@
 
 							<div>
 								<h2>Kinematics Theory</h2>
-									<p><span class="image left"><img src="images/ME35/2dof/MathDiagram.png" alt="" /></span><br><br> </p>	
-									<br>
-									<p>Here's the math behind the kinematics! It's essentially just a bunch of trigonometry.</p>
-									<br>
-									<br>								
-									<br>
-									<br>
-									<br>
-									<br>
+									<p><span class="image left"><img src="images/ME35/2dof/MathDiagram.png" alt="" /></span> </p>	
+									<p>Here's the IK I used to correlate an end effector point to servo angles. It's essentially just a bit of trigonometry.</p>
+									
+									<blockquote>
+										<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+											<mrow>
+											  <mi>c</mi>
+											  <mo>=</mo>
+											  <msqrt>
+												<msup><mi>x</mi><mn>2</mn></msup>
+												<mo>+</mo>
+												<msup><mi>y</mi><mn>2</mn></msup>
+											  </msqrt>
+											</mrow>
+											
+											<mrow>
+											  <mi>e</mi>
+											  <mo>=</mo>
+											  <msqrt>
+												<msup>
+												  <mrow><mo>(</mo><mi>d</mi><mo>−</mo><mi>x</mi><mo>)</mo></mrow>
+												  <mn>2</mn>
+												</msup>
+												<mo>+</mo>
+												<msup><mi>y</mi><mn>2</mn></msup>
+											  </msqrt>
+											</mrow>
+											<mrow>  
+										  </math> </blockquote>
+
+									<blockquote> <math xmlns="http://www.w3.org/1998/Math/MathML" display = "block"> 
+										<mrow>
+											<mi>b₁</mi>
+											<mo>=</mo>
+											<mi>atan2</mi><mo>(</mo><mi>y</mi><mo>,</mo><mi>x</mi><mo>)</mo>
+										  </mrow>
+
+										  <mrow>
+											<mi> a₁</mi>
+											<mo>=</mo>
+											<mi>atan2</mi><mo>(</mo><mi>y</mi><mo>,</mo><mi>d</mi><mo>−</mo><mi>x</mi><mo>)</mo>
+										  </mrow>
+									</math></blockquote>
+
+									<blockquote> <math xmlns="http://www.w3.org/1998/Math/MathML" display = "block">
+
+										<mrow>
+											<mi>a₂</mi>
+											<mo>=</mo>
+											<mi>acos</mi>
+											<mo>(</mo>
+											<mfrac>
+											  <mi>e</mi>
+											  <mrow><mn>2</mn><mi>L</mi></mrow>
+											</mfrac>
+											<mo>)</mo>
+										  </mrow>
+
+										  <mrow>
+											<mi>b₂</mi>
+											<mo>=</mo>
+											<mi>acos</mi>
+											<mo>(</mo>
+											<mfrac>
+											  <mi> c</mi>
+											  <mrow><mn>2</mn><mi>L</mi></mrow>
+											</mfrac>
+											<mo>)</mo>
+										  </mrow>
+									</math></blockquote>
 
 								<h2> MATLAB Simulation </h2>
 									<p><span class="image right"><video name="badROM" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/2dof/MATLAB Demo.mov"></video></span><br>Before going straight to incorporating the kinematics with the mechanical system, I wanted to simulate everything in MATLAB to make sure that my logic was sound. So I made a MATLAB script that models the linkage system, and you can input an array of points and it will draw it out! Let it be known that this was programmed by hand, and the only time AI was used was to generate the array of points for the star shape. <p>
 									<br>
-										<a id = "showButton" href="javascript:" onClick=" document.getElementById('matlab').style.display='inline-block'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">MATLAB code!</a>
-										<a id = "showButton" href="javascript:" onClick="document.getElementById('micropython').style.display='inline-block'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">MicroPython code!</a>
-										<a id = "hideButton" href="javascript:" style = "display: none;" onClick="document.getElementById('matlab').style.display='none'; document.getElementById('micropython').style.display='inline-block'; document.getElementById('hideButton').style.display='none';" class="button small primary">hide code</a>
+										<a id = "showButton" href="javascript:" onClick="document.getElementById('matlab').style.display='inline-block'; document.getElementById('micropython').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">MATLAB code!</a>
+										<a id = "showButton" href="javascript:" onClick="document.getElementById('micropython').style.display='inline-block'; document.getElementById('matlab').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">MicroPython code!</a>
+										<a id = "hideButton" href="javascript:" style = "display: none;" onClick="document.getElementById('matlab').style.display='none'; document.getElementById('micropython').style.display='none'; document.getElementById('hideButton').style.display='none';" class="button small primary">hide code</a>
 
-										<pre style = "display: none;"><code id = "matlab">
-matlab
-										</code></pre>
-										<pre style = "display: none;"><code id = "micropython">
-micropython
-										</code></pre>
+										<div id = 'matlab' style = "display: none">
+											<pre><code>
+% endefactor coordinates
+x = 75;
+y = 120;
+
+% Linkage parameters
+L = 122.125;
+d = 100;
+
+% Array of points we want to move to
+vertLine = [50 180; 50 150; 50 120; 50 90; 50 60; 50 30;];
+horizLine = [-10 150; 0 150; 20 150; 40 150; 60 150; 80 150; 100 150; 120 150;];
+square = [-25 25; 125 25; 125 200; -25 200; -25 25];
+
+circle = generate_circle([50, 175], 25, 5);
+star = generate_star([50, 150], 25, 50, 5, 5);
+
+
+% Setting up plot
+figure;
+axis equal;
+axis([  -200 300 -200 500]);
+grid on;
+hold on;
+
+animateShape(star, d, L);
+
+disp(star);
+
+function animateShape(points, d, L)
+for i = 1:size(points, 1)
+	cla;
+	for j = 1:i
+		plot(points(j, 1), points(j,2), 'go', 'MarkerSize', 2, 'MarkerFaceColor', 'g');
+	end
+
+	x = points(i, 1);
+	y = points(i, 2);
+
+	% plotting servo links
+	angles = findAngles(x, y, d, L);
+	joint1 = drawLinkage(angles(2), 0, 0, L);
+		% disp("Joint1 endPoints: " + joint1)
+	joint2 = drawLinkage(angles(1), d, 0, L);
+		% disp("Joint2 endPoints: " + joint2)
+
+	% plotting endefactor links
+	plot([joint1(1) x], [joint1(2) y], 'b-', 'LineWidth', 3);
+		% disp("Length of Endefactor Linkage:" + sqrt((joint1(1) - x)^2 + (joint1(2) - y)^2))
+	plot([joint2(1) x], [joint2(2) y], 'b-', 'LineWidth', 3);
+		% disp("Length of Endefactor Linkage:" + sqrt((joint2(1) - x)^2 + (joint2(2) - y)^2))
+	plot(x, y, 'ro', 'MarkerFaceColor', 'r'); % endefactor joint
+	
+	pause(0.01);
+end
+
+end
+
+function endPoints = drawLinkage(theta, xo, yo, L)
+
+% Doing trig to find the end point of linkage
+xf = xo - L*cos(theta);
+yf = yo + L*sin(theta);
+
+% plotting linkage
+plot([xo xf], [yo yf], 'b-', 'LineWidth', 3);
+plot(xo, yo, 'ro', 'MarkerFaceColor', 'r'); % base joint
+plot(xf, yf, 'ko', 'MarkerFaceColor', 'k'); % end joint
+
+% disp("Length of Servo Linkage:" + sqrt((xo - xf)^2 + (yo - yf)^2))
+
+endPoints = [xf, yf];
+
+end
+
+% input the endefactor coordinates, distance between, and length of arms 
+% output the two servo angles from the left face to ground
+function angles = findAngles(x, y, d, L)
+
+% inverse pythag on inner triangle // this is good
+b_c = sqrt(x^2 + y^2);
+a_e = sqrt((d - x)^2 + y^2);
+
+% find the inner angles on inner triangle // this is good
+b1 = atan2(y, x);
+a1 = atan2(y, d-x);
+
+% law of cosines to find the middle angle //maybe not?                                                                                                                        a
+a2 = acos(a_e/(2*L));
+b2 = acos(b_c/(2*L));
+
+% weird conditional stuff
+af = (a1 + a2);
+bf  = pi - (b1 + b2);
+
+% if x < 0
+%     af = pi + (a1 + a2);
+%     bf  = pi - (b1 + b2);
+% elseif x > d
+%     af = (a1 + a2);
+%     bf  = -1 * (b1 + b2);
+% end
+
+angles = [af, bf];
+disp(angles)
+% disp("Angles (rad): " + angles)
+% disp("Angles (deg): " + rad2deg(angles))
+end
+
+
+% These last two functions are AI Generated - used to create an array of
+% points for the linkages to move to
+
+function points = generate_circle(origin, r, spacing)       
+
+circumference = 2 * pi * r;
+numPoints = round(circumference / spacing);
+
+theta = linspace(0, 2*pi, numPoints+1);  % +1 to close the circle
+
+x = origin(1) + r * cos(theta);
+y = origin(2) + r * sin(theta);
+
+points = [x(:), y(:)];
+end
+
+function star_points = generate_star(origin, r_outer, r_inner, num_points, spacing)
+%GENERATE_STAR Generates coordinates for a star outline
+%
+% INPUTS:
+%   origin    - [x0, y0] center of the star
+%   r_outer   - radius of the star's outer points
+%   r_inner   - radius of the star's inner points
+%   num_points- number of star points (5 for classic star)
+%   spacing   - approximate distance between points along the outline
+%
+% OUTPUT:
+%   star_points - N×2 array of [x y] coordinates along the star outline
+
+% Step 1: Generate outer and inner points
+angles_outer = (0:num_points-1)*(2*pi/num_points) - pi/2; % start top
+x_outer = origin(1) + r_outer*cos(angles_outer);
+y_outer = origin(2) + r_outer*sin(angles_outer);
+
+angles_inner = angles_outer + pi/num_points;
+x_inner = origin(1) + r_inner*cos(angles_inner);
+y_inner = origin(2) + r_inner*sin(angles_inner);
+
+% Interleave outer and inner points
+x_star = zeros(1, num_points*2+1);
+y_star = zeros(1, num_points*2+1);
+x_star(1:2:end-1) = x_outer;
+x_star(2:2:end-1) = x_inner;
+x_star(end) = x_outer(1);  % close the star
+y_star(1:2:end-1) = y_outer;
+y_star(2:2:end-1) = y_inner;
+y_star(end) = y_outer(1);
+
+% Step 2: Resample points along the star edges with ~spacing distance
+star_points = [];
+for i = 1:length(x_star)-1
+	% start and end of edge
+	p1 = [x_star(i), y_star(i)];
+	p2 = [x_star(i+1), y_star(i+1)];
+	
+	% distance and number of segments
+	d = norm(p2 - p1);
+	n_seg = max(1, round(d/spacing));  % at least one segment
+	
+	% interpolate points along the edge
+	t = linspace(0, 1, n_seg+1);
+	edge_points = (1-t)'*p1 + t'*p2;  % linear interpolation
+	star_points = [star_points; edge_points(1:end-1,:)]; % avoid duplicates
+end
+star_points = [star_points; star_points(1,:)];  % close star
+end												
+											</code></pre>
+										</div>
+										<div id = 'micropython' style = "display:none"> 
+											<pre style><code>
+i havent gotten my micropython script off my esp32 yet yet, but its more or less similar to the matlab :-)
+											</code></pre>
+										</div>
 
 								<h2>Hardware</h2>
-									<p><span class="image left"><video name="badROM" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/2dof/badROM.mp4"></video></span><br>This was the first prototype of the arm linkages I designed. The issue I ran into with this prototype was just that its range of motion was too little for what I wanted to do with it. I fixed this by giving more space between the linkage and the bearings, and also offsetting the bearing from the bearing-holder-linkage    <p>
-									<br> <br> <br>	
-
-								<h2>that one issue that drove me crazy</h2>
+									<div class="row">
+										<div class="column">
+											<iframe src="https://tufts597.autodesk360.com/shares/public/SH28cd1QT2badd0ea72bff545daf43e29f86?mode=embed" width="600" height="600" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>
+										</div>
+										<div class="column">
+											<h3> Mechanical Debugging </h3>
+											<video name="badROM" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/2dof/badROM.mp4"></video>
+											<p> This first prototype of the arm linkages I designed. The issue <br> here was that it didn't have as big a range of motion as I <br> would have liked. I fixed this by giving more space between <br> the linkage and the bearings, and also offsetting the bearing <br> from the arm of the linkage</p>
+											<!-- <p> This was the first prototype of the arm linkages I designed. The issue I ran into with this prototype was just that its range of motion was too little for what I wanted to do with it. I fixed this by giving more space between the linkage and the bearings, and also offsetting the bearing from the bearing-holder-linkage</p> -->
+										</div>
+									  </div>
+									
+									<h2>that one issue that drove me crazy</h2>
 									<p><span class="image left"><img src="images/ME35/2dof/star.png" alt="" /></span>Ok do you see how the star is warped? Like its kind of squished in the Y axis? I spent SO LONG trying to figure out why this was happening. The MATLAB simulation helped me prove it wasn't a code issue, and when I was looking at the mechanical system I realized that I think this five-bar linkage setup is a little fundamentally flawed. Especially compared to the X-axis, the Y-axis is controlled by such minute changes in servo angles that it makes it really hard to accurately control - especially given the generic servo motors that I had. I think if I had all the time in the world I would experiment with better servo motors with higher step resolution, or potentially switching to motors and trying to do some fancy gear ratio stuff. </p>	
 
 
