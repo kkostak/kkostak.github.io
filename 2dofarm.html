@@ -57,76 +57,98 @@
 
 							<div>
 								<h2>Kinematics Theory</h2>
-									<p><span class="image left"><img src="images/ME35/2dof/MathDiagram.png" alt="" /></span> </p>	
 									<p>Here's the IK I used to correlate an end effector point to servo angles. It's essentially just a bit of trigonometry.</p>
+
+									<p><span class="image left"><img src="images/ME35/2dof/MathDiagram.png" alt="" /></span> </p>	
+									<p>Using Pythagorean Theorem, Arctan, and Law of Cosines:</p>		
 									
-									<blockquote>
-										<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-											<mrow>
-											  <mi>c</mi>
-											  <mo>=</mo>
-											  <msqrt>
-												<msup><mi>x</mi><mn>2</mn></msup>
-												<mo>+</mo>
-												<msup><mi>y</mi><mn>2</mn></msup>
-											  </msqrt>
-											</mrow>
-											
-											<mrow>
-											  <mi>e</mi>
-											  <mo>=</mo>
-											  <msqrt>
-												<msup>
-												  <mrow><mo>(</mo><mi>d</mi><mo>−</mo><mi>x</mi><mo>)</mo></mrow>
-												  <mn>2</mn>
-												</msup>
-												<mo>+</mo>
-												<msup><mi>y</mi><mn>2</mn></msup>
-											  </msqrt>
-											</mrow>
-											<mrow>  
-										  </math> </blockquote>
+									<div class = "row">
+										<div class = "column">
+											<blockquote> <math display = "block">
+												<mrow>
+													<mi>c</mi>
+													<mo>=</mo>
+													<msqrt>
+													  <msup><mi>x</mi><mn>2</mn></msup>
+													  <mo>+</mo>
+													  <msup><mi>y</mi><mn>2</mn></msup>
+													</msqrt>
+												</mrow>
+											</math></blockquote>
+										</div>
+										<div class = "column">
+											<math display = "block">
+												<mrow>
+													<mi>e</mi>
+													<mo>=</mo>
+													<msqrt>
+													  <msup>
+														<mrow><mo>(</mo><mi>d</mi><mo>−</mo><mi>x</mi><mo>)</mo></mrow>
+														<mn>2</mn>
+													  </msup>
+													  <mo>+</mo>
+													  <msup><mi>y</mi><mn>2</mn></msup>
+													</msqrt>
+												  </mrow>
+											</math>
+										</div>
+									</div>
 
-									<blockquote> <math xmlns="http://www.w3.org/1998/Math/MathML" display = "block"> 
-										<mrow>
-											<mi>b₁</mi>
-											<mo>=</mo>
-											<mi>atan2</mi><mo>(</mo><mi>y</mi><mo>,</mo><mi>x</mi><mo>)</mo>
-										  </mrow>
+									<div class = "row">
+										<div class = "column">
+											<blockquote><math>
+												<mrow>
+													<mi>b₁</mi>
+													<mo>=</mo>
+													<mi>atan2</mi><mo>(</mo><mi>y</mi><mo>,</mo><mi>x</mi><mo>)</mo>
+												</mrow>
+											</math></blockquote>
+										</div>
+										<div class = "column">	
+											<math>
+												<mrow>
+													<mi> a₁</mi>
+													<mo>=</mo>
+													<mi>atan2</mi><mo>(</mo><mi>y</mi><mo>,</mo><mi>d</mi><mo>−</mo><mi>x</mi><mo>)</mo>
+												</mrow>
+											</math>											  
+										</div>
+									</div>
 
-										  <mrow>
-											<mi> a₁</mi>
-											<mo>=</mo>
-											<mi>atan2</mi><mo>(</mo><mi>y</mi><mo>,</mo><mi>d</mi><mo>−</mo><mi>x</mi><mo>)</mo>
-										  </mrow>
-									</math></blockquote>
+									<div class = "row">
+										<div class = "column">
+											<blockquote><math>
+												<mrow>
+													<mi>a₂</mi>
+													<mo>=</mo>
+													<mi>acos</mi>
+													<mo>(</mo>
+													<mfrac>
+													  <mi>e</mi>
+													  <mrow><mn>2</mn><mi>L</mi></mrow>
+													</mfrac>
+													<mo>)</mo>
+												</mrow>
+											</math></blockquote>
+										</div>
+										<div class = "column">
+											<math>
+												<mrow>
+													<mi>b₂</mi>
+													<mo>=</mo>
+													<mi>acos</mi>
+													<mo>(</mo>
+													<mfrac>
+													  <mi> c</mi>
+													  <mrow><mn>2</mn><mi>L</mi></mrow>
+													</mfrac>
+													<mo>)</mo>
+												</mrow>
+											</math>
+										</div>
+									</div>
 
-									<blockquote> <math xmlns="http://www.w3.org/1998/Math/MathML" display = "block">
-
-										<mrow>
-											<mi>a₂</mi>
-											<mo>=</mo>
-											<mi>acos</mi>
-											<mo>(</mo>
-											<mfrac>
-											  <mi>e</mi>
-											  <mrow><mn>2</mn><mi>L</mi></mrow>
-											</mfrac>
-											<mo>)</mo>
-										  </mrow>
-
-										  <mrow>
-											<mi>b₂</mi>
-											<mo>=</mo>
-											<mi>acos</mi>
-											<mo>(</mo>
-											<mfrac>
-											  <mi> c</mi>
-											  <mrow><mn>2</mn><mi>L</mi></mrow>
-											</mfrac>
-											<mo>)</mo>
-										  </mrow>
-									</math></blockquote>
+									<br>
 
 								<h2> MATLAB Simulation </h2>
 									<p><span class="image right"><video name="badROM" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/2dof/MATLAB Demo.mov"></video></span><br>Before going straight to incorporating the kinematics with the mechanical system, I wanted to simulate everything in MATLAB to make sure that my logic was sound. So I made a MATLAB script that models the linkage system, and you can input an array of points and it will draw it out! Let it be known that this was programmed by hand, and the only time AI was used was to generate the array of points for the star shape. <p>
@@ -316,7 +338,7 @@ end
 										</div>
 										<div id = 'micropython' style = "display:none"> 
 											<pre style><code>
-i havent gotten my micropython script off my esp32 yet yet, but its more or less similar to the matlab :-)
+i havent gotten my micropython script off my esp32 yet, but its more or less similar to the matlab :-)
 											</code></pre>
 										</div>
 
