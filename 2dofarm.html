@@ -338,7 +338,154 @@ end
 										</div>
 										<div id = 'micropython' style = "display:none"> 
 											<pre style><code>
-i havent gotten my micropython script off my esp32 yet, but its more or less similar to the matlab :-)
+from machine import PWM, Pin
+import time
+import math
+servo1 = PWM(Pin(19), freq=50, duty_u16=0)
+servo2 = PWM(Pin(18), freq=50, duty_u16=0)
+
+#Physical Robot Parameters
+d = 100;
+L = 122.125;
+
+def setAngle(servo, rad):
+	
+	scaledNs = ((rad - 0) / (math.pi - 0) * (2500 - 500)) + 500
+	
+	print("Servo ", servo, " going to ", rad);
+	
+	servo.duty_ns(int(scaledNs*1000))
+
+
+# input the endefactor coordinates, distance between, and length of arms 
+# output the two servo angles from the right face to ground
+def findAngles(x, y):
+
+	b_c = math.sqrt(x**2 + y**2);
+	a_e = math.sqrt((d - x)**2 + y**2);
+
+
+	b1 = math.atan2(y, x);
+	a1 = math.atan2(y, d-x);
+																														
+	a2 = math.acos(a_e/(2*L));
+	b2 = math.acos(b_c/(2*L));
+
+	af = math.pi - (a1 + a2);
+	bf  = (b1 + b2);
+	
+
+	angles = [bf, af];
+	return angles
+
+import math
+
+def generate_circle(origin, r, spacing):
+
+	circumference = 2 * math.pi * r
+	num_points = round(circumference / spacing)
+	
+	points = []
+	for i in range(num_points + 1):  # +1 to close the circle
+		theta = 2 * math.pi * i / num_points
+		x = origin[0] + r * math.cos(theta)
+		y = origin[1] + r * math.sin(theta)
+		points.append((x, y))
+	
+	return points
+
+import math
+
+def generate_star(origin, r_outer, r_inner, num_points, spacing):
+	"""
+	Generate coordinates for a star outline in MicroPython.
+
+	Parameters:
+		origin      -- tuple (x0, y0), center of the star
+		r_outer     -- radius of outer points
+		r_inner     -- radius of inner points
+		num_points  -- number of star points (5 for classic star)
+		spacing     -- approximate distance between points along edges
+
+	Returns:
+		star_points -- list of (x, y) tuples along the star outline
+	"""
+
+	x0, y0 = origin
+
+	# Step 1: Generate outer and inner points
+	angles_outer = [(2*math.pi*i/num_points - math.pi/2) for i in range(num_points)]
+	angles_inner = [angle + math.pi/num_points for angle in angles_outer]
+
+	x_outer = [x0 + r_outer*math.cos(a) for a in angles_outer]
+	y_outer = [y0 + r_outer*math.sin(a) for a in angles_outer]
+
+	x_inner = [x0 + r_inner*math.cos(a) for a in angles_inner]
+	y_inner = [y0 + r_inner*math.sin(a) for a in angles_inner]
+
+	# Interleave outer and inner points
+	x_star = []
+	y_star = []
+	for i in range(num_points):
+		x_star.append(x_outer[i])
+		y_star.append(y_outer[i])
+		x_star.append(x_inner[i])
+		y_star.append(y_inner[i])
+
+	# Close the star
+	x_star.append(x_outer[0])
+	y_star.append(y_outer[0])
+
+	# Step 2: Resample points along the star edges
+	star_points = []
+
+	for i in range(len(x_star)-1):
+		x1, y1 = x_star[i], y_star[i]
+		x2, y2 = x_star[i+1], y_star[i+1]
+
+		# Distance between points
+		dx = x2 - x1
+		dy = y2 - y1
+		d = math.sqrt(dx*dx + dy*dy)
+
+		# Number of segments
+		n_seg = max(1, round(d / spacing))
+
+		# Interpolate points along the edge
+		for j in range(n_seg):
+			t = j / n_seg
+			x = x1 + t*dx
+			y = y1 + t*dy
+			star_points.append((x, y))
+
+	# Close the star by adding the first point again
+	star_points.append(star_points[0])
+
+	return star_points
+
+
+star = generate_star((50, 150), 25, 50, 5, 10)
+circle = generate_circle((25, 150), 25, 5)
+vertLine = [(50, 180), (50, 150), (50, 120), (50, 90), (50, 60), (50, 30)]
+horizLine = [(-10, 150), (0, 150), (20, 150), (40, 150), (60, 150), (80, 150), (100, 150), (120, 150)]
+square = [(-25, 25), (125, 25), (125, 200), (-25, 200), (-25, 25)]
+
+print(circle);
+
+while True:
+	for x, y in star:
+		angles = findAngles(x, y);
+		
+	#     print(angles)  
+	#     print("servo1 ", angles[1]);
+	#     print("servo2: ", angles[0]);
+		
+		setAngle(servo1, angles[1]);
+		setAngle(servo2, angles[0]);
+		
+		time.sleep(0.1);
+	
+print("done!");												
 											</code></pre>
 										</div>
 
