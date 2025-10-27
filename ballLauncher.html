@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
+<html>
+	<head>
+		<title>Ball Launching Robot - Katie Kostak</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+							<!-- Logo -->
+							<a href="index.html" class="logo">
+								<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title">Katie!</span>
+							</a>
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutMe.html">About Me</a></li>
+							<li><a href="https://docs.google.com/document/d/1IWItMeYGe21i9kFOkmaiU_o10JnmGZ0ZCY9t4pEIM1M/edit?usp=sharing">Resume</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Ball Launching Robot</h1>
+
+							<div style="display: inline-block; width: 875pt;">
+								<p><span class="image right"><img src="images/ME35/BallThrower2.png" alt="" /></span> <b>GOALS: </b> Create a robot that can precisely launch a ball to different distances <br> <b>SKILLS: </b> CAD, MicroPython, ESP32, 3D Printing, Laser Cutting</p>
+								<p> This week's project was to create a robot that could launch a ball to different distances with precision. I decided to do this using a flywheel mechanism, and changing the speed of the wheels based on how far the ball should go. </p>
+							</div>		
+
+							<div>
+								<h2>Speed Calculation & Code</h2>
+									<p> I originally wanted to design it such that I could use projectile motion equations to derive how fast the ball should be launched at. However, I found this method to be somewhat innacurate and instead ended up experimentally deriving a speed-to-distance function. </p>
+									<a id = "showButton" href="javascript:" onClick="document.getElementById('MLCode').style.display='block'; document.getElementById('showButton').style.display='none';" class="button small primary">see my code!</a>
+										<div id = "MLCode" style="display:none;">
+											<a href="javascript:;" onClick="document.getElementById('MLCode').style.display='none'; document.getElementById('showButton').style.display='inline-block';" class="button small primary" >I dont want to look at the code anymore!!</a>
+
+											<pre><code>
+from machine import Pin, PWM, Timer
+import time
+import math
+
+class Count(object):
+	def __init__(self,A,B):
+		self.A = Pin(A, Pin.IN)
+		self.B = Pin(B, Pin.IN)
+		self.counter = 0
+
+		self.A.irq(self.cb,self.A.IRQ_FALLING|self.A.IRQ_RISING) #interrupt on line A
+		self.B.irq(self.cb,self.B.IRQ_FALLING|self.B.IRQ_RISING) #interrupt on line B
+
+
+	def cb(self,msg):
+		other,inc = (self.B,1) if msg == self.A else (self.A,-1) #define other line and increment
+		self.counter += -inc if msg.value()!=other.value() else  inc 
+		
+	def value(self):
+		#print(self.counter)
+		return self.counter
+	
+class Motor(Count):
+	def __init__(self,m1,m2, A, B):
+		self.enc = Count(A,B)
+		self.M1 = PWM(m1, freq=100, duty_u16=0)
+		self.M2 = PWM(m2, freq=100, duty_u16=0)
+		self.stop()
+					
+		self.oldpos = 0
+		self.newpos = 0
+		self.velocity = 0
+		self.T = 500
+		self.RPM = 0
+		
+		tim = Timer(0)  # Use Timer 0
+		tim.init(mode=Timer.PERIODIC, period=self.T, callback=self.find_velocity) # T m-second interval
+	
+
+	def find_velocity(self,p):
+		self.newpos = self.pos()
+		self.velocity = (self.newpos - self.oldpos)/self.T
+		self.RPM = self.velocity * 1000 * 60  / 32  # since 1 rot = 3840 counts, and velocity = counts/ ms
+		self.oldpos = self.newpos
+	
+	def show_velocity(self):
+		return self.velocity
+	
+	def show_RPM(self):
+		return self.RPM
+	
+	
+	def pos(self):
+		return self.enc.value()
+		#        print(self.enc.value())        
+			
+	def stop(self):
+		self.M1.duty_u16(0) 
+		self.M2.duty_u16(0) 
+
+	def start(self, direction = 0, speed = 50):
+		if direction:
+			self.M1.duty_u16(int(speed*65535/100)) 
+			self.M2.duty_u16(0)
+		else:
+			self.M1.duty_u16(0)
+			self.M2.duty_u16(int(speed*65535/100)) 
+		
+	def setSpeed(self,direction = 0, speed = 100): #percentage
+		if direction:
+			self.M1.duty_u16(int(speed*65535/100)) 
+			self.M2.duty_u16(0)
+		else:
+			self.M1.duty_u16(0)
+			self.M2.duty_u16(int(speed*65535/100))
+	
+
+def distToPercent(distance = 0.4064, height = 0.16):
+	wheelDiameter = 0.055 #[m]
+	velocity = distance / math.sqrt(2 * height / 9.81) #[m/s]
+	print("velocity: ", velocity, "m/s");
+	
+	countsPerMsec = velocity*(32/(math.pi*wheelDiameter))
+	print("Countrs Per Millisec: ", countsPerMsec)
+	
+	# Experimentally derivced maximum velocity [counts/s] is about -3270 at 100% & Min is -545 at 10%
+	# Linear Interpolation for finding percentage
+	
+	newPercent = 10 + (countsPerMsec - 545)*((100-10)/(3270-545))
+	
+	print("newPercent: ", newPercent);
+	
+	return newPercent;
+
+def linearPlot(inches = 0):
+#     15.5% - 12 in
+#  17/.3% - 18inch ish
+#19.25% - 24 inch ish
+	percent = 0.3125*inches+11.75
+	
+	return percent;
+
+
+
+#count = Count(32,39)
+#print(count.value())
+
+#setting up motor with encoder
+motor1 = Motor(14, 27, 32, 39)
+motor2 = Motor(12, 13, 21, 22)
+
+
+percent = distToPercent();
+
+motor1.start(1, linearPlot(16));
+motor2.start(0, linearPlot(16))
+
+while True:
+	
+	#print("MOTOR 1: ", motor1.show_RPM())
+	print("MOTOR 2: ", motor2.show_RPM())
+	time.sleep(0.5)
+
+											</code></pre>
+										</div>
+
+								<h2>CAD Model</h2>
+									<iframe src="https://tufts597.autodesk360.com/shares/public/SH28cd1QT2badd0ea72ba34cbb0c5528f459?mode=embed" width="640" height="480" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>
+
+								<h2>Future Improvements</h2>
+									<p> I think theres alot of little things adding metaphorical (and probably literal) friction to this system that makes the theoretical physics and the real physics not line up. For example, the motors given the same duty cycle do not run at the same speeds, the wheels wiggle when they spin, and the rubber bands that add friction between the ball and the wheels are not even thickness all around. If </p>								
+
+							</div>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+								<h2>Say Hello!</h2>
+								<form method="POST" action="https://api.web3forms.com/submit">
+									<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
+
+									<div class="fields">
+										<div class="field half">
+											<input type="text" name="name" id="name" placeholder="Name" />
+										</div>
+										<div class="field half">
+											<input type="email" name="email" id="email" placeholder="Email" />
+										</div>
+										<div class="field">
+											<textarea name="message" id="message" placeholder="Message"></textarea>
+										</div>
+									</div>
+
+									<!-- Honeypot Spam Protection -->
+									<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+									<ul class="actions">
+										<li><input type="submit" value="Send" class="primary" /></li>
+									</ul>
+								</form>
+
+								
+								<ul class="copyright">
+									<li>Built by Katie Kostak :-)</li>
+								</ul>
+							</section>
+							<section>
+								<h2>Stay in Touch</h2>
+								<ul class="icons">
+									<li><a href="https://github.com/kkostak" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://katie.kostak@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+									<li><a href="https://www.linkedin.com/in/katiekostak" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<div class="box alt">
+									<div class="col-4"><span class="image fit"><img src="images/bottomLabel.png" alt="" /></span></div>
+									</div>
+								</ul>
+							</section>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
