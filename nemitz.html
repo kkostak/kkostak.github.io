@@ -4,9 +4,11 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+
+<!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
 <html>
 	<head>
-		<title>Soft-Bodied Robotics - Katie Kostak</title>
+		<title>Soft Bodied Robotics - Katie Kostak</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -19,12 +21,10 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="inner">
-
 							<!-- Logo -->
-								<a href="index.html" class="logo">
-									<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title">Katie!</span>
-								</a>
-
+							<a href="index.html" class="logo">
+								<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title">Katie!</span>
+							</a>
 							<!-- Nav -->
 								<nav>
 									<ul>
@@ -39,7 +39,7 @@
 					<nav id="menu">
 						<h2>Menu</h2>
 						<ul>
-							<li><a href="aboutMe.html">Home</a></li>
+							<li><a href="index.html">Home</a></li>
 							<li><a href="aboutMe.html">About Me</a></li>
 							<li><a href="https://docs.google.com/document/d/1IWItMeYGe21i9kFOkmaiU_o10JnmGZ0ZCY9t4pEIM1M/edit?usp=sharing">Resume</a></li>
 						</ul>
@@ -48,47 +48,94 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<p><span class="image right"><img src="images/nemitz/internalTubing.png" alt="" /></span><h1>Soft-Bodied Robotics</h1> 	
-								<b>GOALS:</b> Design a 3D printed hand model out of ultra-soft TPU that can be actuated through pressurized air <br>
-								<b>SKILLS:</b> 3D Printing, Arduino, C++, Electromechanical Systems, Iterative Design, Prototyping <br>
-								In the world of soft robotics, many actuators are created using silicone casting. However, silicone casting can be very limiting to design for, and can be very involved/time-consuming to manufacture. However, with the development of 3D printing - especially with softer filaments like TPU - this begs the question if we can create an easier way to manufacture <br> ultra-soft materials that would conventionally be silicone cast. 
-								</p>
-							<!-- <span class="image main"><img src="images/nemitz/fingerDemo.png" alt="" /></span> -->
-							<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0 64%"autoplay muted loop><source src="images/nemitz/NiceHand.mov"></video></span>
-								 TPU is a very commonly seen filament in 3D printing, offering a decently wide range of material softness. It is typically seen with shore values of ~60A to 90A. However, shore values can go down as low as 20A, and thus TPU filaments leave a large region of untapped potential. One of the challenges of creating TPU filaments lower than 60A is that its extreme softness makes it difficult to extrude. However, filament is made out of raw pellets, and it's entirely possible to obtain TPU pellets at shore values down to 20A, thus opening the door for creating a printer specialized for ultra-soft materials using these raw pellets that a conventional filament printer would be unable to use. 
-								<br> 
-							 
-							<h3>Model Progression</h3>
-							<div class="box alt">
-								<div class="row gtr-uniform">
-									<!-- First Image -->
-									<div class="col-4"><span class="image fit"><img src="images/nemitz/actuatedPneuNet.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/nemitz/fingerDemo.png" alt="" /></span></div>
-									<!-- Second Image -->
-									<div class="col-4">
-										<span class="image fit">
-										  <video 
-											name="Orange Demo" 
-											style="
-											  width: 450px; 
-											  height: 350px; 
-											  object-fit: cover;
-											  transform: scale(0.8) translate(-50px, -10px);
-											  transform-origin: 20% 4%;
-											  border-radius: 15px;
-											" 
-											autoplay 
-											muted 
-											loop
-										  >
-											<source src="images/nemitz/orange.mov">
-										  </video>
-										</span>
+							<h1>Soft-Bodied Robotics @ Nemitz Robotics Group</h1>
+
+							<div style="display: inline-block; width: 875pt;">
+								<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0 64%"autoplay muted loop><source src="images/nemitz/NiceHand.mov"></video></span> <b>GOALS: </b> Design a pneumatically actuated hand out of ultra-soft TPU <br> <b>SKILLS: </b> CAD, Arduino, Iterative Design, 3D Printing</p>
+								<p> This is a project I worked on during Spring 2025 where I designed this pneumatically controlled hand out of 3D printed raw TPU pellets as a demonstration of the applications of a novel 3D printer for ultra-soft materials. This demonstration is currently a part of a research paper under review for publication!</p>
+							</div>		
+
+							<div>
+								<h2>Electronics</h2>
+									<p><span class="image left"><img src="images/nemitz/Electronics.png" alt=""/></span> <span class="image left"><img src="images/nemitz/WiringDiagram.png" style="object-position: 10% 10%;" alt="" /></span>This electromechanical system was a monster to set up. I really wanted each joint to be individually controllable, which ment wiring up 15 solenoid valves both the the microcontroller and the air compressor - one for each of the 3 joints on each of the fingers. <p>
+
+								<h2>Code & CAD</h2>
+									<div class ="row">
+										<div class = "col">
+											<iframe src="https://tufts597.autodesk360.com/shares/public/SH28cd1QT2badd0ea72b52049eb7c70ab017?mode=embed" width="640" height="480" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>
+										</div>
+										<div class = "col">
+											<br>
+											<p> This is the CAD Model for what the internal channels of the <br> hand looks like. </p>
+											<h2>Code</h2>
+											<p> The code is just a pretty simple script to turn certain solenoid pins <br>on and off. Here's an example that curls each finger individualy! </p>
+											<a id = "showButton" href="javascript:" onClick="document.getElementById('handCode').style.display='block'; document.getElementById('showButton').style.display='none';" class="button small primary">see my code!</a>
+		
+										</div>
 									</div>
-									  
-									<!-- Third Image -->
-									<!-- <div class="col-4"><span class="image fit"><img src="images/nemitz/nomadFing.png" alt="" /></span></div> -->
+
+									<div id = "handCode" style="display:none;">
+										<a href="javascript:;" onClick="document.getElementById('handCode').style.display='none'; document.getElementById('showButton').style.display='inline-block';" class="button small primary" >I dont want to look at the code anymore!!</a>
+
+										<pre><code>
+const int solenoidPins[] = {A0, A1, A2, A3, A4};
+const int numSolenoids = sizeof(solenoidPins) / sizeof(solenoidPins[0]);
+
+void setup() {
+for (int i = 0; i < numSolenoids; i++) {
+pinMode(solenoidPins[i], OUTPUT);
+digitalWrite(solenoidPins[i], LOW);
+}
+}
+
+void loop() {
+for (int i = 0; i < numSolenoids; i++) {
+digitalWrite(solenoidPins[i], HIGH);
+delay(1000);
+digitalWrite(solenoidPins[i], LOW);
+delay(500); 
+}
+}
+										</code></pre>
+									</div>
+									<br>
+								
+								<h2> Model Progression </h2>
+								<div class="box alt">
+									<div class="row gtr-uniform">
+										<!-- First Image -->
+										<div class="col-4"><span class="image fit"><img src="images/nemitz/actuatedPneuNet.jpg" alt="" /></span></div>
+										<div class="col-4"><span class="image fit"><img src="images/nemitz/fingerDemo.png" alt="" /></span></div>
+										<!-- Second Image -->
+										<div class="col-4">
+											<span class="image fit">
+											  <video 
+												name="Orange Demo" 
+												style="
+												  width: 450px; 
+												  height: 350px; 
+												  object-fit: cover;
+												  transform: scale(0.8) translate(-50px, -10px);
+												  transform-origin: 20% 4%;
+												  border-radius: 15px;
+												" 
+												autoplay 
+												muted 
+												loop
+											  >
+												<source src="images/nemitz/orange.mov">
+											  </video>
+											</span>
+										</div>
+										  
+										<!-- Third Image -->
+										<!-- <div class="col-4"><span class="image fit"><img src="images/nemitz/nomadFing.png" alt="" /></span></div> -->
+									</div>
 								</div>
+								<br>
+								<h2>3D Sculpting</h2>
+								<p><span class="image right"><img src="images/nemitz/nomadFing.png" alt="" /></span><br><br> After completing the simple hand model, I wanted to figure out a way to make the hand look more realisitc. I used a program called NomadSculpt to digitally sculpt a realistic hand model, and used the CAD model for all the internal channels to boolean those shapes out. This gave me a way to blend organic shapes and structured channels, which was super cool :-) </p>									
+
 							</div>
 						</div>
 					</div>
@@ -98,7 +145,9 @@
 						<div class="inner">
 							<section>
 								<h2>Say Hello!</h2>
-								<form method="post" action="#">
+								<form method="POST" action="https://api.web3forms.com/submit">
+									<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
+
 									<div class="fields">
 										<div class="field half">
 											<input type="text" name="name" id="name" placeholder="Name" />
@@ -110,10 +159,19 @@
 											<textarea name="message" id="message" placeholder="Message"></textarea>
 										</div>
 									</div>
+
+									<!-- Honeypot Spam Protection -->
+									<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
 									<ul class="actions">
 										<li><input type="submit" value="Send" class="primary" /></li>
 									</ul>
 								</form>
+
+								
+								<ul class="copyright">
+									<li>Built by Katie Kostak :-)</li>
+								</ul>
 							</section>
 							<section>
 								<h2>Stay in Touch</h2>
@@ -126,9 +184,6 @@
 									</div>
 								</ul>
 							</section>
-							<ul class="copyright">
-								<li>Built by Katie Kostak :-)</li>
-							</ul>
 						</div>
 					</footer>
 
