@@ -1,0 +1,586 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
+<html>
+	<head>
+		<title>Wifi Robot - Katie Kostak</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+							<!-- Logo -->
+							<a href="index.html" class="logo">
+								<span class="symbol"><img src="images/logo.png" alt="" /></span><span class="title">Katie!</span>
+							</a>
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutMe.html">About Me</a></li>
+							<li><a href="https://docs.google.com/document/d/1IWItMeYGe21i9kFOkmaiU_o10JnmGZ0ZCY9t4pEIM1M/edit?usp=sharing">Resume</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>WiFi Robot</h1>
+
+							<div style="display: inline-block; width: 875pt;">
+								<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/wifiRobot/IMG_3449.MOV"></video></span> <b>GOALS: </b> Design a robot that can be controlled over wifi <br> <b>SKILLS: </b> MicroPython, ESP32, MQTT, CAD, 3D Printing</p>
+								<p> This was a project done for my Intro to Robotics Class, and I had one week to make a remote controlled robot!</p>
+							</div>		
+
+							<div>
+								<h2>CAD</h2>		
+									<div class="row">
+										<div class="column">
+											<iframe src="https://tufts597.autodesk360.com/shares/public/SH28cd1QT2badd0ea72baa8dab5a411436de?mode=embed" width="600" height="600" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  frameborder="0"></iframe>
+										</div>
+										<div class="column">
+											<h3> Hardware</h3>
+											 	<p> Here's the CAD Model for the robot! It's a pretty simple robot chassis <br> with two driven wheels in the front and a caster wheel in the back.</p>
+											<h2>Code</h2>
+												 <p> We used MQTT to have our controller ESP32 communicate with our  <br> robot ESP32. We had our controller post to a channel that the robot was <br> subscribed to so that it could listen in for commands. Then,  <br> it was pretty simple to send commands to make the motors spin. </p>
+											
+												 <a id = "showButton" href="javascript:" onClick="document.getElementById('robot').style.display='inline-block'; document.getElementById('controller').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">robot code!</a>
+												 <a id = "showButton" href="javascript:" onClick="document.getElementById('controller').style.display='inline-block'; document.getElementById('robot').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">controller code!</a>
+												 <a id = "hideButton" href="javascript:" style = "display: none;" onClick="document.getElementById('robot').style.display='none'; document.getElementById('controller').style.display='none'; document.getElementById('hideButton').style.display='none';" class="button small primary">hide code</a>		 
+											</div>
+									  </div>
+
+									  	<div id = "controller" style = "display:none;">
+											<pre><code>
+from machine import Pin, PWM, Timer
+import network
+import time
+from umqtt.simple import MQTTClient
+import ssl
+import secrets
+import neopixel
+import json
+class Count(object):
+    def _init_(self,A,B):
+        self.A = Pin(A, Pin.IN)
+        self.B = Pin(B, Pin.IN)
+        self.counter = 0
+        self.A.irq(self.cb,self.A.IRQ_FALLING|self.A.IRQ_RISING) #interrupt on line A
+        self.B.irq(self.cb,self.B.IRQ_FALLING|self.B.IRQ_RISING) #interrupt on line B
+    def cb(self,msg):
+        other,inc = (self.B,1) if msg == self.A else (self.A,-1) #define other line and increment
+        self.counter += -inc if msg.value()!=other.value() else  inc
+    def value(self):
+        return self.counter
+class Motor(Count):
+    def _init_(self,m1,m2, A, B):
+        self.enc = Count(A,B)
+        self.M1 = PWM(m1, freq=100, duty_u16=0)
+        self.M2 = PWM(m2, freq=100, duty_u16=0)
+        self.stop()
+        self.oldpos = 0
+        self.newpos = 0
+        self.velocity = 0
+        self.T = 500
+        self.RPM = 0
+        tim = Timer(0)  # Use Timer 0
+        tim.init(mode=Timer.PERIODIC, period=self.T, callback=self.find_velocity) # T m-second interval
+    def find_velocity(self,p):
+        self.newpos = self.pos()
+        self.velocity = (self.newpos - self.oldpos)/self.T
+        self.RPM = self.velocity * 1000 * 60  / 32  # since 1 rot = 3840 counts, and velocity = counts/ ms
+        self.oldpos = self.newpos
+    def show_velocity(self):
+        return self.velocity
+    def show_RPM(self):
+        return self.RPM
+    def pos(self):
+        return self.enc.value()
+    def stop(self):
+        self.M1.duty_u16(0)
+        self.M2.duty_u16(0)
+    def start(self, direction = 0, speed = 50):
+        if direction:
+            self.M1.duty_u16(int(speed*65535/100))
+            self.M2.duty_u16(0)
+        else:
+            self.M1.duty_u16(0)
+            self.M2.duty_u16(int(speed*65535/100))
+    def setSpeed(self,direction = 0, speed = 100): #percentage
+        if direction:
+            self.M1.duty_u16(int(speed*65535/100))
+            self.M2.duty_u16(0)
+        else:
+            self.M1.duty_u16(0)
+            self.M2.duty_u16(int(speed*65535/100))
+class MQTTDevice:
+    def _init_(self, is_controller=True):
+        self.SSID = secrets.SSID
+        self.PASSWORD = secrets.PWD
+        self.is_controller = is_controller
+        # Neopixel initialize
+        self.np = neopixel.NeoPixel(Pin(15), 2)
+        # Motor Initialize
+        if is_controller:
+            # Controller: only motor1 for steering control
+            self.motor1 = Motor(14, 27, 25, 26)
+            self.motor2 = None
+        else:
+            # Car: both motors for driving
+            self.motor1 = Motor(14, 27, 32, 39)
+            self.motor2 = Motor(12, 13, 21, 22)
+        # Buzzer setup (on car only, but pin defined on both for code consistency)
+        self.buzzer = PWM(Pin(23), freq=2000, duty_u16=0)  # Adjust pin if needed
+        # Button timing
+        self.forward_button_time = 0
+        self.honk_button_time = 0
+        # Control state
+        self.controller_position = 0
+        self.last_controller_position = 0
+        self.forward_active = False
+        # MQTT settings - CHANGE THESE FOR EACH ROBOT
+        self.MQTT_BROKER = secrets.mqtt_url
+        self.MQTT_PORT = 8883
+        self.MQTT_USERNAME = secrets.mqtt_username
+        self.MQTT_PASSWORD = secrets.mqtt_password
+        self.CLIENT_ID = “/ME35/james”  # CHANGE THIS: james or katie
+        self.TOPIC_PUB = “/ME35/jamesrobot”  # CHANGE THIS: jamesrobot or katierobot
+        # Button setup
+        self.forward_button = Pin(34, Pin.IN, Pin.PULL_UP)
+        self.honk_button = Pin(35, Pin.IN, Pin.PULL_UP)
+        self.forward_button.irq(trigger=Pin.IRQ_FALLING, handler=self.forward_pressed)
+        self.honk_button.irq(trigger=Pin.IRQ_FALLING, handler=self.honk_pressed)
+        # Timer for controller position monitoring (only if controller)
+        if is_controller:
+            tim1 = Timer(1)
+            tim1.init(mode=Timer.PERIODIC, period=100, callback=self.check_controller_position)
+    def forward_pressed(self, p):
+        “”"FUNCTION 1: Toggle forward movement”“”
+        now_time = time.ticks_ms()
+        if(now_time - self.forward_button_time < 200):
+            return
+        self.forward_button_time = now_time
+        self.forward_active = not self.forward_active
+        if self.forward_active:
+            msg = json.dumps({“command”: “forward”, “speed”: 60})
+            print(“FUNCTION 1: Forward ON”)
+            self.np[0] = (0, 255, 0)  # Green
+        else:
+            msg = json.dumps({“command”: “stop”})
+            print(“FUNCTION 1: Forward OFF”)
+            self.np[0] = (255, 0, 0)  # Red
+        self.np.write()
+        self.client.publish(self.TOPIC_PUB, msg)
+    def honk_pressed(self, p):
+        “”"FUNCTION 2: Make buzzer sound”“”
+        now_time = time.ticks_ms()
+        if(now_time - self.honk_button_time < 200):
+            return
+        self.honk_button_time = now_time
+        msg = json.dumps({“command”: “honk”})
+        self.client.publish(self.TOPIC_PUB, msg)
+        print(“FUNCTION 2: Honk!“)
+        # Flash blue
+        self.np[1] = (0, 0, 255)
+        self.np.write()
+        time.sleep_ms(100)
+        self.np[1] = (0, 0, 0)
+        self.np.write()
+    def check_controller_position(self, timer):
+        “”"FUNCTION 3: Monitor encoder position for steering control”“”
+        if not self.is_controller or self.motor1 is None:
+            return
+        self.controller_position = self.motor1.pos()
+        # Check if position changed significantly (deadzone of 50 counts)
+        position_diff = self.controller_position - self.last_controller_position
+        if abs(position_diff) > 50:
+            # Determine turn direction and speed based on encoder change
+            if position_diff > 0:
+                # Turned right
+                turn_speed = min(abs(position_diff) // 10, 80)  # Scale to reasonable speed
+                msg = json.dumps({“command”: “turn”, “direction”: “right”, “speed”: turn_speed})
+                print(f”FUNCTION 3: Turn RIGHT (encoder: {self.controller_position}, speed: {turn_speed})“)
+            else:
+                # Turned left
+                turn_speed = min(abs(position_diff) // 10, 80)
+                msg = json.dumps({“command”: “turn”, “direction”: “left”, “speed”: turn_speed})
+                print(f”FUNCTION 3: Turn LEFT (encoder: {self.controller_position}, speed: {turn_speed})“)
+            self.client.publish(self.TOPIC_PUB, msg)
+            self.last_controller_position = self.controller_position
+    def connect_wifi(self):
+        self.wlan = network.WLAN(network.STA_IF)
+        self.wlan.active(True)
+        if not self.wlan.isconnected():
+            print(“Connecting to WiFi...“)
+            self.wlan.connect(self.SSID, self.PASSWORD)
+            timeout = 10
+            while not self.wlan.isconnected() and timeout > 0:
+                time.sleep(1)
+                timeout -= 1
+        if self.wlan.isconnected():
+            print(“WiFi Connected! IP:“, self.wlan.ifconfig()[0])
+            return True
+        else:
+            print(“WiFi connection failed!“)
+            return False
+    def publish(self, topic, msg):
+        self.client.publish(topic, msg)
+        print(f”Published message to topic ‘{topic}’ : ‘{msg}‘“)
+    def subscribe(self, topic):
+        self.client.subscribe(topic)
+    def sub_cb(self, topic, msg):
+        “”"Handle incoming MQTT messages”“”
+        try:
+            json_str = json.loads(msg)
+            command = json_str.get(“command”, “”)
+            print(f”Received ‘{command}’ on topic ‘{topic.decode()}’“)
+            if command == “forward”:
+                # Move both motors forward
+                if self.motor1 and self.motor2:
+                    speed = json_str.get(“speed”, 60)
+                    self.motor1.start(1, speed)
+                    self.motor2.start(1, speed)
+                    print(f”Moving forward at speed {speed}“)
+            elif command == “stop”:
+                # Stop both motors
+                if self.motor1 and self.motor2:
+                    self.motor1.stop()
+                    self.motor2.stop()
+                    print(“Stopped”)
+            elif command == “turn”:
+                # Turn by differential drive
+                if self.motor1 and self.motor2:
+                    direction = json_str.get(“direction”, “right”)
+                    speed = json_str.get(“speed”, 50)
+                    if direction == “right”:
+                        # Right motor slower/stopped, left motor faster
+                        self.motor1.start(1, speed)  # Left motor
+                        self.motor2.start(1, speed // 3)  # Right motor slower
+                    else:  # left
+                        # Left motor slower/stopped, right motor faster
+                        self.motor1.start(1, speed // 3)  # Left motor slower
+                        self.motor2.start(1, speed)  # Right motor
+                    print(f”Turning {direction} at speed {speed}“)
+            elif command == “honk”:
+                # Sound the buzzer
+                self.buzzer.duty_u16(32768)  # 50% duty cycle
+                time.sleep_ms(200)
+                self.buzzer.duty_u16(0)
+                print(“Honked!“)
+        except Exception as e:
+            print(f”Error processing message: {e}“)
+    def mqtt_connect(self):
+        try:
+            self.client = MQTTClient(
+                client_id = self.CLIENT_ID,
+                server = self.MQTT_BROKER,
+                port = self.MQTT_PORT,
+                user = self.MQTT_USERNAME,
+                password = self.MQTT_PASSWORD,
+                ssl = True,
+                ssl_params = {‘server_hostname’: self.MQTT_BROKER}
+            )
+            self.client.set_callback(self.sub_cb)
+            self.client.connect()
+            print(“MQTT Connected successfully!“)
+            return self.client
+        except OSError as e:
+            print(f”MQTT Connection failed: {e}“)
+            return None
+        except Exception as e:
+            print(f”Unexpected error: {e}“)
+            return None
+# True for controller (James)
+# False for car (Katie)
+mqtt_obj = MQTTDevice(is_controller=True)  # CHANGE THIS
+if mqtt_obj.connect_wifi():
+    client = mqtt_obj.mqtt_connect()
+    # CHANGE subscription topic for each robot:
+    mqtt_obj.subscribe(“/ME35/katierobot”)  # Controller subscribes to car’s topic
+while True:
+    try:
+        client.check_msg()
+        time.sleep(0.01)  # Faster checking for responsive control
+    except Exception as e:
+        print(f”Checking message failed: {e}“)											</code></pre>
+										</div>
+										<div id = "robot" style="display:none;">
+											<pre><code>
+from machine import Pin, PWM, Timer
+import network
+import time
+from umqtt.simple import MQTTClient
+import ssl
+import secrets
+import neopixel
+import json
+from machine import Pin
+
+class Count(object):
+	def __init__(self,A,B):
+		self.A = Pin(A, Pin.IN)
+		self.B = Pin(B, Pin.IN)
+		self.counter = 0
+
+		self.A.irq(self.cb,self.A.IRQ_FALLING|self.A.IRQ_RISING) #interrupt on line A
+		self.B.irq(self.cb,self.B.IRQ_FALLING|self.B.IRQ_RISING) #interrupt on line B
+
+
+	def cb(self,msg):
+		other,inc = (self.B,1) if msg == self.A else (self.A,-1) #define other line and increment
+		self.counter += -inc if msg.value()!=other.value() else  inc 
+		
+	def value(self):
+		#print(self.counter)
+		return self.counter
+	
+class Motor(Count):
+	def __init__(self,m1,m2, A, B):
+		self.enc = Count(A,B)
+		self.M1 = PWM(m1, freq=100, duty_u16=0)
+		self.M2 = PWM(m2, freq=100, duty_u16=0)
+		self.stop()
+					
+		self.oldpos = 0
+		self.newpos = 0
+		self.velocity = 0
+		self.T = 500
+		self.RPM = 0
+		
+		tim = Timer(0)  # Use Timer 0
+		tim.init(mode=Timer.PERIODIC, period=self.T, callback=self.find_velocity) # T m-second interval
+	
+
+	def find_velocity(self,p):
+		self.newpos = self.pos()
+		self.velocity = (self.newpos - self.oldpos)/self.T
+		self.RPM = self.velocity * 1000 * 60  / 32  # since 1 rot = 3840 counts, and velocity = counts/ ms
+		self.oldpos = self.newpos
+	
+	def show_velocity(self):
+		return self.velocity
+	
+	def show_RPM(self):
+		return self.RPM
+	
+	
+	def pos(self):
+		return self.enc.value()
+		#        print(self.enc.value())        
+			
+	def stop(self):
+		self.M1.duty_u16(0) 
+		self.M2.duty_u16(0) 
+
+	def start(self, direction = 0, speed = 50):
+		if direction:
+			self.M1.duty_u16(int(speed*65535/100)) 
+			self.M2.duty_u16(0)
+		else:
+			self.M1.duty_u16(0)
+			self.M2.duty_u16(int(speed*65535/100)) 
+		
+	def setSpeed(self,direction = 0, speed = 100): #percentage
+		if direction:
+			self.M1.duty_u16(int(speed*65535/100)) 
+			self.M2.duty_u16(0)
+		else:
+			self.M1.duty_u16(0)
+			self.M2.duty_u16(int(speed*65535/100))
+
+class MQTTDevice:
+	def __init__(self):
+		self.SSID = secrets.SSID
+		self.PASSWORD = secrets.PWD
+
+		#Neopixel intialize
+		self.np = neopixel.NeoPixel(Pin(15), 2)
+	
+		#Motor Initialize
+		self.motor1 = Motor(14, 27, 32, 39)
+		self.motor2 = Motor(12, 13, 21, 22)
+
+		self.entered_time = 0
+		# MQTT settings
+		self.MQTT_BROKER = secrets.mqtt_url 
+		self.MQTT_PORT = 8883
+		self.MQTT_USERNAME = secrets.mqtt_username 
+		self.MQTT_PASSWORD = secrets.mqtt_password 
+		self.CLIENT_ID = "/ME35/katierobot"
+		self.TOPIC_PUB = "/ME35/katierobot"
+
+		
+		self.button = Pin(35, Pin.IN, Pin.PULL_UP)
+		self.button.irq(trigger = Pin.IRQ_RISING, handler = self.button_pressed)
+	
+	def button_pressed(self, p):
+		#how do you add debounce?
+		#uncomment the following - try to understand what's happening 
+		now_time = time.ticks_ms()
+		if(now_time - self.entered_time < 200):
+			return
+		self.entered_time = now_time
+			
+		self.client.publish(self.TOPIC_PUB, b'{"speed1": 10, "speed2": 20}')
+		print("Button was pressed")
+		
+	def connect_wifi(self):
+		self.wlan = network.WLAN(network.STA_IF)
+		self.wlan.active(True)
+		if not self.wlan.isconnected():
+			print("Connecting to WiFi...")
+			self.wlan.connect(self.SSID, self.PASSWORD)
+			timeout = 10
+			while not self.wlan.isconnected() and timeout > 0:
+				time.sleep(1)
+				timeout -= 1
+			
+		if self.wlan.isconnected():
+			print("WiFi Connected! IP:", self.wlan.ifconfig()[0])
+			return True
+		else:
+			print("WiFi connection failed!")
+			return False
+
+	def publish(self, topic, msg):
+		self.client.publish(topic, msg)
+		print(f"Published message to topic '{topic}' : '{msg}'")
+		
+	def subscribe(self, topic):
+		self.client.subscribe(topic)
+		
+	def sub_cb(self, topic, msg):
+		json_str = json.loads(msg)
+#         self.np[0] = json_str["color"]
+#         self.np.write()
+		self.motor1.start(1, json_str["speed1"]);
+		self.motor2.start(1, json_str["speed2"]);
+		print(f"Received message on topic '{topic.decode()}' : '{msg.decode()}'")
+
+	def mqtt_connect(self):
+		try:
+			self.client = MQTTClient(
+				client_id = self.CLIENT_ID,
+				server = self.MQTT_BROKER,
+				port = self.MQTT_PORT,
+				user = self.MQTT_USERNAME,
+				password = self.MQTT_PASSWORD,
+				ssl = True,  # Enable SSL
+				ssl_params = {'server_hostname': self.MQTT_BROKER}  # Important for certificate validation
+			)
+			self.client.set_callback(self.sub_cb)
+			self.client.connect()
+			
+			print("MQTT Connected successfully!")
+			return self.client
+		except OSError as e:
+			print(f"MQTT Connection failed: {e}")
+			return None
+		except Exception as e:
+			print(f"Unexpected error: {e}")
+			return None
+
+
+
+mqtt_obj = MQTTDevice()
+
+if mqtt_obj.connect_wifi():
+	client = mqtt_obj.mqtt_connect()
+	mqtt_obj.subscribe("/ME35/katierobot")
+
+
+while True:
+	try:
+		client.check_msg()
+		time.sleep(1)
+	except Exception as e:
+		print(f"Checking message failed: {e}")
+											</code></pre>
+										</div>
+								<h2> Takeaways </h2>
+										<p> Overall, this project went pretty smoothly. I think the primary obstacle we faced was when our motors were not running at the same speeds/just generally behaving weird. But this was just an issue of me fiddling with the motors' gearboxes in a prior project, and forgetting to take notes on which motors had been modified. This was a pretty easy fix too by just switching out the motors for new ones.</p>
+							</div>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+								<h2>Say Hello!</h2>
+								<form method="POST" action="https://api.web3forms.com/submit">
+									<input type="hidden" name="access_key" value="2b855186-d1af-448e-a3bb-deb242a65f9d">
+
+									<div class="fields">
+										<div class="field half">
+											<input type="text" name="name" id="name" placeholder="Name" />
+										</div>
+										<div class="field half">
+											<input type="email" name="email" id="email" placeholder="Email" />
+										</div>
+										<div class="field">
+											<textarea name="message" id="message" placeholder="Message"></textarea>
+										</div>
+									</div>
+
+									<!-- Honeypot Spam Protection -->
+									<input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+									<ul class="actions">
+										<li><input type="submit" value="Send" class="primary" /></li>
+									</ul>
+								</form>
+
+								
+								<ul class="copyright">
+									<li>Built by Katie Kostak :-)</li>
+								</ul>
+							</section>
+							<section>
+								<h2>Stay in Touch</h2>
+								<ul class="icons">
+									<li><a href="https://github.com/kkostak" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://katie.kostak@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+									<li><a href="https://www.linkedin.com/in/katiekostak" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<div class="box alt">
+									<div class="col-4"><span class="image fit"><img src="images/bottomLabel.png" alt="" /></span></div>
+									</div>
+								</ul>
+							</section>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
