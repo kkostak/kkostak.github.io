@@ -8,7 +8,7 @@
 <!-- OK YES I BASED MY WEBSITE OFF A TEMPLATE BUT IM A MECHE MAJOR NOT A CS MAJOR SUE ME HEY WHY ARE YOU LURKING HERE IN THE FIRST PLACE -->
 <html>
 	<head>
-		<title>Wifi Robot - Katie Kostak</title>
+		<title>Image Processing Wifi Robot - Katie Kostak</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -48,14 +48,16 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>WiFi Robot</h1>
+							<h1>Image Processing WiFi Robot</h1>
 
 							<div style="display: inline-block; width: 875pt;">
-								<p><span class="image right"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 50%"autoplay muted loop><source src="images/ME35/wifiRobot/IMG_3449.MOV"></video></span> <b>GOALS: </b> Design a robot that can be controlled over wifi <br> <b>SKILLS: </b> MicroPython, ESP32, MQTT, CAD, 3D Printing</p>
-								<p> This was a project done for my Intro to Robotics Class, and I had one week to make a remote controlled robot!</p>
+								<p><span class="image right"><video name="Robot Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 75%"autoplay muted loop><source src="images/ME35/wifiRobot/imageProcessing.mp4"></video></span> <b>GOALS: </b> Design a robot that can be controlled over wifi <br> <b>SKILLS: </b> MicroPython, ESP32, MQTT, CAD, 3D Printing, CV2, Image Processing</p>
+								<p> This was a project done for my Intro to Robotics Class, where we were tasked to create a robot that could follow an object using image processing!</p>
 							</div>		
-
+							
 							<div>
+								<h2>Image Processing</h2>
+									<p><span class="image left"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 120%"autoplay muted loop><source src="images/ME35/wifiRobot/Image Data Video.mp4"></video></span> <br> The robot connects to a Macbook (and then uses AirPlay to connect to an iPhone) over WiFi in order to recieve directional information from the camera. We separated the feild of view into three quadrands - left, right, and center - in order to identify which direction the robot should turn towards. <br> My laptop is very old and I think the image processing + wifi + screen recording combo makes the output text really laggy :-( But when not recording it live updates which direction it is sending over to the robot by calculating the distance away the center of the object is from the middle of the screen.</p>
 								<h2>CAD</h2>		
 									<div class="row">
 										<div class="column">
@@ -63,461 +65,274 @@
 										</div>
 										<div class="column">
 											<h3> Hardware</h3>
-											 	<p> Here's the CAD Model for the robot! It's a pretty simple robot chassis <br> with two driven wheels in the front and a caster wheel in the back.</p>
-											<h2>Code</h2>
+											 	<p> Here's the CAD Model for the robot! It's a pretty simple robot chassis <br> with two driven wheels in the front and a caster wheel in the back <br> and a phone stand</p>
+											<h2>WiFi Integration</h2>
 												 <p> We used MQTT to have our controller ESP32 communicate with our  <br> robot ESP32. We had our controller post to a channel that the robot was <br> subscribed to so that it could listen in for commands. Then,  <br> it was pretty simple to send commands to make the motors spin. </p>
 											
-												 <a id = "showButton" href="javascript:" onClick="document.getElementById('robot').style.display='inline-block'; document.getElementById('controller').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">robot code!</a>
-												 <a id = "showButton" href="javascript:" onClick="document.getElementById('controller').style.display='inline-block'; document.getElementById('robot').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">controller code!</a>
-												 <a id = "hideButton" href="javascript:" style = "display: none;" onClick="document.getElementById('robot').style.display='none'; document.getElementById('controller').style.display='none'; document.getElementById('hideButton').style.display='none';" class="button small primary">hide code</a>		 
+												 <a id = "showButton" href="javascript:" onClick="document.getElementById('robot').style.display='inline-block'; document.getElementById('computer').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">robot code!</a>
+												 <a id = "showButton" href="javascript:" onClick="document.getElementById('computer').style.display='inline-block'; document.getElementById('robot').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">controller code!</a>
+												 <a id = "hideButton" href="javascript:" style = "display: none;" onClick="document.getElementById('robot').style.display='none'; document.getElementById('computer').style.display='none'; document.getElementById('hideButton').style.display='none';" class="button small primary">hide code</a>		 
 											</div>
 									  </div>
 
-									  	<div id = "controller" style = "display:none;">
+									  	<div id = "computer" style = "display:none;">
 											<pre><code>
-from machine import Pin, PWM, Timer
-import network
-import time
-from umqtt.simple import MQTTClient
-import ssl
-import secrets
-import neopixel
-import json
-class Count(object):
-    def _init_(self,A,B):
-        self.A = Pin(A, Pin.IN)
-        self.B = Pin(B, Pin.IN)
-        self.counter = 0
-        self.A.irq(self.cb,self.A.IRQ_FALLING|self.A.IRQ_RISING) #interrupt on line A
-        self.B.irq(self.cb,self.B.IRQ_FALLING|self.B.IRQ_RISING) #interrupt on line B
-    def cb(self,msg):
-        other,inc = (self.B,1) if msg == self.A else (self.A,-1) #define other line and increment
-        self.counter += -inc if msg.value()!=other.value() else  inc
-    def value(self):
-        return self.counter
-class Motor(Count):
-    def _init_(self,m1,m2, A, B):
-        self.enc = Count(A,B)
-        self.M1 = PWM(m1, freq=100, duty_u16=0)
-        self.M2 = PWM(m2, freq=100, duty_u16=0)
-        self.stop()
-        self.oldpos = 0
-        self.newpos = 0
-        self.velocity = 0
-        self.T = 500
-        self.RPM = 0
-        tim = Timer(0)  # Use Timer 0
-        tim.init(mode=Timer.PERIODIC, period=self.T, callback=self.find_velocity) # T m-second interval
-    def find_velocity(self,p):
-        self.newpos = self.pos()
-        self.velocity = (self.newpos - self.oldpos)/self.T
-        self.RPM = self.velocity * 1000 * 60  / 32  # since 1 rot = 3840 counts, and velocity = counts/ ms
-        self.oldpos = self.newpos
-    def show_velocity(self):
-        return self.velocity
-    def show_RPM(self):
-        return self.RPM
-    def pos(self):
-        return self.enc.value()
-    def stop(self):
-        self.M1.duty_u16(0)
-        self.M2.duty_u16(0)
-    def start(self, direction = 0, speed = 50):
-        if direction:
-            self.M1.duty_u16(int(speed*65535/100))
-            self.M2.duty_u16(0)
-        else:
-            self.M1.duty_u16(0)
-            self.M2.duty_u16(int(speed*65535/100))
-    def setSpeed(self,direction = 0, speed = 100): #percentage
-        if direction:
-            self.M1.duty_u16(int(speed*65535/100))
-            self.M2.duty_u16(0)
-        else:
-            self.M1.duty_u16(0)
-            self.M2.duty_u16(int(speed*65535/100))
-class MQTTDevice:
-    def _init_(self, is_controller=True):
-        self.SSID = secrets.SSID
-        self.PASSWORD = secrets.PWD
-        self.is_controller = is_controller
-        # Neopixel initialize
-        self.np = neopixel.NeoPixel(Pin(15), 2)
-        # Motor Initialize
-        if is_controller:
-            # Controller: only motor1 for steering control
-            self.motor1 = Motor(14, 27, 25, 26)
-            self.motor2 = None
-        else:
-            # Car: both motors for driving
-            self.motor1 = Motor(14, 27, 32, 39)
-            self.motor2 = Motor(12, 13, 21, 22)
-        # Buzzer setup (on car only, but pin defined on both for code consistency)
-        self.buzzer = PWM(Pin(23), freq=2000, duty_u16=0)  # Adjust pin if needed
-        # Button timing
-        self.forward_button_time = 0
-        self.honk_button_time = 0
-        # Control state
-        self.controller_position = 0
-        self.last_controller_position = 0
-        self.forward_active = False
-        # MQTT settings - CHANGE THESE FOR EACH ROBOT
-        self.MQTT_BROKER = secrets.mqtt_url
-        self.MQTT_PORT = 8883
-        self.MQTT_USERNAME = secrets.mqtt_username
-        self.MQTT_PASSWORD = secrets.mqtt_password
-        self.CLIENT_ID = “/ME35/james”  # CHANGE THIS: james or katie
-        self.TOPIC_PUB = “/ME35/jamesrobot”  # CHANGE THIS: jamesrobot or katierobot
-        # Button setup
-        self.forward_button = Pin(34, Pin.IN, Pin.PULL_UP)
-        self.honk_button = Pin(35, Pin.IN, Pin.PULL_UP)
-        self.forward_button.irq(trigger=Pin.IRQ_FALLING, handler=self.forward_pressed)
-        self.honk_button.irq(trigger=Pin.IRQ_FALLING, handler=self.honk_pressed)
-        # Timer for controller position monitoring (only if controller)
-        if is_controller:
-            tim1 = Timer(1)
-            tim1.init(mode=Timer.PERIODIC, period=100, callback=self.check_controller_position)
-    def forward_pressed(self, p):
-        “”"FUNCTION 1: Toggle forward movement”“”
-        now_time = time.ticks_ms()
-        if(now_time - self.forward_button_time < 200):
-            return
-        self.forward_button_time = now_time
-        self.forward_active = not self.forward_active
-        if self.forward_active:
-            msg = json.dumps({“command”: “forward”, “speed”: 60})
-            print(“FUNCTION 1: Forward ON”)
-            self.np[0] = (0, 255, 0)  # Green
-        else:
-            msg = json.dumps({“command”: “stop”})
-            print(“FUNCTION 1: Forward OFF”)
-            self.np[0] = (255, 0, 0)  # Red
-        self.np.write()
-        self.client.publish(self.TOPIC_PUB, msg)
-    def honk_pressed(self, p):
-        “”"FUNCTION 2: Make buzzer sound”“”
-        now_time = time.ticks_ms()
-        if(now_time - self.honk_button_time < 200):
-            return
-        self.honk_button_time = now_time
-        msg = json.dumps({“command”: “honk”})
-        self.client.publish(self.TOPIC_PUB, msg)
-        print(“FUNCTION 2: Honk!“)
-        # Flash blue
-        self.np[1] = (0, 0, 255)
-        self.np.write()
-        time.sleep_ms(100)
-        self.np[1] = (0, 0, 0)
-        self.np.write()
-    def check_controller_position(self, timer):
-        “”"FUNCTION 3: Monitor encoder position for steering control”“”
-        if not self.is_controller or self.motor1 is None:
-            return
-        self.controller_position = self.motor1.pos()
-        # Check if position changed significantly (deadzone of 50 counts)
-        position_diff = self.controller_position - self.last_controller_position
-        if abs(position_diff) > 50:
-            # Determine turn direction and speed based on encoder change
-            if position_diff > 0:
-                # Turned right
-                turn_speed = min(abs(position_diff) // 10, 80)  # Scale to reasonable speed
-                msg = json.dumps({“command”: “turn”, “direction”: “right”, “speed”: turn_speed})
-                print(f”FUNCTION 3: Turn RIGHT (encoder: {self.controller_position}, speed: {turn_speed})“)
-            else:
-                # Turned left
-                turn_speed = min(abs(position_diff) // 10, 80)
-                msg = json.dumps({“command”: “turn”, “direction”: “left”, “speed”: turn_speed})
-                print(f”FUNCTION 3: Turn LEFT (encoder: {self.controller_position}, speed: {turn_speed})“)
-            self.client.publish(self.TOPIC_PUB, msg)
-            self.last_controller_position = self.controller_position
-    def connect_wifi(self):
-        self.wlan = network.WLAN(network.STA_IF)
-        self.wlan.active(True)
-        if not self.wlan.isconnected():
-            print(“Connecting to WiFi...“)
-            self.wlan.connect(self.SSID, self.PASSWORD)
-            timeout = 10
-            while not self.wlan.isconnected() and timeout > 0:
-                time.sleep(1)
-                timeout -= 1
-        if self.wlan.isconnected():
-            print(“WiFi Connected! IP:“, self.wlan.ifconfig()[0])
-            return True
-        else:
-            print(“WiFi connection failed!“)
-            return False
-    def publish(self, topic, msg):
-        self.client.publish(topic, msg)
-        print(f”Published message to topic ‘{topic}’ : ‘{msg}‘“)
-    def subscribe(self, topic):
-        self.client.subscribe(topic)
-    def sub_cb(self, topic, msg):
-        “”"Handle incoming MQTT messages”“”
-        try:
-            json_str = json.loads(msg)
-            command = json_str.get(“command”, “”)
-            print(f”Received ‘{command}’ on topic ‘{topic.decode()}’“)
-            if command == “forward”:
-                # Move both motors forward
-                if self.motor1 and self.motor2:
-                    speed = json_str.get(“speed”, 60)
-                    self.motor1.start(1, speed)
-                    self.motor2.start(1, speed)
-                    print(f”Moving forward at speed {speed}“)
-            elif command == “stop”:
-                # Stop both motors
-                if self.motor1 and self.motor2:
-                    self.motor1.stop()
-                    self.motor2.stop()
-                    print(“Stopped”)
-            elif command == “turn”:
-                # Turn by differential drive
-                if self.motor1 and self.motor2:
-                    direction = json_str.get(“direction”, “right”)
-                    speed = json_str.get(“speed”, 50)
-                    if direction == “right”:
-                        # Right motor slower/stopped, left motor faster
-                        self.motor1.start(1, speed)  # Left motor
-                        self.motor2.start(1, speed // 3)  # Right motor slower
-                    else:  # left
-                        # Left motor slower/stopped, right motor faster
-                        self.motor1.start(1, speed // 3)  # Left motor slower
-                        self.motor2.start(1, speed)  # Right motor
-                    print(f”Turning {direction} at speed {speed}“)
-            elif command == “honk”:
-                # Sound the buzzer
-                self.buzzer.duty_u16(32768)  # 50% duty cycle
-                time.sleep_ms(200)
-                self.buzzer.duty_u16(0)
-                print(“Honked!“)
-        except Exception as e:
-            print(f”Error processing message: {e}“)
-    def mqtt_connect(self):
-        try:
-            self.client = MQTTClient(
-                client_id = self.CLIENT_ID,
-                server = self.MQTT_BROKER,
-                port = self.MQTT_PORT,
-                user = self.MQTT_USERNAME,
-                password = self.MQTT_PASSWORD,
-                ssl = True,
-                ssl_params = {‘server_hostname’: self.MQTT_BROKER}
-            )
-            self.client.set_callback(self.sub_cb)
-            self.client.connect()
-            print(“MQTT Connected successfully!“)
-            return self.client
-        except OSError as e:
-            print(f”MQTT Connection failed: {e}“)
-            return None
-        except Exception as e:
-            print(f”Unexpected error: {e}“)
-            return None
-# True for controller (James)
-# False for car (Katie)
-mqtt_obj = MQTTDevice(is_controller=True)  # CHANGE THIS
-if mqtt_obj.connect_wifi():
-    client = mqtt_obj.mqtt_connect()
-    # CHANGE subscription topic for each robot:
-    mqtt_obj.subscribe(“/ME35/katierobot”)  # Controller subscribes to car’s topic
-while True:
-    try:
-        client.check_msg()
-        time.sleep(0.01)  # Faster checking for responsive control
-    except Exception as e:
-        print(f”Checking message failed: {e}“)											</code></pre>
+# vision_publish_red_blob.py — Mac (Python 3)
+# Largest-red-blob detection → MQTT command ("left" / "right" / "red" / "lost")
+# Also publishes eyaw ∈ [-1,1] and normalized area for future PID use.
+
+import cv2, numpy as np, time, json
+import paho.mqtt.client as mqtt
+import secrets  # expects: mqtt_url, mqtt_username, mqtt_password
+
+# ===== MQTT (HiveMQ Cloud or your broker) =====
+BROKER   = "860ad10a759d4944a8fb19d293ee23e1.s1.eu.hivemq.cloud"
+PORT     = 8883
+USERNAME = "me352025"
+PASSWORD = "cee0preK!"
+TOPIC    = "/ME35/motorControl"
+
+# ===== Camera & Detection =====
+CAM_INDEX   = 0         # change to 1 if using iPhone/virtual cam
+MIN_PIXELS  = 800       # min contour area to consider "seen" (adjust as needed)
+BAND_PX     = 250        # deadband around center (pixels) → "red" when inside band
+LOOP_DELAY = 0.25 #5 FPS
+# Morphology kernel
+KERNEL = np.ones((5, 5), np.uint8)
+
+# ----- MQTT setup -----
+client = mqtt.Client(client_id="mac--pub", clean_session=True)
+client.username_pw_set(USERNAME, PASSWORD)
+client.tls_set()                  # use system CA
+client.tls_insecure_set(False)
+client.connect(BROKER, PORT, keepalive=30)
+client.loop_start()
+
+# ----- Camera -----
+cam = cv2.VideoCapture(CAM_INDEX, cv2.CAP_AVFOUNDATION)
+if not cam.isOpened():
+	cam = cv2.VideoCapture(CAM_INDEX)
+if not cam.isOpened():
+	raise SystemExit(f"Error: Could not open camera index {CAM_INDEX}")
+
+try:
+	while True:
+		ok, frame = cam.read()
+		if not ok:
+			print("Error: Failed to capture frame")
+			break
+
+		h, w = frame.shape[:2]
+		frame_center = w // 2
+
+		# --- Red extraction: R - G - B ---
+		b, g, r = cv2.split(frame)
+		red_filtered = cv2.subtract(r, g)
+		red_filtered = cv2.subtract(red_filtered, b)
+
+		# --- Threshold to binary mask ---
+		_, red_mask = cv2.threshold(red_filtered, 50, 255, cv2.THRESH_BINARY)
+
+		# --- Morphological cleanup ---
+		red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_OPEN, KERNEL)
+		red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_CLOSE, KERNEL)
+
+		# --- Find largest contour ---
+		contours, _ = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+		mode = "lost"
+		eyaw = None
+		area_norm = 0.0
+
+		result = frame.copy()
+		if contours:
+			biggest = max(contours, key=cv2.contourArea)
+			area = float(cv2.contourArea(biggest))
+
+			if area > MIN_PIXELS:
+				x, y, bw, bh = cv2.boundingRect(biggest)
+				cv2.rectangle(result, (x, y), (x + bw, y + bh), (255, 0, 0), 2)
+				cv2.drawContours(result, [biggest], -1, (0, 255, 0), 2)
+
+				M = cv2.moments(biggest)
+				if M["m00"] != 0:
+					cx = int(M["m10"] / M["m00"])
+					cy = int(M["m01"] / M["m00"])
+					cv2.circle(result, (cx, cy), 7, (255, 255, 255), -1)
+
+					# Decide discrete mode by band
+					if cx < frame_center - BAND_PX:
+						mode = "left"
+					elif cx > frame_center + BAND_PX:
+						mode = "right"
+					else:
+						mode = "red"
+
+					# Normalized lateral error for PID (optional)
+					eyaw = (cx - frame_center) / (w / 2.0)
+
+					# Normalized area as distance proxy
+					area_norm = area / float(w * h)
+
+					# HUD text
+					cv2.putText(result, f"Area: {int(area)}  eyaw: {0 if eyaw is None else eyaw:.2f}",
+								(x, max(20, y - 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+		# Center lines / band
+		cv2.line(result, (frame_center, 0), (frame_center, h), (0, 255, 255), 1)
+		cv2.line(result, (frame_center - BAND_PX, 0), (frame_center - BAND_PX, h), (255, 255, 0), 1)
+		cv2.line(result, (frame_center + BAND_PX, 0), (frame_center + BAND_PX, h), (255, 255, 0), 1)
+
+		# --- Publish decision ---
+		payload = {"mode": mode, "eyaw": eyaw, "area": area_norm, "ts": time.time()}
+		client.publish(TOPIC, json.dumps(payload), qos=0, retain=False)
+		print("Sent:", payload)
+
+		# --- Visualization ---
+		cv2.imshow("Original Camera", frame)
+		cv2.imshow("Red Mask", red_mask)
+		cv2.imshow("Biggest Red Object", result)
+
+		if (cv2.waitKey(1) & 0xFF) == ord('q'):
+			break
+		time.sleep(LOOP_DELAY)
+
+finally:
+	cam.release()
+	cv2.destroyAllWindows()
+	client.loop_stop()
+	client.disconnect()
+
+											</code></pre>
 										</div>
 										<div id = "robot" style="display:none;">
 											<pre><code>
-from machine import Pin, PWM, Timer
-import network
-import time
+# esp32_listen_red.py — MicroPython on Robo ESP32
+import network, time, json
+from machine import Pin, PWM
 from umqtt.simple import MQTTClient
-import ssl
 import secrets
-import neopixel
-import json
-from machine import Pin
+from motordriverfollow import Motor, Robot  # <-- keep your motor driver file unchanged
 
-class Count(object):
-	def __init__(self,A,B):
-		self.A = Pin(A, Pin.IN)
-		self.B = Pin(B, Pin.IN)
-		self.counter = 0
+# Motor1 = Motor(14, 27, 25, 26)  # Right
+# Motor2 = Motor(12, 13, 21, 22)
 
-		self.A.irq(self.cb,self.A.IRQ_FALLING|self.A.IRQ_RISING) #interrupt on line A
-		self.B.irq(self.cb,self.B.IRQ_FALLING|self.B.IRQ_RISING) #interrupt on line B
+ourRobot = Robot(14, 27, 25, 26, 13, 12, 21, 22)
+
+# m1a, m1b, m1e1, m1e2, m2a, m2b, m2e1, m2e2):
 
 
-	def cb(self,msg):
-		other,inc = (self.B,1) if msg == self.A else (self.A,-1) #define other line and increment
-		self.counter += -inc if msg.value()!=other.value() else  inc 
-		
-	def value(self):
-		#print(self.counter)
-		return self.counter
-	
-class Motor(Count):
-	def __init__(self,m1,m2, A, B):
-		self.enc = Count(A,B)
-		self.M1 = PWM(m1, freq=100, duty_u16=0)
-		self.M2 = PWM(m2, freq=100, duty_u16=0)
-		self.stop()
-					
-		self.oldpos = 0
-		self.newpos = 0
-		self.velocity = 0
-		self.T = 500
-		self.RPM = 0
-		
-		tim = Timer(0)  # Use Timer 0
-		tim.init(mode=Timer.PERIODIC, period=self.T, callback=self.find_velocity) # T m-second interval
-	
-
-	def find_velocity(self,p):
-		self.newpos = self.pos()
-		self.velocity = (self.newpos - self.oldpos)/self.T
-		self.RPM = self.velocity * 1000 * 60  / 32  # since 1 rot = 3840 counts, and velocity = counts/ ms
-		self.oldpos = self.newpos
-	
-	def show_velocity(self):
-		return self.velocity
-	
-	def show_RPM(self):
-		return self.RPM
-	
-	
-	def pos(self):
-		return self.enc.value()
-		#        print(self.enc.value())        
-			
-	def stop(self):
-		self.M1.duty_u16(0) 
-		self.M2.duty_u16(0) 
-
-	def start(self, direction = 0, speed = 50):
-		if direction:
-			self.M1.duty_u16(int(speed*65535/100)) 
-			self.M2.duty_u16(0)
-		else:
-			self.M1.duty_u16(0)
-			self.M2.duty_u16(int(speed*65535/100)) 
-		
-	def setSpeed(self,direction = 0, speed = 100): #percentage
-		if direction:
-			self.M1.duty_u16(int(speed*65535/100)) 
-			self.M2.duty_u16(0)
-		else:
-			self.M1.duty_u16(0)
-			self.M2.duty_u16(int(speed*65535/100))
-
-class MQTTDevice:
+class BuzzerListener:
 	def __init__(self):
-		self.SSID = secrets.SSID
-		self.PASSWORD = secrets.PWD
-
-		#Neopixel intialize
-		self.np = neopixel.NeoPixel(Pin(15), 2)
-	
-		#Motor Initialize
-		self.motor1 = Motor(14, 27, 32, 39)
-		self.motor2 = Motor(12, 13, 21, 22)
-
-		self.entered_time = 0
+		# Wi-Fi (open network, no password)
+		self.SSID = secrets.SSID   # e.g. "Tufts_Wireless"
+		
 		# MQTT settings
-		self.MQTT_BROKER = secrets.mqtt_url 
-		self.MQTT_PORT = 8883
-		self.MQTT_USERNAME = secrets.mqtt_username 
-		self.MQTT_PASSWORD = secrets.mqtt_password 
-		self.CLIENT_ID = "/ME35/katierobot"
-		self.TOPIC_PUB = "/ME35/katierobot"
+		self.MQTT_BROKER   = secrets.mqtt_url
+		self.MQTT_PORT     = 8883
+		self.MQTT_USERNAME = secrets.mqtt_username
+		self.MQTT_PASSWORD = secrets.mqtt_password
+		self.TOPIC_SUB     = "/ME35/motorControl"
+		self.CLIENT_ID     = "esp32-buzzer"
 
-		
-		self.button = Pin(35, Pin.IN, Pin.PULL_UP)
-		self.button.irq(trigger = Pin.IRQ_RISING, handler = self.button_pressed)
-	
-	def button_pressed(self, p):
-		#how do you add debounce?
-		#uncomment the following - try to understand what's happening 
-		now_time = time.ticks_ms()
-		if(now_time - self.entered_time < 200):
-			return
-		self.entered_time = now_time
-			
-		self.client.publish(self.TOPIC_PUB, b'{"speed1": 10, "speed2": 20}')
-		print("Button was pressed")
-		
+		# Buzzer (optional)
+		self.BUZZER_PIN = 23
+		self.buzzer = PWM(Pin(self.BUZZER_PIN), freq=2000, duty=0)
+
+		self.client = None
+		self.last_ping_ms = time.ticks_ms()
+
+	# ---------------- Wi-Fi ----------------
 	def connect_wifi(self):
-		self.wlan = network.WLAN(network.STA_IF)
-		self.wlan.active(True)
-		if not self.wlan.isconnected():
-			print("Connecting to WiFi...")
-			self.wlan.connect(self.SSID, self.PASSWORD)
-			timeout = 10
-			while not self.wlan.isconnected() and timeout > 0:
-				time.sleep(1)
-				timeout -= 1
-			
-		if self.wlan.isconnected():
-			print("WiFi Connected! IP:", self.wlan.ifconfig()[0])
-			return True
-		else:
-			print("WiFi connection failed!")
-			return False
+		wlan = network.WLAN(network.STA_IF)
+		wlan.active(True)
+		print("Connecting to WiFi:", self.SSID)
+		wlan.connect(self.SSID)  # no password
+		while not wlan.isconnected():
+			time.sleep_ms(300)
+		print("WiFi connected! IP:", wlan.ifconfig()[0])
 
-	def publish(self, topic, msg):
-		self.client.publish(topic, msg)
-		print(f"Published message to topic '{topic}' : '{msg}'")
-		
-	def subscribe(self, topic):
-		self.client.subscribe(topic)
-		
-	def sub_cb(self, topic, msg):
-		json_str = json.loads(msg)
-#         self.np[0] = json_str["color"]
-#         self.np.write()
-		self.motor1.start(1, json_str["speed1"]);
-		self.motor2.start(1, json_str["speed2"]);
-		print(f"Received message on topic '{topic.decode()}' : '{msg.decode()}'")
-
+	# ---------------- MQTT ----------------
 	def mqtt_connect(self):
+		self.client = MQTTClient(
+			client_id=self.CLIENT_ID,
+			server=self.MQTT_BROKER,
+			port=self.MQTT_PORT,
+			user=self.MQTT_USERNAME,
+			password=self.MQTT_PASSWORD,
+			ssl=True,
+			ssl_params={'server_hostname': self.MQTT_BROKER}
+		)
+		self.client.set_callback(self.on_message)
+		self.client.connect()
+		self.client.subscribe(self.TOPIC_SUB)
+		print("Subscribed to", self.TOPIC_SUB)
+
+	def mqtt_reconnect(self):
 		try:
-			self.client = MQTTClient(
-				client_id = self.CLIENT_ID,
-				server = self.MQTT_BROKER,
-				port = self.MQTT_PORT,
-				user = self.MQTT_USERNAME,
-				password = self.MQTT_PASSWORD,
-				ssl = True,  # Enable SSL
-				ssl_params = {'server_hostname': self.MQTT_BROKER}  # Important for certificate validation
-			)
-			self.client.set_callback(self.sub_cb)
-			self.client.connect()
-			
-			print("MQTT Connected successfully!")
-			return self.client
-		except OSError as e:
-			print(f"MQTT Connection failed: {e}")
-			return None
+			if self.client:
+				try:
+					self.client.disconnect()
+				except:
+					pass
+			self.mqtt_connect()
 		except Exception as e:
-			print(f"Unexpected error: {e}")
-			return None
+			print("Re-connect failed:", e)
 
+	def on_message(self, topic, msg):
+		"""Called when a message arrives on /ME35/motorControl"""
+		try:
+			data = json.loads(msg)
+		except Exception:
+			return
+		mode = str(data.get("mode", "")).lower().strip()
+		print(mode)
+		
+		if mode == "red":
+			print("🔴 Red detected — move!")
+			ourRobot.robotForward()
 
+		elif mode == "left":
+			print("Left detected")
+			ourRobot.robotLeft()
 
-mqtt_obj = MQTTDevice()
+		elif mode == "right":
+			print("Right detected")
+			ourRobot.robotRight()
+			
+		elif mode == "lost":
+			print("lost detected")
+			ourRobot.robotStopboo()
+			
+		
 
-if mqtt_obj.connect_wifi():
-	client = mqtt_obj.mqtt_connect()
-	mqtt_obj.subscribe("/ME35/katierobot")
+	# ---------------- Main loop ----------------
+	def run(self):
+		self.connect_wifi()
+		self.mqtt_connect()
+		print("Ready. Waiting for MQTT messages…")
 
+		while True:
+			try:
+				self.client.check_msg()  # non-blocking
+			except Exception as e:
+				print("MQTT error:", e)
+				self.mqtt_reconnect()
 
-while True:
-	try:
-		client.check_msg()
-		time.sleep(1)
-	except Exception as e:
-		print(f"Checking message failed: {e}")
+			# Keep TLS alive (prevents the 20–30s dropout)
+			now = time.ticks_ms()
+			if time.ticks_diff(now, self.last_ping_ms) > 25000:
+				try:
+					self.client.ping()
+				except Exception as e:
+					print("Ping failed:", e)
+					self.mqtt_reconnect()
+				self.last_ping_ms = now
+
+			time.sleep_ms(50)
+
+# --- main ---
+BuzzerListener().run()												
 											</code></pre>
 										</div>
 								<h2> Takeaways </h2>
