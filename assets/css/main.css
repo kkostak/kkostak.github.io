@@ -3408,12 +3408,35 @@ input, select, textarea {
 	background-color: hsl(0 0% 90%);
   }
   
+  .caption {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	font-size: 1.5rem;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none; /* so hovering over text doesn’t break hover */
+  }
+  
+  .gallery:hover .caption {
+	opacity: 1;
+  }
+
   .gallery-landscape {
 	aspect-ratio: 9 / 6;
 	grid-column-end: span 2;
   }
   
+  .gallery-landscape:hover img {
+	filter: grayscale(100%);
+	transform: scale(1.05); /* optional zoom effect */
+	transition: filter 0.3s ease, transform 0.3s ease;
+  }
+  
   .gallery-portrait {
 	aspect-ratio: 6 / 9;
   }
+
 

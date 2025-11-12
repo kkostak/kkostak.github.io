@@ -57,7 +57,7 @@
 							
 							<div>
 								<h2>Image Processing</h2>
-									<p><span class="image left"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 120%"autoplay muted loop><source src="images/ME35/wifiRobot/Image Data Video.mp4"></video></span> <br> The robot connects to a Macbook (and then uses AirPlay to connect to an iPhone) over WiFi in order to recieve directional information from the camera. We separated the feild of view into three quadrands - left, right, and center - in order to identify which direction the robot should turn towards. <br> My laptop is very old and I think the image processing + wifi + screen recording combo makes the output text really laggy :-( But when not recording it live updates which direction it is sending over to the robot by calculating the distance away the center of the object is from the middle of the screen.</p>
+									<p><span class="image left"><video name="Hand Demo" style = "width: 450px; height: 350px; object-fit: cover; object-position: 0% 120%"autoplay muted loop><source src="images/ME35/wifiRobot/Image Data Video.mp4"></video></span> <br> The robot connects to a Macbook (and then uses AirPlay to connect to an iPhone) over WiFi in order to recieve directional information from the camera. We separated the feild of view into three sections - left, right, and center - in order to identify which direction the robot should turn towards. <br> My laptop is very old and I think the image processing + wifi + screen recording combo makes the output text really laggy :-( But when not recording it live updates which direction it is sending over to the robot by calculating the distance away the center of the object is from the middle of the screen.</p>
 								<h2>CAD</h2>		
 									<div class="row">
 										<div class="column">
@@ -65,12 +65,12 @@
 										</div>
 										<div class="column">
 											<h3> Hardware</h3>
-											 	<p> Here's the CAD Model for the robot! It's a pretty simple robot chassis <br> with two driven wheels in the front and a caster wheel in the back <br> and a phone stand</p>
+											 	<p> Here's the CAD Model for the robot! It's a pretty simple robot chassis <br> with two driven wheels in the front, a caster wheel in the back, <br> and a phone stand on top.</p>
 											<h2>WiFi Integration</h2>
-												 <p> We used MQTT to have our controller ESP32 communicate with our  <br> robot ESP32. We had our controller post to a channel that the robot was <br> subscribed to so that it could listen in for commands. Then,  <br> it was pretty simple to send commands to make the motors spin. </p>
+												 <p> I used MQTT to have the computer communicate with our robot's  <br>  ESP32. The computer posted to a channel that the robot was <br> subscribed to so that it could listen in for commands. Once the <br> computer determined which way the robot should turn based off <br>of the image processing info, it just some pretty simple motor PWM <br> control to spin the motors in different ways! </p>
 											
 												 <a id = "showButton" href="javascript:" onClick="document.getElementById('robot').style.display='inline-block'; document.getElementById('computer').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">robot code!</a>
-												 <a id = "showButton" href="javascript:" onClick="document.getElementById('computer').style.display='inline-block'; document.getElementById('robot').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">controller code!</a>
+												 <a id = "showButton" href="javascript:" onClick="document.getElementById('computer').style.display='inline-block'; document.getElementById('robot').style.display='none'; document.getElementById('hideButton').style.display='inline-block';" class="button small primary">image processing code!</a>
 												 <a id = "hideButton" href="javascript:" style = "display: none;" onClick="document.getElementById('robot').style.display='none'; document.getElementById('computer').style.display='none'; document.getElementById('hideButton').style.display='none';" class="button small primary">hide code</a>		 
 											</div>
 									  </div>
@@ -335,8 +335,14 @@ class BuzzerListener:
 BuzzerListener().run()												
 											</code></pre>
 										</div>
-								<h2> Takeaways </h2>
-										<p> Overall, this project went pretty smoothly. I think the primary obstacle we faced was when our motors were not running at the same speeds/just generally behaving weird. But this was just an issue of me fiddling with the motors' gearboxes in a prior project, and forgetting to take notes on which motors had been modified. This was a pretty easy fix too by just switching out the motors for new ones.</p>
+								
+							<h3>Everything That Went Wrong and How I Fixed It</h3>
+							<ul>
+								<li> The first iteration of the robot's chassis had the motors <b> spaced too closely together</b>, and the screw holes that the motor mounts were <b> clipping against the wheels </b> which weakened the motor mounts over time. This was a pretty easy fix by just widening the frame and placing the screw holes somewhere else</li>
+								<br>
+								<li> When I first put the wheels on, they were running at different speeds, and I realized this was becuase I had fiddled around with the gearboxes for a prior project, and had forgotten to change them back. Pretty easy fix of just putting in fresh motors, but will definitely not mix my diy-ed motors and my real motors together again. </li>
+								<br>
+							</ul>
 							</div>
 						</div>
 					</div>
