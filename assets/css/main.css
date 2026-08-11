@@ -3456,3 +3456,26 @@ input, select, textarea {
   .gallery-portrait {
 	aspect-ratio: 6 / 9;
   }
+
+  /* ========================================
+   HOMEPAGE TITLE
+   ======================================== */
+
+.hero-title {
+    width: 100%;
+    text-align: center;
+    padding: 2.5rem 1rem 1rem 1rem;
+}
+
+.hero-title h1 {
+    margin: 0;
+
+	font-family: inherit;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 600;
+
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+
+    text-transform: none;
+}
