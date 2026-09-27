@@ -1,5 +1,7 @@
 @import url(fontawesome-all.min.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700,900");
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+
 
 /*
 	Phantom by HTML5 UP
@@ -104,14 +106,14 @@ input, select, textarea {
 	}
 
 	body {
-		background:  #e2ecd2;
+		background:  #d1d9cd;
 		/* background-image: url("../../images/digifart/customGentle.png"); */
 		background-size: 100% auto;  
  
 	}
 		body.index {
 			/* background-image: url("../../images/digifart/customGentle.png"); */
-			background:  #e2ecd2;
+			background:  #d1d9cd;
 			background-size: 100% auto;  
 		}
 
@@ -3465,6 +3467,7 @@ input, select, textarea {
     width: 100%;
     text-align: center;
     padding: 2.5rem 1rem 1rem 1rem;
+	font-family:Verdana, Geneva, Tahoma, sans-serif
 }
 
 .hero-title h1 {
