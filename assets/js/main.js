@@ -26,6 +26,33 @@
 			}, 100);
 		});
 
+	// Fit page titles onto one line.
+		var fitPageTitles = function() {
+			$('#main > .inner > h1, #main > .inner > section > h1:first-child').each(function() {
+				var el = this,
+					parent = el.parentElement,
+					max = parseFloat(window.getComputedStyle(el).fontSize) || 44,
+					min = 14,
+					size = max;
+
+				el.style.fontSize = '';
+				max = parseFloat(window.getComputedStyle(el).fontSize) || 44;
+				size = max;
+				el.style.whiteSpace = 'nowrap';
+				el.style.fontSize = size + 'px';
+
+				while (el.scrollWidth > parent.clientWidth && size > min) {
+					size -= 1;
+					el.style.fontSize = size + 'px';
+				}
+			});
+		};
+
+		$window.on('load resize', fitPageTitles);
+		if (document.fonts && document.fonts.ready) {
+			document.fonts.ready.then(fitPageTitles);
+		}
+
 	// Touch?
 		if (browser.mobile)
 			$body.addClass('is-touch');

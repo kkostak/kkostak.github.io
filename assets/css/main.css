@@ -1,6 +1,7 @@
 @import url(fontawesome-all.min.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700,900");
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Scribble&display=swap');
 
 
 /*
@@ -106,14 +107,14 @@ input, select, textarea {
 	}
 
 	body {
-		background:  #d1d9cd;
+		background:  #f9f5f0;
 		/* background-image: url("../../images/digifart/customGentle.png"); */
 		background-size: 100% auto;  
  
 	}
 		body.index {
 			/* background-image: url("../../images/digifart/customGentle.png"); */
-			background:  #d1d9cd;
+			background:  #f9f5f0;
 			background-size: 100% auto;  
 		}
 
@@ -192,6 +193,17 @@ input, select, textarea {
 		line-height: 1.3;
 		margin: 0 0 1em 0;
 		letter-spacing: -0.035em;
+	}
+
+	/* Page titles only (e.g. "Ball Launching Robot"), not section headings */
+	#main > .inner > h1,
+	#main > .inner > section > h1:first-child {
+		font-family: "Rubik Scribble", cursive;
+		font-weight: 400;
+		letter-spacing: -0.03em;
+		white-space: nowrap;
+		max-width: 100%;
+		font-size: 2.75em;
 	}
 
 		h1 a {
@@ -1876,12 +1888,12 @@ input, select, textarea {
 			}
 
 			.icon.style2:hover {
-				color: #f2849e;
-				border-color: #f2849e;
+				color: #5b94a0;
+				border-color: #5b94a0;
 			}
 
 			.icon.style2:active {
-				background-color: rgba(242, 132, 158, 0.1);
+				background-color: rgba(91, 148, 160, 0.1);
 			}
 
 /* List */
@@ -2190,8 +2202,8 @@ input, select, textarea {
 		input[type="tel"]:focus,
 		select:focus,
 		textarea:focus {
-			border-bottom-color: #f2849e;
-			box-shadow: inset 0 -1px 0 0 #f2849e;
+			border-bottom-color: #5b94a0;
+			box-shadow: inset 0 -1px 0 0 #5b94a0;
 		}
 
 	select {
@@ -2295,8 +2307,8 @@ input, select, textarea {
 
 		input[type="checkbox"]:focus + label:before,
 		input[type="radio"]:focus + label:before {
-			border-color: #f2849e;
-			box-shadow: 0 0 0 1px #f2849e;
+			border-color: #5b94a0;
+			box-shadow: 0 0 0 1px #5b94a0;
 		}
 
 	input[type="checkbox"] + label:before {
@@ -2558,8 +2570,8 @@ input, select, textarea {
 		input[type="button"]:hover,
 		button:hover,
 		.button:hover {
-			color: #f2849e !important;
-			box-shadow: inset 0 0 0 2px #f2849e;
+			color: #5b94a0 !important;
+			box-shadow: inset 0 0 0 2px #5b94a0;
 		}
 
 		input[type="submit"]:active,
@@ -2567,7 +2579,7 @@ input, select, textarea {
 		input[type="button"]:active,
 		button:active,
 		.button:active {
-			background-color: rgba(242, 132, 158, 0.1);
+			background-color: rgba(91, 148, 160, 0.1);
 		}
 
 		input[type="submit"].small,
@@ -2601,7 +2613,7 @@ input, select, textarea {
 			input[type="button"].primary:hover,
 			button.primary:hover,
 			.button.primary:hover {
-				background-color: #f2849e;
+				background-color: #5b94a0;
 			}
 
 			input[type="submit"].primary:active,
@@ -2609,7 +2621,7 @@ input, select, textarea {
 			input[type="button"].primary:active,
 			button.primary:active,
 			.button.primary:active {
-				background-color: #ee5f81;
+				background-color: #477a84;
 			}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
@@ -2771,39 +2783,14 @@ input, select, textarea {
 						margin-bottom: 0;
 					}
 
-			.tiles article.style1 > .image:before {
-				background-color: #c2c19a;
-				background-size: inherit;
-
-			}
-
-			.tiles article.style2 > .image:before {
-				background-color: #6e7646;
-				background-size: inherit;
-
-			}
-
-			.tiles article.style3 > .image:before {
-				background-color: #c3c77e;
-				background-size: inherit;
-
-			}
-			.tiles article.style4 > .image:before {
-				background-color: #444f38;
-				background-size: inherit;
-
-			}
-
-			.tiles article.style5 > .image:before {
-				background-color: #6b8ebe;
-				background-size: inherit;
-
-			}
-
+			.tiles article.style1 > .image:before,
+			.tiles article.style2 > .image:before,
+			.tiles article.style3 > .image:before,
+			.tiles article.style4 > .image:before,
+			.tiles article.style5 > .image:before,
 			.tiles article.style6 > .image:before {
-				background-color: #c2c19a;
+				background-color: #666666;
 				background-size: inherit;
-
 			}
 			.tiles article.show {
 				display: block;
@@ -3013,7 +3000,7 @@ input, select, textarea {
 						}
 
 						#header nav ul li a[href="#menu"]:before {
-							background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cstyle%3Eline %7B stroke-width: 8px%3B stroke: %23f2849e%3B %7D%3C/style%3E%3Cline x1='0' y1='25' x2='100' y2='25' /%3E%3Cline x1='0' y1='50' x2='100' y2='50' /%3E%3Cline x1='0' y1='75' x2='100' y2='75' /%3E%3C/svg%3E");
+							background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cstyle%3Eline %7B stroke-width: 8px%3B stroke: %235b94a0%3B %7D%3C/style%3E%3Cline x1='0' y1='25' x2='100' y2='25' /%3E%3Cline x1='0' y1='50' x2='100' y2='50' /%3E%3Cline x1='0' y1='75' x2='100' y2='75' /%3E%3C/svg%3E");
 							opacity: 0;
 						}
 
@@ -3163,7 +3150,7 @@ input, select, textarea {
 			}
 
 			#menu > .close:before {
-				background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cstyle%3Eline %7B stroke-width: 8px%3B stroke: %23f2849e%3B %7D%3C/style%3E%3Cline x1='15' y1='15' x2='85' y2='85' /%3E%3Cline x1='85' y1='15' x2='15' y2='85' /%3E%3C/svg%3E");
+				background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cstyle%3Eline %7B stroke-width: 8px%3B stroke: %235b94a0%3B %7D%3C/style%3E%3Cline x1='15' y1='15' x2='85' y2='85' /%3E%3Cline x1='85' y1='15' x2='15' y2='85' /%3E%3C/svg%3E");
 				opacity: 0;
 			}
 
@@ -3413,22 +3400,28 @@ input, select, textarea {
 
 		}
 
-/* Gallery */
+/* Gallery — drop any size image in; columns masonry lays it out */
 .gallery {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 1.5rem;
-	grid-auto-flow: dense;
-  }
-  
-  .gallery img {
+	column-count: 3;
+	column-gap: 1.5rem;
+}
+
+.gallery img {
 	display: block;
 	width: 100%;
-	object-fit: cover;
+	height: auto;
+	margin: 0 0 1.5rem;
+	break-inside: avoid;
 	background-color: hsl(0 0% 90%);
-  }
-  
-  .caption {
+	transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.gallery img:hover {
+	filter: grayscale(100%);
+	transform: scale(1.02);
+}
+
+.caption {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -3437,48 +3430,323 @@ input, select, textarea {
 	font-size: 1.5rem;
 	opacity: 0;
 	transition: opacity 0.3s ease;
-	pointer-events: none; /* so hovering over text doesn’t break hover */
-  }
-  
-  .gallery:hover .caption {
-	opacity: 1;
-  }
+	pointer-events: none;
+}
 
-  .gallery-landscape {
-	aspect-ratio: 9 / 6;
-	grid-column-end: span 2;
-  }
-  
-  .gallery-landscape:hover img {
-	filter: grayscale(100%);
-	transform: scale(1.05); /* optional zoom effect */
-	transition: filter 0.3s ease, transform 0.3s ease;
-  }
-  
-  .gallery-portrait {
-	aspect-ratio: 6 / 9;
-  }
+.gallery:hover .caption {
+	opacity: 1;
+}
+
+@media screen and (max-width: 980px) {
+	.gallery {
+		column-count: 2;
+	}
+}
+
+@media screen and (max-width: 736px) {
+	.gallery {
+		column-count: 1;
+	}
+}
+
+/* Hide footer bottom label graphic */
+img[src$="bottomLabel.png"],
+.box.alt:has(img[src$="bottomLabel.png"]) {
+	display: none !important;
+}
+
+/* Demo media in project intros — escape the fixed .image box */
+.image.demo-media {
+	width: 450px;
+	max-width: 45%;
+	height: 350px;
+	overflow: hidden;
+	margin: 0;
+}
+
+.image.demo-media video {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 75%;
+}
 
   /* ========================================
-   HOMEPAGE TITLE
+   RESUME
    ======================================== */
 
+.resume-embed {
+	width: 100%;
+	background: #ffffff;
+	border: solid 1px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+}
+
+.resume-embed iframe {
+	display: block;
+	width: 100%;
+	height: 70vh;
+	min-height: 520px;
+	border: 0;
+}
+
+.resume-fallback {
+	margin: 0;
+	padding: 0.85rem 1rem;
+	font-size: 0.9em;
+	border-top: solid 1px rgba(0, 0, 0, 0.08);
+}
+
+@media screen and (max-width: 736px) {
+	.resume-embed iframe {
+		height: 60vh;
+		min-height: 400px;
+	}
+}
+
+  /* ========================================
+   ABOUT ME
+   ======================================== */
+
+.about h1 {
+	margin: 0 0 1.75rem;
+	font-family: "Rubik Scribble", cursive;
+	font-size: clamp(3rem, 8vw, 4.5rem);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: -0.03em;
+	text-transform: uppercase;
+}
+
+.about-intro {
+	display: flex;
+	align-items: center;
+	gap: 2.5rem;
+	margin-bottom: 3rem;
+}
+
+.about-photo {
+	flex: 0 0 44%;
+	max-width: 420px;
+}
+
+.about-photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.about-bio {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-family: "Lexend Exa", sans-serif;
+	font-size: 1rem;
+	line-height: 1.5;
+	letter-spacing: 0.01em;
+}
+
+.about-bio p {
+	margin: 0 0 1em;
+}
+
+.about-bio p:last-child {
+	margin-bottom: 0;
+}
+
+.about-skills {
+	font-family: "Lexend Exa", sans-serif;
+}
+
+.about-hobbies {
+	margin-top: 3.5rem;
+	font-family: "Lexend Exa", sans-serif;
+}
+
+.about-hobbies h2 {
+	margin: 0 0 1.25rem;
+	font-family: "Rubik Scribble", cursive;
+	font-size: clamp(2.25rem, 6vw, 3.25rem);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: -0.03em;
+	text-transform: uppercase;
+}
+
+.hobbies-carousel {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
+}
+
+.hobbies-carousel-viewport {
+	overflow: hidden;
+}
+
+.hobbies-carousel-track {
+	display: flex;
+	gap: 1rem;
+	width: max-content;
+	padding: 0.25rem 0;
+	transition: transform 0.35s ease;
+	will-change: transform;
+}
+
+.hobbies-carousel-item {
+	flex: 0 0 auto;
+	width: min(260px, 70vw);
+	margin: 0;
+}
+
+.hobbies-carousel-item img {
+	display: block;
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.04);
+}
+
+.hobbies-carousel-btn {
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 0;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.85);
+	color: #111;
+	font-size: 1.5rem;
+	line-height: 1;
+	cursor: pointer;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+	flex-shrink: 0;
+}
+
+.hobbies-carousel-btn:hover {
+	background: #ffffff;
+	color: #5b94a0;
+}
+
+.about-skills h2 {
+	margin: 0 0 1.25rem;
+	font-family: "Rubik Scribble", cursive;
+	font-size: clamp(2.25rem, 6vw, 3.25rem);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: -0.03em;
+	text-transform: uppercase;
+}
+
+.about-skills-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1.5rem 2rem;
+}
+
+.about-skills h3 {
+	margin: 0 0 0.75rem;
+	font-size: 0.95rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+.about-skills ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 0.95rem;
+	line-height: 1.55;
+}
+
+.about-skills li {
+	margin: 0 0 0.35em;
+	padding: 0;
+}
+
+@media screen and (max-width: 736px) {
+	.about-intro {
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.about-photo {
+		flex: none;
+		width: min(80%, 320px);
+		max-width: none;
+	}
+
+	.about-skills-grid {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+}
+
+  /* ========================================
+   HOMEPAGE HERO
+   ======================================== */
+
+.hero {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2.5rem;
+	padding: 9rem 2rem 1rem;
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+.hero .hero-image {
+	flex: 0 1 55%;
+	max-width: 560pt;
+	margin: 0;
+}
+
+.hero .hero-image img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
 .hero-title {
-    width: 100%;
-    text-align: center;
-    padding: 2.5rem 1rem 1rem 1rem;
-	font-family:Verdana, Geneva, Tahoma, sans-serif
+	flex: 1 1 45%;
+	width: auto;
+	text-align: left;
+	padding: 0;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .hero-title h1 {
-    margin: 0;
+	margin: 0;
+	font-family: "Rubik Scribble", cursive;
+	font-size: clamp(3rem, 6vw, 6rem);
+	font-weight: 400;
+	line-height: 0.9;
+	letter-spacing: -0.03em;
+	text-transform: none;
+}
 
-	font-family: inherit;
-    font-size: clamp(3rem, 6vw, 6rem);
-    font-weight: 600;
+.hero-title p {
+	margin: 1rem 0 0;
+}
 
-    line-height: 0.9;
-    letter-spacing: -0.06em;
+@media screen and (max-width: 736px) {
+	.hero {
+		flex-direction: column;
+		gap: 1.25rem;
+		padding: 1.5rem 1.25rem 0.5rem;
+	}
 
-    text-transform: none;
+	.hero .hero-image {
+		flex: none;
+		width: 90%;
+		max-width: 100%;
+	}
+
+	.hero-title {
+		text-align: center;
+	}
 }

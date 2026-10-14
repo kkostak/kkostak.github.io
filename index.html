@@ -9,6 +9,9 @@
 		<title>Katie Kostak</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Rubik+Scribble&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
@@ -16,13 +19,13 @@
 		<!-- Wrapper -->
 			<div id="wrapper">
 				
-				<span class="hero-title" style="width:auto; max-width:70%; height:auto;">
-					<br>	
-					<h1>hi i'm katie!</h1>
-					<p>i'm a recent mechE grad from tufts</p>
-				</span>
-
-				<span class="image center"><img src="images/centerCoverBG2.png"  alt=""/></span>
+				<div class="hero">
+					<span class="image hero-image"><img src="images/centerCoverBG2.png" alt="" fetchpriority="high" /></span>
+					<div class="hero-title">
+						<h1>hi i'm katie!</h1>
+						<p>i'm a recent mechE grad from tufts</p>
+					</div>
+				</div>
 
 				<!-- Header -->
 					<header id="header">
@@ -39,7 +42,7 @@
 						<ul>
 							<li><a href="index.html">Home</a></li>
 							<li><a href="aboutMe.html">About Me</a></li>
-							<li><a href="https://docs.google.com/document/d/1IWItMeYGe21i9kFOkmaiU_o10JnmGZ0ZCY9t4pEIM1M/edit?usp=sharing">Resume</a></li>
+							<li><a href="resume.html">Resume</a></li>
 						</ul>
 					</nav>
 
@@ -64,7 +67,7 @@
 
 								<article class="style1 filterDiv cad sim">
 									<span class="image">
-										<img src="images/ME35/2dof/coverPhoto.png" style= "object-fit: fill;" alt="" />
+										<img src="images/covers/ik-robot.jpg" style="object-fit: fill;" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="2dofarm.html">
 										<h2>IK Drawing Robot</h2>
@@ -76,7 +79,7 @@
 								
 								<article class="style1 filterDiv sim">
 									<span class="image">
-										<img src="images/lasers/30 Pulses Better Frame Rate.gif" alt="" />
+										<img src="images/covers/laser-drilling.jpg" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="laserDrilling.html">
 										<h2>Laser Drilling</h2>
@@ -88,7 +91,7 @@
 								
 								<article class="style1 filterDiv cad">
 									<span class="image">
-										<img src="images/nemitz/orangeCover.png" alt="" />
+										<img src="images/covers/nemitz.jpg" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="nemitz.html">
 										<h2>Soft-Bodied Robotics</h2>
@@ -98,21 +101,9 @@
 									</a>
 								</article>
 
-								<article class="style6 filterDiv cad">
-									<span class="image">
-										<img src="images/ME35/wifiRobot/front view.png" alt="" />
-									</span>
-									<a href="wifiRobot.html">
-										<h2>Image Processing Wifi Robot</h2>
-										<div class="content">
-											<p>Robot that uses camera info to follow an object!</p>
-										</div>
-									</a>
-								</article>
-
 								<article class="style1 filterDiv cad">
 									<span class="image">
-										<img src="images/ME35/pinball/gameCropped.png" alt="" />
+										<img src="images/covers/pinball.jpg" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="pinball.html">
 										<h2>Machine Learning Pinball</h2>
@@ -124,6 +115,18 @@
 
 								<article class="style6 filterDiv cad">
 									<span class="image">
+										<img src="images/covers/wifi-robot.jpg" alt="" loading="lazy" decoding="async" />
+									</span>
+									<a href="wifiRobot.html">
+										<h2>Image Processing Wifi Robot</h2>
+										<div class="content">
+											<p>Robot that uses camera info to follow an object!</p>
+										</div>
+									</a>
+								</article>
+								
+								<!-- <article class="style6 filterDiv cad">
+									<span class="image">
 										<img src="images/scuttletron/him.png" alt="" />
 									</span>
 									<a href="scuttletron.html">
@@ -132,12 +135,12 @@
 											<p>Personal Project for the MassRobotics Form & Function Challenge</p>
 										</div>
 									</a>
-								</article>
+								</article> -->
 
 																
 								<article class="style1 filterDiv cad">
 									<span class="image">
-										<img src="images/ME35/clock/clock.png" style= "object-fit: fill; object-position: 50% -10%;" alt="" />
+										<img src="images/covers/clock.jpg" style="object-fit: fill; object-position: 50% -10%;" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="clock.html">
 										<h2>API-Driven Clock</h2>
@@ -149,7 +152,7 @@
 
 								<article class="style1 filterDiv cad">
 									<span class="image">
-										<img src="images/ME35/ballo/BalloCover.png" style= "object-fit: fill;" alt="" />
+										<img src="images/covers/ballo.jpg" style="object-fit: fill;" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="Ballo.html">
 										<h2>Ballo</h2>
@@ -161,7 +164,7 @@
 
 								<article class="style5 filterDiv sim">
 									<span class="image">
-										<img src="images/fea/curtainRodCAD.png" alt="" />
+										<img src="images/covers/fea.jpg" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="curtainFEA.html">
 										<h2>FEA Analysis</h2>
@@ -173,7 +176,7 @@
 
 								<article class="style6 filterDiv misc">
 									<span class="image">
-										<img src="images/PCB/realThingCover.png" alt="" />
+										<img src="images/covers/pcb.jpg" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="PCB.html">
 										<h2>PCB Design</h2>
@@ -185,7 +188,7 @@
 
 								<article class="style2 filterDiv cad">
 									<span class="image">
-										<img src="images/teardown/crosssection.png" alt="" />
+										<img src="images/covers/teardown.jpg" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="teardown.html">
 										<h2>Teardown Project</h2>
@@ -197,7 +200,7 @@
 
 								<article class="style4 filterDiv misc">
 									<span class="image">
-										<img src="images/artwork/snowCropped.jpg" alt="" />
+										<img src="images/covers/artwork.jpg" alt="" loading="lazy" decoding="async" />
 									</span>
 									<a href="art.html">
 										<h2> drawings and paintings and things</h2>

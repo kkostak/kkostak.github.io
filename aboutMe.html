@@ -9,6 +9,9 @@
 		<title>About Me - Katie Kostak</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@400;700&family=Rubik+Scribble&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
@@ -41,48 +44,101 @@
 						<ul>
 							<li><a href="index.html">Home</a></li>
 							<li><a href="aboutMe.html">About Me</a></li>
-							<li><a href="https://docs.google.com/document/d/1IWItMeYGe21i9kFOkmaiU_o10JnmGZ0ZCY9t4pEIM1M/edit?usp=sharing">Resume</a></li>
+							<li><a href="resume.html">Resume</a></li>
 						</ul>
 					</nav>
 
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>About Me</h1>
-							<!-- <span class="image main"><img src="images/pic13.jpg" alt="" /></span> -->
-							<p><span class="image right"><img src="images/aboutMe/croppedMe.png" style = "width: 75%; height: auto;" alt="" /></span>My name is Katie Kostak, and I'm a current senior at Tufts University studying Mechanical Engineering and Computer Science. Originally from New Jersey, I was drawn to Tufts for the dual degree SMFA program, but instead fell in love with engineering. I’m a firm believer that engineering is inherently artistic and creative, and love to express myself through the various projects I take on! Outside of art and engineering I love playing the violin, and staying active through playing tennis or going on runs. I am also a big lover of all things aquatic, and can often find me trying to find any excuse to insert my shrimp tank into conversation!</p>
-								
-						<!-- <section> -->
-							<h1> Skills</h1>
-							<div class="row">
-								<div class="col-6 col-12-medium">
-									<h3>Technical</h3>
-									<ul>
-										<li>3D Printing</li>
-										<li>Finite Element Analysis (FEA)</li>
-										<li>Computational Fluid Dynamics (CFD)</li>
-										<li>Control Systems</li>
-										<li>Raspberry Pi</li>
-										<li>PCB Design</li>
-										<li>Waterjet</li>
-									</ul>
+							<section class="about">
+								<h1>about me</h1>
+
+								<div class="about-intro">
+									<div class="about-photo">
+										<img src="images/CoverMeCropped.png" alt="Katie Kostak" />
+									</div>
+									<div class="about-bio">
+										 <p>hi im katie! I graduated in 2026 from Tufts University with a degree in Mechanical Engineering. I was originally drawn to Tufts to pursue a dual degree in art, but instead fell in love with engineering. I'm a big believer that engineering is inherently artistic and creative, and love to express myself through the projects I do!</p>
+										<p>outside of art and engineering I love playing the violin, and staying active through climbing or going on runs. I am also a big lover of all things aquatic, and can often find me trying to find any excuse to insert my shrimp tank into conversation!</p>
+									</div>
 								</div>
-								<div class="col-6 col-12-medium">
-									<h3>Software</h3>
-									<ul>
-										<li>SolidWorks, Fusion, & OnShape</li>
-										<li>COMSOL Multiphysics</li>
-										<li>MATLAB</li>
-										<li>Python</li>
-										<li>JavaScript, HTML, & CSS</li>
-										<li>LabView</li>
-										<li>Java</li>
-										<li>KiCad</li>
-									</ul>
+
+								<div class="about-skills">
+									<h2>skills</h2>
+									<div class="about-skills-grid">
+										<div>
+											<h3>Technical</h3>
+											<ul>
+												<li>3D Printing</li>
+												<li>Finite Element Analysis (FEA)</li>
+												<li>Computational Fluid Dynamics (CFD)</li>
+												<li>Control Systems</li>
+												<li>Raspberry Pi</li>
+												<li>PCB Design</li>
+												<li>Waterjet</li>
+											</ul>
+										</div>
+										<div>
+											<h3>Software</h3>
+											<ul>
+												<li>SolidWorks, Fusion, & OnShape</li>
+												<li>COMSOL Multiphysics</li>
+												<li>MATLAB</li>
+												<li>Python</li>
+												<li>JavaScript, HTML, & CSS</li>
+												<li>LabView</li>
+												<li>Java</li>
+												<li>KiCad</li>
+											</ul>
+										</div>
+									</div>
 								</div>
-							</div>
+
+								<div class="about-hobbies">
+									<h2>outside of work</h2>
+									<p>i have a bad habit of taking on too many hobbies, so here are some photos of a few of my favorites!</p>
+									<div class="hobbies-carousel" data-hobbies-carousel>
+										<button type="button" class="hobbies-carousel-btn prev" data-hobbies-prev aria-label="Scroll gallery left">‹</button>
+										<div class="hobbies-carousel-viewport" data-hobbies-viewport>
+											<div class="hobbies-carousel-track">
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/lalosymphonieespagnole.png" alt="Lalo Symphonie Espagnole" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/taiwanbike.JPG" alt="Taiwan bike ride" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/skiing.jpg" alt="Skiing" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/shrimp!.jpeg" alt="Shrimp" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/shrimptank.png" alt="Shrimp tank" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/kaoshung.JPG" alt="Kaohsiung" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/lakecrescent.jpeg" alt="Lake Crescent" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/hurricaineridge.JPG" alt="Hurricane Ridge" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/mountstormking2.JPG" alt="Mount Storm King" loading="lazy" />
+												</figure>
+												<figure class="hobbies-carousel-item">
+													<img src="images/aboutMe/rafeschasm.JPG" alt="Rafael Chasm" loading="lazy" />
+												</figure>
+											</div>
+										</div>
+										<button type="button" class="hobbies-carousel-btn next" data-hobbies-next aria-label="Scroll gallery right">›</button>
+									</div>
+								</div>
+							</section>
 						</div>
-						<!-- </section> -->
 					</div>
 
 				<!-- Footer -->
@@ -135,6 +191,52 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+				(function () {
+					var root = document.querySelector('[data-hobbies-carousel]');
+					if (!root) return;
+
+					var viewport = root.querySelector('[data-hobbies-viewport]');
+					var prev = root.querySelector('[data-hobbies-prev]');
+					var next = root.querySelector('[data-hobbies-next]');
+					var track = root.querySelector('.hobbies-carousel-track');
+					var items = Array.prototype.slice.call(track.querySelectorAll('.hobbies-carousel-item'));
+					var index = 0;
+
+					function stepSize() {
+						if (!items.length) return 0;
+						var styles = window.getComputedStyle(track);
+						var gap = parseFloat(styles.columnGap || styles.gap) || 0;
+						return items[0].offsetWidth + gap;
+					}
+
+					function maxIndex() {
+						var step = stepSize();
+						if (!step) return 0;
+						var maxOffset = Math.max(0, track.scrollWidth - viewport.clientWidth);
+						return Math.max(0, Math.round(maxOffset / step));
+					}
+
+					function render() {
+						var max = maxIndex();
+						if (index < 0) index = max;
+						else if (index > max) index = 0;
+						track.style.transform = 'translateX(' + (-index * stepSize()) + 'px)';
+					}
+
+					prev.addEventListener('click', function () {
+						index -= 1;
+						render();
+					});
+					next.addEventListener('click', function () {
+						index += 1;
+						render();
+					});
+
+					window.addEventListener('resize', render);
+					render();
+				})();
+			</script>
 
 	</body>
 </html>
