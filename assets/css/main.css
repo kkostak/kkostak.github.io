@@ -3464,6 +3464,12 @@ img[src$="bottomLabel.png"],
 	margin: 0;
 }
 
+.image.demo-media.portrait {
+	width: 260px;
+	max-width: 35%;
+	height: 420px;
+}
+
 .image.demo-media video {
 	display: block;
 	width: 100%;

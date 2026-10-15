@@ -1,0 +1,137 @@
+\documentclass[a4paper, 10pt]{article}
+
+% Encoding & fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+
+% Layout
+\usepackage[scale=0.9, top=0.4in, bottom=0.4in, left=0.55in, right=0.55in]{geometry}
+\usepackage{parskip}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+% Tables, lists, graphics
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{titlesec}
+\usepackage{fontawesome5}
+\usepackage[normalem]{ulem}
+\usepackage[unicode, draft=false]{hyperref}
+
+% Centered X column
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% Section style
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{8pt}{4pt}
+
+% Shared list style
+\setlist[itemize]{nosep, leftmargin=1.4em, itemsep=1.5pt, topsep=2pt, parsep=0pt, after=\vspace{0pt}}
+
+% Link / accent color
+\definecolor{accent}{HTML}{381e7b}
+\hypersetup{pdfborder={0 0 0}, colorlinks=false}
+
+% Helpers
+\newcommand{\entrygap}{\vspace{5pt}}
+\newcommand{\role}[1]{\textcolor{accent}{#1}}
+
+\begin{document}
+\fontsize{10}{12}\selectfont
+\pagestyle{empty}
+
+% ---------- Header ----------
+\begin{center}
+  {\Huge\scshape\textbf{Katie Kostak}}\\[4pt]
+  {\large
+  \textcolor{accent}{\href{mailto:katie.kostak@gmail.com}{\raisebox{-0.05\height}{\faEnvelope}\ katie.kostak@gmail.com}}
+  \ $|$ \
+  \textcolor{accent}{\href{tel:+12014527017}{\raisebox{-0.05\height}{\faPhone}\ +1 (201) 452-7017}}
+  \ $|$ \
+  \textcolor{accent}{\href{https://kkostak.github.io}{\raisebox{-0.05\height}{\faWrench}\ Portfolio}}
+  \ $|$ \
+  \textcolor{accent}{\href{https://www.linkedin.com/in/katiekostak/}{\raisebox{-0.05\height}{\faLinkedin}\ katiekostak}}
+  }
+\end{center}
+
+% ---------- Education ----------
+\section{Education}
+\textbf{Tufts University} \hfill Sept.\ 2022 -- May 2026\\[1pt]
+\role{B.S.\ in Mechanical Engineering} \textit{-- magna cum laude} \hfill \role{Medford, MA}\\[1pt]
+\textbf{Courses:} Thermodynamics, Materials \& Manufacturing, Static \& Dynamic Mechanics, Data Structures, Robotics\\[1pt]
+\textbf{Clubs:} Symphony Orchestra, Club Tennis, Robotics Club, Tufts FOCUS
+
+% ---------- Experience ----------
+\section{Experience}
+
+\textbf{Lumafield} \hfill Jun.\ 2026 -- Present\\[1pt]
+\role{R\&D Intern; Process Engineering} \hfill \role{Cambridge, MA}
+\begin{itemize}
+  \item Developed a nonlinear correction model for flat-panel detectors to substantially reduce ring artifacts in reconstructed CT volumes \& improve dimensional analysis, currently being integrated into production
+  \item Characterized lag in X-ray detectors to develop correction algorithm for burn-in \& ghosting artifacts
+\end{itemize}
+\entrygap
+
+\textbf{Bose Corporation} \hfill Jan.\ 2026 -- May 2026\\[1pt]
+\role{Competitive Intelligence Technical Analyst Co-op} \hfill \role{Framingham, MA}
+\begin{itemize}
+  \item Evaluated performance of product design innovations in audio electronics, led cross-functional hardware research initiatives, and presented findings across R\&D
+  \item Designed Instron test fixtures to experimentally evaluate material response in prototypes
+\end{itemize}
+\entrygap
+
+\textbf{Nemitz Robotics Group} \hfill Jan.\ 2025 -- Dec.\ 2025\\[1pt]
+\role{Undergraduate Research Intern; Systems Integration Engineering} \hfill \role{Medford, MA}
+\begin{itemize}
+  \item Designed electro-mechanical fixtures to support integration of multi-material pellet extrusion \& deposition systems
+  \item Experimentally characterized material properties for pellet-based 3D printer targeting fabrication of ultra-soft devices
+\end{itemize}
+\entrygap
+
+\textbf{NCKU Metal 3D Printing Lab} \hfill May 2025 -- Aug.\ 2025\\[1pt]
+\role{Undergraduate Researcher; Laser Drilling Simulations Under Prof.\ Yu-Lung Lo} \hfill \role{Tainan, Taiwan}
+\begin{itemize}
+  \item Designed and validated a laser drilling simulation on semiconductor materials using COMSOL Multiphysics
+  \item Utilized a full factorial design to experimentally define optimal laser drilling parameters on Aluminum Nitride
+  \item Collected experimental data, analyzed trends, and summarized findings using MATLAB
+\end{itemize}
+
+% ---------- Publications \& Projects ----------
+\section{Publications \& Projects}
+
+\textbf{``Pellet Printing for Soft Robotic Devices''} \textit{-- Advanced Science} \hfill Mar.\ 2026\\[1pt]
+\role{Wu, Y., Chen, J.-H., Olivares, A., \textbf{Kostak, K.}, Pedicone, S., Kendre, S.\ V., and Nemitz, M.\ P.}
+\begin{itemize}
+  \item \href{https://doi.org/10.1002/advs.202524237}{https://doi.org/10.1002/advs.202524237}
+  \item Iteratively designed an ultra-soft, pneumatically-actuated robotic hand to achieve compliant motion and demonstrate the pellet printer's high-resolution capabilities
+\end{itemize}
+\entrygap
+
+\textbf{Inverse Kinematics Drawing Robot} \hfill Mar.\ 2026
+\begin{itemize}
+  \item Designed, prototyped, and programmed a 5-bar drawing robot that utilizes inverse kinematics to derive end effector points using Raspberry Pi
+  \item Simulated kinematics using MATLAB, and troubleshot deflection and stall torque issues
+\end{itemize}
+
+% ---------- Leadership ----------
+\section{Leadership Experience}
+
+\textbf{Tufts University, Tisch College of Civic Life} \hfill Jan.\ 2024 -- Dec.\ 2024\\[1pt]
+\role{Tufts FOCUS Pre-Orientation; Coordinator} \hfill \role{Medford, MA}
+\begin{itemize}
+  \item Collaborated in a team of 3 to design and execute a 5-day community service \& social change program for 180 first-year students and 75 staff in the greater Boston area
+  \item Coordinated with university staff and 50+ community partners to ensure an efficient workflow
+  \item Developed detailed documentation to streamline future program operations
+\end{itemize}
+
+% ---------- Skills ----------
+\section{Skills}
+\role{\textbf{Software and Programming Languages:}}
+SolidWorks, Fusion360, MATLAB, Python, GitHub, Stress Analysis, Finite Element Analysis (FEA), COMSOL Multiphysics, Google Suite, Microsoft Office, KiCad, LabView, Siemens NX, Cursor\\[3pt]
+\role{\textbf{Technical Skills:}}
+Laser Cutting, Waterjetting, Injection Molding, 3D Printing, Rapid Prototyping, Instron
+
+\end{document}
